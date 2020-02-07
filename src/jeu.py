@@ -5,14 +5,14 @@ from PySide2.QtCore import Slot, QObject, Signal, Property
 class Jeu(QObject):
     """Represente le jeu."""
 
-    
+
     def __init__(self):
         super(Jeu, self).__init__()
         self.carte_perso = Carte()
         self.carte_adversaire = Carte()
 
-    def placer_navire(self, x, y, z, sens, name):
-        pass
+    def placer_navire(self, x, y, z, sens, type_navire):
+        self.carte_perso.positionner_navire(x, y, z, "Vertical", type_navire, len(self.carte_perso.navires))
 
 # QML Link part
 

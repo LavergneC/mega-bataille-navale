@@ -47,8 +47,7 @@ class Carte:
         elif type_navire == "sous-marins":
             longueur = 2
             largeur = 1
-
-        navire = Navire(longueur, largeur, type_navire, id)
+        navire = Navire(id, longueur, largeur, type_navire)
         self.navires.append(navire)
         index = self.trouver_navire(id)
         if index == "ERR":

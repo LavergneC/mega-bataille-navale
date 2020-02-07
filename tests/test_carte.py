@@ -19,8 +19,8 @@ def test_check_ship():
 
 def test_positionner_navire():
     carte = Carte()
-    navire = Navire(3, 1, "Calypso")
-    carte.positionner_navire(5, 5, 1, "Vertical")
+    navire = Navire(0, 3, 1, "Calypso")
+    carte.positionner_navire(5, 5, 1, "Vertical", "destroyer", 0)
 
     assert carte.navires[0].cases[0].x == 5
     assert carte.navires[0].cases[0].y == 5

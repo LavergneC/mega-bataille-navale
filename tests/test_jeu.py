@@ -95,19 +95,19 @@ def test_placer_navire():
     jeu = Jeu()
 
     navire = Navire(0, 3, 1, "Calypso")
-    jeu.placer_navire(5, 5, 1, "Vertical")
-    assert jeu.carte.navires[0].cases[0].x == 5
-    assert jeu.carte.navires[0].cases[0].y == 5
-    assert jeu.carte.navires[0].cases[0].z == 1
+    jeu.placer_navire(5, 5, 1, "Vertical", "destroyer")
+    assert jeu.carte_perso.navires[0].cases[0].x == 5
+    assert jeu.carte_perso.navires[0].cases[0].y == 5
+    assert jeu.carte_perso.navires[0].cases[0].z == 1
 
-    assert jeu.carte.navires[0].cases[1].x == 5
-    assert jeu.carte.navires[0].cases[1].y == 6
-    assert jeu.carte.navires[0].cases[1].z == 1
+    assert jeu.carte_perso.navires[0].cases[1].x == 5
+    assert jeu.carte_perso.navires[0].cases[1].y == 6
+    assert jeu.carte_perso.navires[0].cases[1].z == 1
 
-    assert jeu.carte.navires[0].cases[2].x == 5
-    assert jeu.carte.navires[0].cases[2].y == 7
-    assert jeu.carte.navires[0].cases[2].z == 1
+    assert jeu.carte_perso.navires[0].cases[2].x == 5
+    assert jeu.carte_perso.navires[0].cases[2].y == 7
+    assert jeu.carte_perso.navires[0].cases[2].z == 1
 
-    assert not jeu.carte.navires[0].cases[2].x == 6
-    assert not jeu.carte.navires[0].cases[2].y == 8
-    assert not jeu.carte.navires[0].cases[1].z == 2
+    assert not jeu.carte_perso.navires[0].cases[2].x == 6
+    assert not jeu.carte_perso.navires[0].cases[2].y == 8
+    assert not jeu.carte_perso.navires[0].cases[1].z == 2

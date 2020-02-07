@@ -20,7 +20,7 @@ def test_test_impact():
     assert navire.test_impact(2.2, 2, 1)[1] == False
 
 def test_set_position():
-    navire = Navire(3, 1, "Calypso")
+    navire = Navire(0, 3, 1, "Calypso")
     navire.set_position(5, 5, 1, "Vertical")
 
     assert navire.cases[0].x == 5
