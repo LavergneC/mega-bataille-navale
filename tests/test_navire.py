@@ -23,18 +23,18 @@ def test_set_position():
     navire = Navire(3, 1, "Calypso")
     navire.set_position(5, 5, 1, "Vertical")
 
-    assert navires.cases[0].x == 5
-    assert navires.cases[0].y == 5
-    assert navires.cases[0].z == 1
+    assert navire.cases[0].x == 5
+    assert navire.cases[0].y == 5
+    assert navire.cases[0].z == 1
 
-    assert navires.cases[1].x == 5
-    assert navires.cases[1].y == 6
-    assert navires.cases[1].z == 1
+    assert navire.cases[1].x == 5
+    assert navire.cases[1].y == 6
+    assert navire.cases[1].z == 1
 
-    assert navires.cases[2].x == 5
-    assert navires.cases[2].y == 7
-    assert navires.cases[2].z == 1
+    assert navire.cases[2].x == 5
+    assert navire.cases[2].y == 7
+    assert navire.cases[2].z == 1
 
-    assert not navires.cases[2].x == 6
-    assert not navires.cases[2].y == 8
-    assert not navires.cases[1].z == 2
+    assert not navire.cases[2].x == 6
+    assert not navire.cases[2].y == 8
+    assert not navire.cases[1].z == 2
