@@ -5,7 +5,7 @@ sys.path.insert(1, 'src')
 from navire import *
 
 def test_test_impact():
-    navire = Navire(3, 1, "Calypso")
+    navire = Navire(0, 3, 1, "Calypso")
     navire.cases.append(Case(1, 2, 1))
     navire.cases.append(Case(2, 2, 1))
     navire.cases.append(Case(3, 2, 1))

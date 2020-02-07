@@ -12,13 +12,13 @@ def test_recevoir_tir():
     """Test de la fonction recevoir un tir."""
     jeu = Jeu()
 
-    navire = Navire(3, 1, "AlainBernard")
+    navire = Navire(0, 3, 1, "AlainBernard")
     jeu.carte_perso.navires.append(navire)
     jeu.carte_perso.navires[0].cases.append(Case(11, 5, 1))
     jeu.carte_perso.navires[0].cases.append(Case(10, 5, 1))
     jeu.carte_perso.navires[0].cases.append(Case(9, 5, 1))
 
-    navire1 = Navire(4, 1, "HollandaisVolant")
+    navire1 = Navire(1, 4, 1, "HollandaisVolant")
     jeu.carte_perso.navires.append(navire1)
     jeu.carte_perso.navires[1].cases.append(Case(1, 7, 2))
     jeu.carte_perso.navires[1].cases.append(Case(2, 7, 2))
