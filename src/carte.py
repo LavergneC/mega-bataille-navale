@@ -25,5 +25,38 @@ class Carte:
                 return True
         return False
 
-    def positionner_navire(self, x, y, z, sens, name):
-        pass
+    def positionner_navire(self, x, y, z, sens, type_navire, id):
+        if type_navire == "porte-container":
+            longueur = 5
+            largeur = 2
+        elif type_navire == "porte-avions":
+            longueur = 5
+            largeur = 1
+        elif type_navire == "destroyer":
+            longueur = 4
+            largeur = 1
+        elif type_navire == "torpilleur":
+            longueur = 3
+            largeur = 2
+        elif type_navire == "sous-marins-nuc":
+            longueur = 6
+            largeur = 1
+        elif type_navire == "petit-sous-marins":
+            longueur = 3
+            largeur = 2
+        elif type_navire == "sous-marins":
+            longueur = 2
+            largeur = 1
+
+        navire = Navire(longueur, largeur, type_navire, id)
+        self.navires.append(navire)
+        index = self.trouver_navire(id)
+        if index == "ERR":
+            return -1
+        self.navires[index].set_position(x, y, z, sens)
+
+    def trouver_navire(self, id):
+        for index, navire in enumerate(self.navires):
+            if navire.id == id:
+                return index
+        return "ERR"
