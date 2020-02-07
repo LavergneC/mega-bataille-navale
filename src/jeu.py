@@ -5,13 +5,14 @@ from PySide2.QtCore import Slot, QObject, Signal, Property
 class Jeu(QObject):
     """Represente le jeu."""
 
-    
     def __init__(self):
+        """Défini un jeu."""
         super(Jeu, self).__init__()
         self.carte_perso = Carte()
         self.carte_adversaire = Carte()
 
     def placer_navire(self, x, y, z, sens, name):
+        """Place un bateau sur jeu."""
         pass
 
 # QML Link part
@@ -56,19 +57,16 @@ class Jeu(QObject):
 
     def recevoir_tir(self, x, y):
         """Gere la reception d'un tir."""
-
         etage = 0
         etat_tir = False
         while not etat_tir and etage < 3:
             etage += 1
             etat_tir = self.carte_perso.check_ship(x, y, etage)
-
         self.tir_subit.emit()
-
         return (etat_tir, etage)
 
     def parse_message(self, trame):
-        """Decoupe les trames reçues."""
+        """Découpe les trames reçues."""
         if trame[0] == 2:
             # Reception d'un tir
             x = trame[1]
