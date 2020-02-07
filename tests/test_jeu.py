@@ -1,30 +1,38 @@
 import sys
 
-sys.path.insert(1, 'src')
+sys.path.insert(1, "src")
 
-from jeu import *
+from jeu import Jeu
+from carte import Carte
+from navire import Navire
+from case import Case
+
 
 def test_recevoir_tir():
+    """Test de la fonction recevoir un tir."""
     jeu = Jeu()
 
-    navire = Navire(3, 1, "AlainBernard")
+    navire = Navire(0, 3, 1, "AlainBernard")
     jeu.carte_perso.navires.append(navire)
     jeu.carte_perso.navires[0].cases.append(Case(11, 5, 1))
     jeu.carte_perso.navires[0].cases.append(Case(10, 5, 1))
     jeu.carte_perso.navires[0].cases.append(Case(9, 5, 1))
 
-    #assert jeu.recevoir_tir(-50, 20) == (False, 1)
-    #assert jeu.recevoir_tir(-50, -20) == False
-    assert jeu.recevoir_tir(50, 20)[0] == False
-    #assert jeu.recevoir_tir(50, -20) == False
-    #assert jeu.recevoir_tir(5.5, 2.3) == False
-    #assert jeu.recevoir_tir(-5.5, -2.3) == False
+    navire1 = Navire(1, 4, 1, "HollandaisVolant")
+    jeu.carte_perso.navires.append(navire1)
+    jeu.carte_perso.navires[1].cases.append(Case(1, 7, 2))
+    jeu.carte_perso.navires[1].cases.append(Case(2, 7, 2))
+    jeu.carte_perso.navires[1].cases.append(Case(3, 7, 2))
+    jeu.carte_perso.navires[1].cases.append(Case(4, 7, 2))
+
     assert jeu.recevoir_tir(0, 0)[0] == False
     assert jeu.recevoir_tir(4, 5)[0] == False
-    #assert jeu.recevoir_tir(a, b) == False
     assert jeu.recevoir_tir(11, 5) == (True, 1)
+    assert jeu.recevoir_tir(4, 7) == (True, 2)
+
 
 def test_parse_message():
+    """Test de la fonction parse_message."""
     jeu = Jeu()
 
     trame = []
@@ -33,7 +41,7 @@ def test_parse_message():
     trame.append(5)
     assert jeu.parse_message(trame) == (1, 5)
 
-    # Bad Message ID
+    #  Bad Message ID
     trame1 = []
     trame1.append(0)
     trame1.append(1)
@@ -58,7 +66,7 @@ def test_parse_message():
     trame4.append(0)
     assert jeu.parse_message(trame4) == (18, 0)
 
-    # Negative message ID
+    #  Negative message ID
     trame5 = []
     trame5.append(-5)
     trame5.append(18)
@@ -86,7 +94,7 @@ def test_parse_message():
 def test_placer_navire():
     jeu = Jeu()
 
-    navire = Navire(3, 1, "Calypso")
+    navire = Navire(0, 3, 1, "Calypso")
     jeu.placer_navire(5, 5, 1, "Vertical")
     assert jeu.carte.navires[0].cases[0].x == 5
     assert jeu.carte.navires[0].cases[0].y == 5

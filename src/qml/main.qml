@@ -3,44 +3,24 @@ import QtQuick.Controls 2.14
 import QtQuick.Layouts 1.14
 import QtQuick.Window 2.14
 
-import "Attaque"
-import "Defense"
+import "Page_connexion"
 
-ApplicationWindow {
+ApplicationWindow{
     visible: true
+    minimumWidth : connecte ? jeuWin.implicitWidth : connecWin.implicitWidth
+    minimumHeight : connecte ? jeuWin.implicitHeight : connecWin.implicitHeight
+
+    property bool connecte: false
     
-    minimumWidth : mainLayout.implicitWidth
-    minimumHeight : mainLayout.implicitHeight
-
-    RowLayout{
-        id : mainLayout
-        Layout.margins : 20
+    Connexion_Window{
+        id : connecWin
+        visible: !connecte
         anchors.fill : parent
-        spacing : 10
-		Button{
-			id: but_att
-			text: "Attaque "
-			onClicked: {
-				Jeu.simulate();
-			}
-		}
-        RowLayout{}
-        CarteAttaque{
-            id : attaq
-        }
-        RowLayout{}
+    }
 
-        ToolSeparator {
-            Layout.fillHeight : true
-            Layout.maximumHeight : attaq.implicitHeight + 40
-        }
-        RowLayout{}
-
-        CarteDefense{
-            id : carteDef
-            focus : true
-        }
-
-        RowLayout{}           
-    }           
+    Partie{
+        id : jeuWin
+        visible : connecte
+        anchors.fill : parent
+    }
 }
