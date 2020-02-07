@@ -3,12 +3,13 @@ from case import *
 
 class Navire:
     """Représente un navire."""
-
-    def __init__(self, longueur, largeur, nom):
+    
+    def __init__(self, id, longueur, largeur, nom):
         """Défini un navire."""
         self.longueur = longueur
         self.largeur = largeur
         self.nom = nom
+        self.id = id
         self.cases = []
 
     def test_impact(self, x, y, z):
