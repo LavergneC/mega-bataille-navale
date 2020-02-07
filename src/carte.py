@@ -1,7 +1,10 @@
 from navire import *
 
 class Carte:
+    """Représente une carte."""
+
     def __init__(self):
+        """Définition d'une carte."""
         self.navires = []
         self.cases = []
         z = 0
@@ -16,6 +19,7 @@ class Carte:
             z += 1
 
     def check_ship(self, x, y, z):
+        """Vérifie si un bateau est présent à l'endroit de la carte."""
         for navire in self.navires:
             case_touche, etat_attaque = navire.test_impact(x, y, z)
             if etat_attaque:
@@ -26,6 +30,7 @@ class Carte:
         return False
 
     def positionner_navire(self, x, y, z, sens, type_navire, id):
+        """Positionnement d'un navire sur la carte."""
         if type_navire == "porte-container":
             longueur = 5
             largeur = 2

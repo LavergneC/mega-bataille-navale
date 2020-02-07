@@ -3,8 +3,9 @@ from case import *
 
 class Navire:
     """Représente un navire."""
-
+    
     def __init__(self, id, longueur, largeur, nom):
+        """Défini un navire."""
         self.longueur = longueur
         self.largeur = largeur
         self.nom = nom
@@ -20,6 +21,7 @@ class Navire:
         return (None, False)
 
     def set_position(self, x, y, z, sens):
+        """Permet de définir les coordonnées d'un bateau."""
         cpt_longueur = 0
         if sens == "Vertical":
             max_longueur = self.largeur
