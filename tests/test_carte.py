@@ -65,4 +65,3 @@ def test_trouver_navire():
     carte = Carte()
 
     assert carte.trouver_navire(1) == "ERR"
-    
