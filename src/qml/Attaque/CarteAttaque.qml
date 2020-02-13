@@ -7,7 +7,7 @@ GridLayout{
     columnSpacing : 0
     Layout.alignment : Qt.alignHCenter | Qt.alignVCenter
     Layout.margins : 20
-    
+
     columns : 15
     Repeater{
         model : 225

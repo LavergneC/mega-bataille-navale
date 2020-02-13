@@ -10,8 +10,8 @@ ApplicationWindow{
     minimumWidth : connecte ? jeuWin.implicitWidth : connecWin.implicitWidth
     minimumHeight : connecte ? jeuWin.implicitHeight : connecWin.implicitHeight
 
-    property bool connecte: false
-    
+    property bool connecte: true
+
     Connexion_Window{
         id : connecWin
         visible: !connecte

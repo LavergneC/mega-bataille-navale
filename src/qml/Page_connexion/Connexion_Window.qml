@@ -39,8 +39,6 @@ ColumnLayout{
         currentIndex: bar.currentIndex
         Layout.fillWidth: true
         Layout.alignment: Qt.AlignTop
-        interactive: false
-
         Rejoindre{
         }
         Heberger{
