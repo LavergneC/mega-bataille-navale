@@ -25,8 +25,8 @@ def test_recevoir_tir():
     jeu.carte_perso.navires[1].cases.append(Case(3, 7, 2))
     jeu.carte_perso.navires[1].cases.append(Case(4, 7, 2))
 
-    assert jeu.recevoir_tir(0, 0)[0] == False
-    assert jeu.recevoir_tir(4, 5)[0] == False
+    assert jeu.recevoir_tir(0, 0)[0] is False
+    assert jeu.recevoir_tir(4, 5)[0] is False
     assert jeu.recevoir_tir(11, 5) == (True, 1)
     assert jeu.recevoir_tir(4, 7) == (True, 2)
 
@@ -95,7 +95,6 @@ def test_parse_message():
 def test_placer_navire():
     jeu = Jeu()
 
-    navire = Navire(0, 3, 1, "Calypso")
     jeu.placer_navire(5, 5, 1, "Vertical", "destroyer")
     assert jeu.carte_perso.navires[0].cases[0].x == 5
     assert jeu.carte_perso.navires[0].cases[0].y == 5
