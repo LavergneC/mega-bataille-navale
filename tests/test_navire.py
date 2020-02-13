@@ -1,8 +1,9 @@
 import sys
 
-sys.path.insert(1, 'src')
+sys.path.insert(1, "src")
 
 from navire import *
+
 
 def test_test_impact():
     navire = Navire(0, 3, 1, "Calypso")
@@ -18,6 +19,7 @@ def test_test_impact():
 
     assert navire.test_impact(-2, 2, 1)[1] == False
     assert navire.test_impact(2.2, 2, 1)[1] == False
+
 
 def test_set_position():
     navire = Navire(0, 3, 1, "Calypso")

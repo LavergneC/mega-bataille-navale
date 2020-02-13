@@ -1,8 +1,9 @@
 import sys
 
-sys.path.insert(1, 'src')
+sys.path.insert(1, "src")
 
 from carte import *
+
 
 def test_check_ship():
     carte = Carte()
@@ -16,6 +17,7 @@ def test_check_ship():
     assert carte.check_ship(2, 2, 2) == False
     assert carte.check_ship(2, 3, 1) == False
     assert carte.check_ship(4, 2, 1) == False
+
 
 def test_positionner_navire():
     carte = Carte()

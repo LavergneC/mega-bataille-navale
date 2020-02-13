@@ -85,11 +85,12 @@ def test_parse_message():
     trame8.append(5.5)
     assert jeu.parse_message(trame8) == (2.5, 5.5)
 
-    #trame9 = []
-    #trame9.append(a)
-    #trame9.append(5)
-    #trame9.append(b)
-    #assert jeu.parse_message(trame9) == False
+    # trame9 = []
+    # trame9.append(a)
+    # trame9.append(5)
+    # trame9.append(b)
+    # assert jeu.parse_message(trame9) == False
+
 
 def test_placer_navire():
     jeu = Jeu()

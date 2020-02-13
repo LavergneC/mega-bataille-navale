@@ -1,5 +1,6 @@
 from navire import *
 
+
 class Carte:
     """Représente une carte."""
 
@@ -25,7 +26,7 @@ class Carte:
             if etat_attaque:
                 for index, case in enumerate(self.cases):
                     if case.index == case_touche.index:
-                       self.cases[index].impact = True
+                        self.cases[index].impact = True
                 return True
         return False
 
