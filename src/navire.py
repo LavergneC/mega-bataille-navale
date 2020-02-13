@@ -3,7 +3,7 @@ from case import *
 
 class Navire:
     """Représente un navire."""
-    
+
     def __init__(self, id, longueur, largeur, nom):
         """Défini un navire."""
         self.longueur = longueur
