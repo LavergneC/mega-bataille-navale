@@ -38,9 +38,9 @@ RowLayout{
         currentIndex: stacklayout.currentIndex
         count: stacklayout.count
     }
-    onVisibleChanged:{
-        focus = true
-    }
+//    onVisibleChanged:{
+//        focus = true
+//    }
 
     Keys.onPressed: {
         console.log(event.key)

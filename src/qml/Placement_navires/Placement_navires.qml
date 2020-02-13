@@ -22,6 +22,10 @@ ColumnLayout{
         model: ModelBateaux{}
         delegate: GridLayout {
             columns: 2
+            id: boot
+            visible: nbRestant > 0
+
+            property int nbRestant : nb
 
             Text {
                 Layout.column: 0
@@ -35,53 +39,54 @@ ColumnLayout{
             Text {
                 Layout.column: 1
                 Layout.row: 1
-                text: "x " + nb
+                text: "x " + nbRestant
                 font.pointSize: 14
                 style: Text.Sunken
                 styleColor: "blue"
                 Layout.alignment: Qt.AlignVCenter
             }
+            Repeater {
+                model: nb
+                Rectangle {
+                    Layout.column: 0
+                    Layout.row: 1
+                    id: bateau
+                    width: longueur * 35
+                    height: largeur * 35
+                    color: "grey"
+                    Drag.active: dragArea.drag.active
+                    Drag.keys: "fr"
+                    Drag.hotSpot.x: 15
+                    Drag.hotSpot.y: 15
+                    Drag.source: infobat
 
-            Rectangle {
-                Layout.column: 0
-                Layout.row: 1
-                id: bateau
-                width: longueur * 35
-                height: largeur * 35
-                color: "grey"
-                Drag.active: dragArea.drag.active
-                Drag.keys: "fr"
-                Drag.hotSpot.x: 15
-                Drag.hotSpot.y: 15
-                Drag.source: infobat
+                    MouseArea {
+                        id: dragArea
+                        anchors.fill: parent
+                        acceptedButtons: Qt.AllButtons
+                        drag.target: bateau
 
-                MouseArea {
-                    id: dragArea
-                    anchors.fill: parent
-                    acceptedButtons: Qt.AllButtons
-                    drag.target: bateau
-                    onReleased: {
-                        if(mouse.button  == Qt.RightButton){
-                            bateau.rotation = 90
+                        onReleased: {
+                            if(mouse.button  == Qt.RightButton){
+                                bateau.rotation = bateau.rotation == 90? 0 : 90
+                                console.log("on released : right")
+                            }
+                            if(mouse.button == Qt.LeftButton){
+                                drop = true
+                                parent = bateau.Drag.target !== null ? bateau.Drag.target : boot
+                                bateau.Drag.drop()
+                                bateau.visible = false
+                                nbRestant --
+                                console.log("on released : left")
+                            }
                         }
-                        if(mouse.button == Qt.LeftButton & drop == false){
-                            drop = true
-                             parent = bateau.Drag.target !== null ? bateau.Drag.target : infobat
-                            bateau.Drag.drop()
+                        states: State {
+                            when: dragArea.drag.active
+                            ParentChange { target: bateau; parent: boot }
+                            AnchorChanges { target: bateau }
                         }
-                    }
-                    onClicked:{
-                        if(mouse.button == Qt.LeftButton){
-                            drop = false
-                        }
-                    }
-                    states: State {
-                        when: dragArea.drag.active
-                        ParentChange { target: bateau; parent: infobat }
-                        AnchorChanges { target: bateau }
                     }
                 }
-
             }
         }
     }
