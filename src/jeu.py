@@ -13,47 +13,48 @@ class Jeu(QObject):
 
     def placer_navire(self, x, y, z, sens, type_navire):
         """Place un bateau sur jeu."""
-        self.carte_perso.positionner_navire(x, y, z, "Vertical", type_navire, len(self.carte_perso.navires))
+        self.carte_perso.positionner_navire(
+            x, y, z, "Vertical", type_navire, len(self.carte_perso.navires)
+        )
 
-# QML Link part
+    # QML Link part
 
-# Défense :
+    # Défense :
     # A appeller dès que la carte de défense est modifiée
     @Signal
     def tir_subit(self):
         pass
 
     # return true si un bateau est présent
-    @Slot(int, int, result = bool)
+    @Slot(int, int, result=bool)
     def get_navire_at(self, case_index, depth):
         return True
 
     # Return true si cette case à subit un tir (idépendant de bateau)
-    @Slot(int, int, result = bool)
+    @Slot(int, int, result=bool)
     def get_defense_touche(self, case_index, depth):
         return True
 
-# Attaque :
+    # Attaque :
     # A appeller dès que notre carte d'attaque est mise à jour
     @Signal
     def tir_feedback_received(self):
         pass
 
-    # Return une liste de taille 3, indiquant à quels niveaux 
+    # Return une liste de taille 3, indiquant à quels niveaux
     # des bateaux ont été touchés
-    @Slot(int, result = 'QVariantList')
+    @Slot(int, result="QVariantList")
     def get_case_attaque(self, index):
-        return [0,1,0]
+        return [0, 1, 0]
 
     # return true si on a tire sur la case mais que rien n'a été touché
-    @Slot(int, result = bool)
+    @Slot(int, result=bool)
     def get_case_manque(index):
         return True
 
     @Slot()
     def simulate(self):
         self.recevoir_tir(1, 2)
-
 
     def recevoir_tir(self, x, y):
         """Gere la reception d'un tir."""
