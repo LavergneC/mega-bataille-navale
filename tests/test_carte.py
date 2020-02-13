@@ -1,8 +1,9 @@
 import sys
 
-sys.path.insert(1, 'src')
+sys.path.insert(1, "src")
 
 from carte import *
+
 
 def test_check_ship():
     carte = Carte()
@@ -12,14 +13,14 @@ def test_check_ship():
     navire.cases.append(Case(3, 2, 1))
     carte.navires.append(navire)
 
-    assert carte.check_ship(2, 2, 1) == True
-    assert carte.check_ship(2, 2, 2) == False
-    assert carte.check_ship(2, 3, 1) == False
-    assert carte.check_ship(4, 2, 1) == False
+    assert carte.check_ship(2, 2, 1) is True
+    assert carte.check_ship(2, 2, 2) is False
+    assert carte.check_ship(2, 3, 1) is False
+    assert carte.check_ship(4, 2, 1) is False
+
 
 def test_positionner_navire():
     carte = Carte()
-    navire = Navire(0, 3, 1, "Calypso")
     carte.positionner_navire(5, 5, 1, "Vertical", "destroyer", 0)
 
     assert carte.navires[0].cases[0].x == 5
@@ -37,3 +38,11 @@ def test_positionner_navire():
     assert not carte.navires[0].cases[2].x == 6
     assert not carte.navires[0].cases[2].y == 8
     assert not carte.navires[0].cases[2].z == 2
+
+def test_mise_a_jour():
+    carte = Carte()
+    carte.positionner_navire(0, 0, 0, "Vertical", "destroyer", 0)
+
+    carte.mise_a_jour_case(0, 0, 0)
+    assert carte.cases[0].impact is True
+

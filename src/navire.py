@@ -3,7 +3,7 @@ from case import *
 
 class Navire:
     """Représente un navire."""
-    
+
     def __init__(self, id, longueur, largeur, nom):
         """Défini un navire."""
         self.longueur = longueur
@@ -32,6 +32,6 @@ class Navire:
         while cpt_longueur < max_longueur:
             cpt_largeur = 0
             while cpt_largeur < max_largeur:
-                self.cases.append(Case(x+cpt_longueur, y+cpt_largeur, z))
+                self.cases.append(Case(x + cpt_longueur, y + cpt_largeur, z))
                 cpt_largeur += 1
             cpt_longueur += 1
