@@ -52,6 +52,7 @@ def test_positionner_navire():
     assert carte.navires[3].cases[5].x == 7
     assert carte.navires[3].cases[5].y == 2
 
+
 def test_mise_a_jour():
     carte = Carte()
     carte.positionner_navire(0, 0, 0, "Vertical", "destroyer", 0)
@@ -59,7 +60,9 @@ def test_mise_a_jour():
     carte.mise_a_jour_case(0, 0, 0)
     assert carte.cases[0].impact is True
 
+
 def test_trouver_navire():
     carte = Carte()
 
     assert carte.trouver_navire(1) == "ERR"
+    
