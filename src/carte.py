@@ -19,14 +19,14 @@ class Carte:
                 y += 1
             z += 1
 
-    def check_ship(self, x, y, z):
+    def mise_a_jour_case(self, x, y, z):
         """Vérifie si un bateau est présent à l'endroit de la carte."""
         for index, case in enumerate(self.cases):
             if case.x == x and case.y == y and case.z == z:
                 self.cases[index].impact = True
-        self.mise_a_jour_case(x, y, z)
+        return self.check_ship(x, y, z)
 
-    def mise_a_jour_case(self, x, y, z):
+    def check_ship(self, x, y, z):
         for navire in self.navires:
             case_touche, etat_attaque = navire.test_impact(x, y, z)
             if etat_attaque:
