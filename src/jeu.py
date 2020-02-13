@@ -11,9 +11,9 @@ class Jeu(QObject):
         self.carte_perso = Carte()
         self.carte_adversaire = Carte()
 
-    def placer_navire(self, x, y, z, sens, name):
+    def placer_navire(self, x, y, z, sens, type_navire):
         """Place un bateau sur jeu."""
-        pass
+        self.carte_perso.positionner_navire(x, y, z, "Vertical", type_navire, len(self.carte_perso.navires))
 
 # QML Link part
 
