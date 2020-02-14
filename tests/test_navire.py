@@ -40,3 +40,14 @@ def test_set_position():
     assert not navire.cases[2].x == 6
     assert not navire.cases[2].y == 8
     assert not navire.cases[1].z == 2
+
+    navire2 = Navire(1, 3, 1, "Antargaz")
+    navire2.set_position(1, 3, 2, "Horizontal")
+
+    assert navire2.cases[0].x == 1
+    assert navire2.cases[0].y == 3
+    assert not navire2.cases[0].x == 2
+
+    assert navire2.cases[2].x == 3
+    assert navire2.cases[2].y == 3
+    assert not navire2.cases[2].y == 4

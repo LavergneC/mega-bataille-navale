@@ -59,8 +59,6 @@ class Carte:
         navire = Navire(id, longueur, largeur, type_navire)
         self.navires.append(navire)
         index = self.trouver_navire(id)
-        if index == "ERR":
-            return -1
         self.navires[index].set_position(x, y, z, sens)
 
     def trouver_navire(self, id):
