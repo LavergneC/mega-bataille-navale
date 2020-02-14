@@ -18,7 +18,7 @@ ApplicationWindow{
         anchors.fill : parent
     }
 
-    Jeu{
+    Partie{
         id : jeuWin
         visible : connecte
         anchors.fill : parent

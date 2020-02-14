@@ -12,21 +12,21 @@ def test_recevoir_tir():
     """Test de la fonction recevoir un tir."""
     jeu = Jeu()
 
-    navire = Navire(3, 1, "AlainBernard")
+    navire = Navire(0, 3, 1, "AlainBernard")
     jeu.carte_perso.navires.append(navire)
     jeu.carte_perso.navires[0].cases.append(Case(11, 5, 1))
     jeu.carte_perso.navires[0].cases.append(Case(10, 5, 1))
     jeu.carte_perso.navires[0].cases.append(Case(9, 5, 1))
 
-    navire1 = Navire(4, 1, "HollandaisVolant")
+    navire1 = Navire(1, 4, 1, "HollandaisVolant")
     jeu.carte_perso.navires.append(navire1)
     jeu.carte_perso.navires[1].cases.append(Case(1, 7, 2))
     jeu.carte_perso.navires[1].cases.append(Case(2, 7, 2))
     jeu.carte_perso.navires[1].cases.append(Case(3, 7, 2))
     jeu.carte_perso.navires[1].cases.append(Case(4, 7, 2))
 
-    assert jeu.recevoir_tir(0, 0)[0] == False
-    assert jeu.recevoir_tir(4, 5)[0] == False
+    assert jeu.recevoir_tir(0, 0)[0] is False
+    assert jeu.recevoir_tir(4, 5)[0] is False
     assert jeu.recevoir_tir(11, 5) == (True, 1)
     assert jeu.recevoir_tir(4, 7) == (True, 2)
 
@@ -84,3 +84,30 @@ def test_parse_message():
     trame8.append(2.5)
     trame8.append(5.5)
     assert jeu.parse_message(trame8) == (2.5, 5.5)
+
+    # trame9 = []
+    # trame9.append(a)
+    # trame9.append(5)
+    # trame9.append(b)
+    # assert jeu.parse_message(trame9) == False
+
+
+def test_placer_navire():
+    jeu = Jeu()
+
+    jeu.placer_navire(5, 5, 1, "Vertical", "destroyer")
+    assert jeu.carte_perso.navires[0].cases[0].x == 5
+    assert jeu.carte_perso.navires[0].cases[0].y == 5
+    assert jeu.carte_perso.navires[0].cases[0].z == 1
+
+    assert jeu.carte_perso.navires[0].cases[1].x == 5
+    assert jeu.carte_perso.navires[0].cases[1].y == 6
+    assert jeu.carte_perso.navires[0].cases[1].z == 1
+
+    assert jeu.carte_perso.navires[0].cases[2].x == 5
+    assert jeu.carte_perso.navires[0].cases[2].y == 7
+    assert jeu.carte_perso.navires[0].cases[2].z == 1
+
+    assert not jeu.carte_perso.navires[0].cases[2].x == 6
+    assert not jeu.carte_perso.navires[0].cases[2].y == 8
+    assert not jeu.carte_perso.navires[0].cases[1].z == 2
