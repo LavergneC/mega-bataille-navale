@@ -83,13 +83,13 @@ class Jeu(QObject):
         pass
 
     @Slot(result = str)
-    def getIP(self)
+    def getIP(self):
         pass
 
     @Slot (result = str)
-    def getPort(self)
+    def getPort(self):
         pass
 
     @Slot()
-    def heberger(self)
+    def heberger(self):
         pass    
