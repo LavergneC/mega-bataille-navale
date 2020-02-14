@@ -29,7 +29,7 @@ class Reseau:
             self.socket.send()
         else:
             self.socketclient.send(message)
-        
+
     def recevoir_trame(self, taille_message):
         if self.isclient:
             message = self.socket.recv(taille_message)
