@@ -2,6 +2,8 @@ import QtQuick.Layouts 1.14
 import QtQuick 2.14
 
 ColumnLayout{
+
+    id: test
     property int num
     property int depth
     property bool touche: false
@@ -19,6 +21,7 @@ ColumnLayout{
         id: dropArea
         width: 35
         height: 35
+        onDropped: console.log(drag.source.height/35 + " " + drag.source.width/35 + " " + drag.source.rotation)
 
         Rectangle {
             id : rect

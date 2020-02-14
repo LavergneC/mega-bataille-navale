@@ -35,25 +35,25 @@ class Carte:
 
     def positionner_navire(self, x, y, z, sens, type_navire, id):
         """Positionnement d'un navire sur la carte."""
-        if type_navire == "porte-container":
+        if type_navire == "Porte-container":
             longueur = 5
             largeur = 2
-        elif type_navire == "porte-avions":
+        elif type_navire == "Porte-avion":
             longueur = 5
             largeur = 1
-        elif type_navire == "destroyer":
+        elif type_navire == "Destroyer":
             longueur = 4
             largeur = 1
-        elif type_navire == "torpilleur":
+        elif type_navire == "Torpilleur":
             longueur = 3
             largeur = 2
-        elif type_navire == "sous-marins-nuc":
+        elif type_navire == "Sous-marin nucléaire":
             longueur = 6
             largeur = 1
-        elif type_navire == "petit-sous-marins":
+        elif type_navire == "Sous-marin de combat":
             longueur = 3
             largeur = 2
-        elif type_navire == "sous-marins":
+        elif type_navire == "Sous-marin de reconnaissance":
             longueur = 2
             largeur = 1
         navire = Navire(id, longueur, largeur, type_navire)

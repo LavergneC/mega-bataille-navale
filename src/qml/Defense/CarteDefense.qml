@@ -32,6 +32,7 @@ RowLayout{
     }
 
 
+
     CustomPageIndicator {
         Layout.rightMargin : 10
         Layout.alignment : Qt.AlignVCenter

@@ -17,6 +17,38 @@ class Jeu(QObject):
             x, y, z, "Vertical", type_navire, len(self.carte_perso.navires)
         )
 
+    def ajouter_navire(self, index_case, profondeur, long, larg, rot):
+        sens = ""
+        type_navire = ""
+        
+        if (rot == 90):
+            sens = "Vertical"
+        else:
+            sens = "Horizontal"
+        
+        if (long == 5 and larg == 2):
+            type_navire = "Porte-container"
+
+        elif (long == 5 and larg == 1):
+            type_navire = "Porte-avions"
+
+        elif (long == 4 and larg == 1):
+            type_navire = "Destroyer"
+
+        elif (long == 3 and larg == 2):
+            type_navire = "Torpilleur"
+
+        elif (long == 6 and larg == 1):
+            type_navire = "Sous-marin nucléaire"
+
+        elif(long == 3 and larg == 1):
+            type_navire = "Sous-marin de combat"
+
+        elif (long == 2 and larg == 1):
+            type_navire = "Sous-marin de reconnaissance"
+        else:
+            type_navire ="Erreur"
+
     # QML Link part
 
     # Défense :

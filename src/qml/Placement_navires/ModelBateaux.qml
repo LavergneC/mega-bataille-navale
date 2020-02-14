@@ -7,15 +7,15 @@ ListModel {
     id: modelBateaux
 
     ListElement {
-        name : "porte-container"
+        name : "Porte-container"
         nb : 1
         longueur : 5
         largeur : 2
     }
     ListElement {
-        name : "Porte-avion"
+        name : "Porte-avions"
         nb : 2
-        longueur : 6
+        longueur : 5
         largeur : 1
     }
     ListElement {
