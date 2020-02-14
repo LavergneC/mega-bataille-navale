@@ -23,13 +23,6 @@ class Reseau:
         self.socketclient, self.infos_connexion = self.socket.accept()
         print(self.infos_connexion)
 
-    def communication_cote_serveur(self):
-        self.socketclient.send(b"Je viens d'accepter la connexion")
-
-    def communication_cote_client(self):
-        message_recu = self.socket.recv(1024)
-        print(message_recu)
-
     def envoyer_trame(self, message):
         if self.isclient: 
             self.socket.send(message)
@@ -38,6 +31,8 @@ class Reseau:
         
     def recevoir_trame(self, taille_message):
         if self.isclient:
-            self.socket.recv(taille_message)
+            message = self.socket.recv(taille_message)
         else:
-            self.socketclient.recv(taille_message)
+            message = self.socketclient.recv(taille_message)
+        return message
+        
