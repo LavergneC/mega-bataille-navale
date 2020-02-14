@@ -24,8 +24,9 @@ class Reseau:
         print(self.infos_connexion)
 
     def envoyer_trame(self, message):
-        if self.isclient: 
-            self.socket.send(message)
+        message = str.encode(message)
+        if self.isclient:
+            self.socket.send()
         else:
             self.socketclient.send(message)
         
@@ -35,4 +36,3 @@ class Reseau:
         else:
             message = self.socketclient.recv(taille_message)
         return message
-        
