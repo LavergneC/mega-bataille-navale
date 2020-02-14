@@ -31,13 +31,13 @@ class Reseau:
         print(message_recu)
 
     def envoyer_trame(self, message):
-        if isclient: 
+        if self.isclient: 
             self.socket.send(message)
         else:
             self.socketclient.send(message)
         
     def recevoir_trame(self, taille_message):
-        if isclient:
+        if self.isclient:
             self.socket.recv(taille_message)
         else:
             self.socketclient.recv(taille_message)
