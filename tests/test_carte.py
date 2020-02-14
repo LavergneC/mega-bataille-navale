@@ -39,10 +39,10 @@ def test_positionner_navire():
     assert not carte.navires[0].cases[2].y == 8
     assert not carte.navires[0].cases[2].z == 2
 
+
 def test_mise_a_jour():
     carte = Carte()
     carte.positionner_navire(0, 0, 0, "Vertical", "destroyer", 0)
 
     carte.mise_a_jour_case(0, 0, 0)
     assert carte.cases[0].impact is True
-

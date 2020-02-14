@@ -82,14 +82,14 @@ class Jeu(QObject):
     def seConnecter(seft, ip, port):
         pass
 
-    @Slot(result = str)
+    @Slot(result=str)
     def getIP(self):
         pass
 
-    @Slot (result = str)
+    @Slot(result=str)
     def getPort(self):
         pass
 
     @Slot()
     def heberger(self):
-        pass    
+        pass
