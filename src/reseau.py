@@ -5,15 +5,18 @@ class Reseau:
     def __init__(self):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.port = 12800
+        self.isclient = True
 
     def get_ip(self):
         hostname = socket.gethostname()
         self.ip_address = socket.gethostbyname(hostname)
 
     def se_connecter(self, ip, port):
+        self.isclient = True
         self.socket.connect((ip, port))
 
     def heberger(self):
+        self.isclient = False
         self.infos_connexion = (self.ip_address, self.port)
         self.socket.bind(self.infos_connexion)
         self.socket.listen(2)
@@ -21,8 +24,20 @@ class Reseau:
         print(self.infos_connexion)
 
     def communication_cote_serveur(self):
-        self.socketclient.send(b"Je viens d'accepter  la connexion")
+        self.socketclient.send(b"Je viens d'accepter la connexion")
 
     def communication_cote_client(self):
         message_recu = self.socket.recv(1024)
         print(message_recu)
+
+    def envoyer_trame(self, message):
+        if isclient: 
+            self.socket.send(message)
+        else:
+            self.socketclient.send(message)
+        
+    def recevoir_trame(self, taille_message):
+        if isclient:
+            self.socket.recv(taille_message)
+        else:
+            self.socketclient.recv(taille_message)
