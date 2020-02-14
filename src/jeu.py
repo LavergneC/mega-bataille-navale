@@ -62,7 +62,7 @@ class Jeu(QObject):
         etat_tir = False
         while not etat_tir and etage < 3:
             etage += 1
-            etat_tir = self.carte_perso.check_ship(x, y, etage)
+            etat_tir = self.carte_perso.mise_a_jour_case(x, y, etage)
         self.tir_subit.emit()
         return (etat_tir, etage)
 
