@@ -57,7 +57,7 @@ class Jeu(QObject):
         liste_touche = []
         niveau = 0
         while niveau < 3:
-            #TODO && bateau présent
+            # TODO && bateau présent
             case = self.carte_adversaire.cases[niveau * 225 + index]
             liste_touche.append(case.impact)
             niveau += 1
@@ -83,10 +83,10 @@ class Jeu(QObject):
         etage = 0
         etat_tir = False
         while not etat_tir and etage < 3:
-            etage += 1
             etat_tir = self.carte_perso.mise_a_jour_case(x, y, etage)
+            etage += 1
         self.tir_subit.emit()
-        return (etat_tir, etage)
+        return (etat_tir, etage - 1)
 
     def parse_message(self, trame):
         """Découpe les trames reçues."""
