@@ -31,6 +31,7 @@ def test_recevoir_tir():
     assert jeu.recevoir_tir(11, 5) == (True, 1)
     assert jeu.recevoir_tir(4, 7) == (True, 2)
 
+
 liste_parametres = []
 liste_parametres.append(([2, 1, 5], (1, 5)))
 liste_parametres.append(([0, 1, 1], (None, None)))
@@ -46,11 +47,13 @@ liste_parametres.append(([3, 1, 1], ("Touche_bateau", "Non_coule")))
 liste_parametres.append(([3, 2, 1], ("Touche_sous_marin_surface", "Non_coule")))
 liste_parametres.append(([3, 3, 0], ("Touche_sous_marin_profond", "Coule")))
 
+
 @pytest.mark.parametrize("test_input,expected", liste_parametres)
 def test_parse_message(test_input, expected):
     """Test de la fonction parse_message."""
     jeu = Jeu()
     assert jeu.parse_message(test_input) == expected
+
 
 def test_placer_navire():
     jeu = Jeu()
