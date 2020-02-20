@@ -128,16 +128,16 @@ class Jeu(QObject):
 
     @Slot(str, str)
     def seConnecter(seft, ip, port):
-        pass
+        self.connection.se_connecter(ip, port)
 
     @Slot(result=str)
     def getIP(self):
-        pass
+        return self.connection.get_ip()
 
     @Slot(result=str)
     def getPort(self):
-        pass
+        return self.connection.port
 
     @Slot()
     def heberger(self):
-        pass
+        return self.connection.heberger()
