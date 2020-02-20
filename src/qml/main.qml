@@ -18,11 +18,7 @@ ApplicationWindow{
         anchors.fill : parent
     }
 
-<<<<<<< Updated upstream
     Partie{
-=======
-    Jeujeu{
->>>>>>> Stashed changes
         id : jeuWin
         visible : connecte
         anchors.fill : parent
