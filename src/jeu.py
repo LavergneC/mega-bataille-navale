@@ -14,7 +14,7 @@ class Jeu(QObject):
     def placer_navire(self, x, y, z, sens, type_navire):
         """Place un bateau sur jeu."""
         self.carte_perso.positionner_navire(
-            x, y, z, "Vertical", type_navire, len(self.carte_perso.navires)
+            x, y, z, sens, type_navire, len(self.carte_perso.navires)
         )
 
     # QML Link part
@@ -32,7 +32,7 @@ class Jeu(QObject):
         y = case_index // 15
         for navire in self.carte_perso.navires:
             for case in navire.cases:
-                if x = case.x and y = case.y and depth = case.z:
+                if x == case.x and y == case.y and depth == case.z:
                     return True
         return False
 
@@ -42,7 +42,7 @@ class Jeu(QObject):
         x = case_index % 15
         y = case_index // 15
         for case in self.carte_perso.cases:
-            if x = case.x and y = case.y and depth = case.z:
+            if x == case.x and y == case.y and depth == case.z:
                 return case.impact
 
     # Attaque :
