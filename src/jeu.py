@@ -1,4 +1,5 @@
 from carte import Carte, Case, Navire
+from reseau import *
 from PySide2.QtCore import Slot, QObject, Signal, Property
 
 
@@ -10,6 +11,7 @@ class Jeu(QObject):
         super(Jeu, self).__init__()
         self.carte_perso = Carte()
         self.carte_adversaire = Carte()
+        self.connection = Reseau()
 
     def placer_navire(self, x, y, z, sens, type_navire):
         """Place un bateau sur jeu."""
@@ -73,8 +75,32 @@ class Jeu(QObject):
             x = trame[1]
             y = trame[2]
             return (x, y)
+        elif trame[0] == 3:
+            # Récupération du résultat d'un tir
+            if trame[1] == 0:  #  Raté
+                resultat_tir = "Rate"
+            elif trame[1] == 1:  # Touché bateau
+                resultat_tir = "Touche_bateau"
+            elif trame[1] == 2:  # Touché sous-marin de surface
+                resultat_tir = "Touche_sous_marin_surface"
+            elif trame[1] == 3:  # Touché sous-marin profond
+                resultat_tir = "Touche_sous_marin_profond"
+
+            if trame[2] == 0:
+                etat_bateau = "Coule"
+            elif trame[2] == 1:
+                etat_bateau = "Non_coule"
+
+            return (resultat_tir, etat_bateau)
+
         else:
             return (None, None)
+
+    def tirer(self, x, y):
+        message = bytearray([2, x, y])
+        self.connection.envoyer_trame(message)
+        reponse_tir = self.connection.recevoir_trame(3)
+        resultat_tir, etat_bateau = self.parse_message(reponse_tir)
 
     # Partie réseau, passage d'appel de fonction
 
