@@ -15,6 +15,7 @@ RowLayout{
             Repeater{
                 model : 3
                 GridLayout {
+                    property int  profondeur: index
                     id : defGrid
                     rowSpacing : 0
                     columnSpacing : 0
@@ -23,6 +24,7 @@ RowLayout{
                         model : 225
                         CaseDef {
                             num : index
+                            depth : defGrid.profondeur
                         }
                     }
                 }

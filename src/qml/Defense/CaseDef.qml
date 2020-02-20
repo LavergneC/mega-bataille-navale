@@ -10,18 +10,21 @@ ColumnLayout{
     property bool navire: false
     Layout.fillWidth : true
 
+
+
     Connections {
         target : Jeu
         onTir_subit:{
             touche = Jeu.get_defense_touche(num, depth)
         }
     }
-    DropArea
-    {
+
+    DropArea {
+
         id: dropArea
         width: 35
         height: 35
-        onDropped: console.log(drag.source.height/35 + " " + drag.source.width/35 + " " + drag.source.rotation)
+        onDropped: console.log(num + " " + depth + " " + drag.source.height/35 + " " + drag.source.width/35 + " " + drag.source.rotation)
 
         Rectangle {
             id : rect
@@ -33,12 +36,12 @@ ColumnLayout{
 
             states: [
                 State {
-                when: dropArea.containsDrag
-                PropertyChanges {
-                    target: rect
-                    color: "grey"
+                    when: dropArea.containsDrag
+                    PropertyChanges {
+                        target: rect
+                        color: "yellow"
+                    }
                 }
-            }
             ]
 
             Image{
