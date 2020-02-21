@@ -55,7 +55,7 @@ class Jeu(QObject):
 
     @Slot(int, result="QVariantList")
     def get_case_attaque(self, index):
-        """Return une liste de taille 3, indiquant à quels niveaux  
+        """Return une liste de taille 3, indiquant à quels niveaux
                                             des bateaux ont été touchés"""
         liste_touche = []
         niveau = 0
