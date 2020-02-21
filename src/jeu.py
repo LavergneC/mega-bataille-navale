@@ -68,10 +68,11 @@ class Jeu(QObject):
         else:
             type_navire = "Erreur"
 
-        self.placer_navire(
-            index_case % 15, index_case // 15, profondeur, sens, type_navire
-        )
-        self.navire_place.emit()
+        if type_navire != "Erreur":
+            self.placer_navire(
+                index_case % 15, index_case // 15, profondeur, sens, type_navire
+            )
+            self.navire_place.emit()
 
     # QML Link part
 

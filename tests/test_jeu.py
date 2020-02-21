@@ -116,3 +116,45 @@ def test_defense_touche():
     assert jeu.get_defense_touche(32, 2) is False
     assert jeu.get_defense_touche(32, 1) is False
     assert jeu.get_defense_touche(32, 0) is False
+
+def test_ajouter_navire():
+    jeu = Jeu()
+
+    jeu.ajouter_navire(0,0,5,2,0)
+    jeu.ajouter_navire(60,0,5,1,0)
+    jeu.ajouter_navire(66,0,4,1,90)
+    jeu.ajouter_navire(10,0,3,2,0)
+    jeu.ajouter_navire(0,1,6,1,0)
+    jeu.ajouter_navire(30,1,3,1,90)
+    jeu.ajouter_navire(105,2,2,1,90)
+    jeu.ajouter_navire(105,1,5,3,90)
+
+    assert jeu.get_navire_at(0,0) is True
+    assert jeu.get_navire_at(3,0) is True
+    assert jeu.get_navire_at(5,0) is False
+    
+    assert jeu.get_navire_at(60,0) is True
+    assert jeu.get_navire_at(0,2) is False
+    assert jeu.get_navire_at(75,0) is False
+    
+    assert jeu.get_navire_at(66,2) is False
+    assert jeu.get_navire_at(66,0) is True
+    assert jeu.get_navire_at(67,0) is False
+
+    assert jeu.get_navire_at(225,0) is False
+    assert jeu.get_navire_at(125,1) is False
+    assert jeu.get_navire_at(13,0) is False
+
+    assert jeu.get_navire_at(0,1) is True
+    assert jeu.get_navire_at(33,0) is False
+    assert jeu.get_navire_at(6,1) is False
+    
+    assert jeu.get_navire_at(30,2) is False
+    assert jeu.get_navire_at(45,1) is True
+    assert jeu.get_navire_at(31,1) is False
+
+    assert jeu.get_navire_at(105,2) is True
+    assert jeu.get_navire_at(115,0) is False
+    assert jeu.get_navire_at(106,2) is False
+
+    assert jeu.get_navire_at(105,1) is False
