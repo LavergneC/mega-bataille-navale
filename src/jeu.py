@@ -185,7 +185,7 @@ class Jeu(QObject):
             return (x, y)
         elif trame[0] == 3:
             # Récupération du résultat d'un tir
-            if trame[1] == 0:  #  Raté
+            if trame[1] == 0:  # Raté
                 resultat_tir = "Rate"
             elif trame[1] == 1:  # Touché bateau
                 resultat_tir = "Touche_bateau"
