@@ -77,15 +77,16 @@ def test_placer_navire():
     assert not jeu.carte_perso.navires[0].cases[2].y == 8
     assert not jeu.carte_perso.navires[0].cases[1].z == 2
 
-    jeu.placer_navire(0,0,1,"Horizontal", "sous-marins-nuc")
+    jeu.placer_navire(0, 0, 1, "Horizontal", "sous-marins-nuc")
     assert jeu.carte_perso.navires[1].cases[1].x == 1
     assert jeu.carte_perso.navires[1].cases[1].y == 0
     assert jeu.carte_perso.navires[1].cases[1].z == 1
 
+
 def test_get_navire_at():
     jeu = Jeu()
 
-    jeu.placer_navire(2,2,2,"Horizontal", "sous-marins")
+    jeu.placer_navire(2, 2, 2, "Horizontal", "sous-marins")
     assert jeu.get_navire_at(32, 2) is True
     assert jeu.get_navire_at(33, 2) is True
 
@@ -95,26 +96,27 @@ def test_get_navire_at():
     assert jeu.get_navire_at(31, 2) is False
     assert jeu.get_navire_at(34, 2) is False
 
+
 def test_defense_touche():
     jeu = Jeu()
 
-    jeu.placer_navire(1,2,1,"Horizontal", "petit-sous-marins")
-    jeu.recevoir_tir(0,0)
-    jeu.recevoir_tir(1,2)
-    jeu.recevoir_tir(3,3)
+    jeu.placer_navire(1, 2, 1, "Horizontal", "petit-sous-marins")
+    jeu.recevoir_tir(0, 0)
+    jeu.recevoir_tir(1, 2)
+    jeu.recevoir_tir(3, 3)
 
     assert jeu.get_defense_touche(0, 2) is True
     assert jeu.get_defense_touche(0, 1) is True
-    assert jeu.get_defense_touche(0, 0) is True   
+    assert jeu.get_defense_touche(0, 0) is True
 
     assert jeu.get_defense_touche(31, 2) is False
     assert jeu.get_defense_touche(31, 1) is True
-    assert jeu.get_defense_touche(31, 0) is True 
+    assert jeu.get_defense_touche(31, 0) is True
 
     assert jeu.get_defense_touche(32, 2) is False
     assert jeu.get_defense_touche(32, 1) is False
-    assert jeu.get_defense_touche(32, 0) is False 
+    assert jeu.get_defense_touche(32, 0) is False
 
     assert jeu.get_defense_touche(48, 2) is False
     assert jeu.get_defense_touche(48, 1) is True
-    assert jeu.get_defense_touche(48, 0) is True   
+    assert jeu.get_defense_touche(48, 0) is True

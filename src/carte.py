@@ -2,7 +2,8 @@ from navire import *
 
 
 class Carte:
-    """Représente une carte."""
+    """ Représente une carte. Elle peut être de deux types différents
+    (defense ou attaque). Son type jouera sur le type des cases contenue. """
 
     def __init__(self, is_carte_attaque):
         """Définition d'une carte."""
@@ -24,13 +25,36 @@ class Carte:
             z += 1
 
     def mise_a_jour_case(self, x, y, z):
-        """Vérifie si un bateau est présent à l'endroit de la carte."""
+        """Met à jour la case concernée par le tir et renvoie le résultat de
+        l'attaque
+
+        Parameters:
+            x(int): Abscisse de la case (0 <= x < 15)
+            y(int): Ordonnée de la case (0 <= y < 15)
+            z(int): Profondeur de la case (0 <= z < 3)
+
+        Returns :
+            etat_attaque(bool): Etat de l'attaque subie"""
         for index, case in enumerate(self.cases):
             if case.x == x and case.y == y and case.z == z:
                 self.cases[index].impact = True
         return self.check_ship(x, y, z)
 
     def check_ship(self, x, y, z):
+        """Test si l'un des navires est touché par les coordonnées de l'attaque
+        passée en paramètre et si c'est le cas, met à jour l'état de la case du
+        bateau concerné
+
+        Parameters :
+            x(int) : abscisse de l'attaque subie (0 <= x < 15)
+            y(int): ordonnées de l'attaque subie (0 <= y < 15)
+            z(int): profondeur de l'attaque subie (0 <= z < 3)
+
+        Returns:
+            bool: Retourne si l'attaque subie a touché l'un de nos bateaux
+
+        """
+
         for navire in self.navires:
             case_touche, etat_attaque = navire.test_impact(x, y, z)
             if etat_attaque:
@@ -38,8 +62,20 @@ class Carte:
         return False
 
     def positionner_navire(self, x, y, z, sens, type_navire, id):
-        """Positionnement d'un navire sur la carte."""
-        if type_navire == "Porte-container":
+        """Créé un bateau et initialise sa taille et sa position dans la carte.
+        IL faut savoir que les coordonnées passées en paramètre concernent la
+        première case du bateau qui est la case la plus haute et la plus à
+        gauche du bateau.
+
+        Parameters:
+            x (int): abscisse de la première case du navire
+            y (int): ordonnée de la première case du navire
+            z (int): profondeur du navire
+            sens (str): sens du navire (Vertical ou Horizontal)
+            type_navire (str): type du navire
+
+        """
+        if type_navire == "porte-container":
             longueur = 5
             largeur = 2
         elif type_navire == "Porte-avion":
@@ -66,6 +102,17 @@ class Carte:
         self.navires[index].set_position(x, y, z, sens)
 
     def trouver_navire(self, id):
+        """ Retoune l'index du bateau correspondant à l'identifiant passé en
+        paramètre.
+
+        Parameters:
+            id (int): Identifant du bateau
+
+        Returns:
+            index(int): Index du navire dans la liste des navires contenus
+            dans la carte.
+
+        """
         for index, navire in enumerate(self.navires):
             if navire.id == id:
                 return index
