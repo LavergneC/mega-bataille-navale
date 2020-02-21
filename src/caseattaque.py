@@ -2,7 +2,8 @@ from case import Case
 
 
 class CaseAttaque(Case):
-    """Instance d'une case spécialisée pour la carte de type attaque héritant de Case"""
+    """Instance d'une case spécialisée pour la carte
+       de type attaque héritant de Case"""
 
     def __init__(self, x, y, z):
         """Initie une case

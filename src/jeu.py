@@ -4,7 +4,9 @@ from PySide2.QtCore import Slot, QObject, Signal, Property
 
 
 class Jeu(QObject):
-    """Instance de jeu, c'est cette instance qui va s'occuper du déroulement de la partie et de la gestion des différents éléments composant cette partie"""
+    """Instance de jeu, c'est cette instance qui va s'occuper du déroulement
+    de la partie et de la gestion des différents éléments composant
+    cette partie"""
 
     def __init__(self):
         """Définit un jeu."""
@@ -90,13 +92,15 @@ class Jeu(QObject):
 
     def parse_message(self, trame):
         """ Découpe la trame en fonction de son type:
-            - Connexion(ID=1) : Trame de connexion envoyée par le client. Renvoie :
+            - Connexion(ID=1) : Trame de connexion envoyée par le client.
+            Renvoie :
                 - Longueur du nom d'un joueur
                 - Nom du joueur
             - Lancé de missile(ID=2) : Trame d'envoi de tir. Renvoie :
                 - Abscisse (entre 1 et 15)
                 - Ordonnée (entre 1 et 15)
-            - Réponse au lancé(ID=3) : Trame de réponse à un tir adverse. Renvoie :
+            - Réponse au lancé(ID=3) : Trame de réponse à un tir adverse.
+            Renvoie :
                 - Résultat du tir :
                     - 0: Raté
                     - 1: bateau touché
@@ -135,14 +139,16 @@ class Jeu(QObject):
             return (None, None)
 
     def tirer(self, x, y):
-        """ Envoi d'un tir à l"adversaire et récupération du résultat de ce tir, ainsi que l'état de l'éventuel bateau touché(coulé ou non coulé
+        """ Envoi d'un tir à l"adversaire et récupération du résultat de ce
+        tir, ainsi que l'état de l'éventuel bateau touché (coulé ou non coulé)
 
         Parameters:
             x(int): abscisse du tir (1 <= x <= 15)
             y(int): ordonnée du tir (1 <= y <= 15)
 
         Returns:
-            (int, bool): Tuple contenant le résultat du tir envoyé ainsi que l'état de l'éventuel bateau concerné.
+            (int, bool): Tuple contenant le résultat du tir envoyé ainsi que
+                         l'état de l'éventuel bateau concerné.
         """
 
         message = bytearray([2, x, y])

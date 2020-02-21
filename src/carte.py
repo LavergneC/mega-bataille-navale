@@ -2,7 +2,8 @@ from navire import *
 
 
 class Carte:
-    """ Représente une carte. Elle peut être de deux types différents (defense ou attaque). Son type jouera sur le type des cases contenue. """
+    """ Représente une carte. Elle peut être de deux types différents
+    (defense ou attaque). Son type jouera sur le type des cases contenue. """
 
     def __init__(self):
         """Initialisation d'une carte. Construit les cases concernées."""
@@ -20,7 +21,8 @@ class Carte:
             z += 1
 
     def mise_a_jour_case(self, x, y, z):
-        """Met à jour la case concernée par le tir et renvoie le résultat de l'attaque
+        """Met à jour la case concernée par le tir et renvoie le résultat de
+        l'attaque
 
         Parameters:
             x(int): Abscisse de la case (0 <= x < 15)
@@ -35,7 +37,9 @@ class Carte:
         return self.check_ship(x, y, z)
 
     def check_ship(self, x, y, z):
-        """ Test si l'un des navires est touché par les coordonnées de l'attaque passée en paramètre et si c'est le cas, met à jour l'état de la case du bateau concerné
+        """Test si l'un des navires est touché par les coordonnées de l'attaque
+        passée en paramètre et si c'est le cas, met à jour l'état de la case du
+        bateau concerné
 
         Parameters :
             x(int) : abscisse de l'attaque subie (0 <= x < 15)
@@ -54,7 +58,10 @@ class Carte:
         return False
 
     def positionner_navire(self, x, y, z, sens, type_navire, id):
-        """Créé un bateau et initialise sa taille et sa position dans la carte. IL faut savoir que les coordonnées passées en paramètre concernent la première case du bateau qui est la case la plus haute et la plus à gauche du bateau.
+        """Créé un bateau et initialise sa taille et sa position dans la carte.
+        IL faut savoir que les coordonnées passées en paramètre concernent la
+        première case du bateau qui est la case la plus haute et la plus à
+        gauche du bateau.
 
         Parameters:
             x (int): abscisse de la première case du navire
@@ -91,13 +98,15 @@ class Carte:
         self.navires[index].set_position(x, y, z, sens)
 
     def trouver_navire(self, id):
-        """ Retoune l'index du bateau correspondant à l'identifiant passé en paramètre
+        """ Retoune l'index du bateau correspondant à l'identifiant passé en
+        paramètre.
 
         Parameters:
             id (int): Identifant du bateau
 
         Returns:
-            index(int): Index du navire dans la liste des navires contenus dans la carte
+            index(int): Index du navire dans la liste des navires contenus
+            dans la carte.
 
         """
         for index, navire in enumerate(self.navires):
