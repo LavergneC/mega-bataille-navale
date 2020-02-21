@@ -12,9 +12,11 @@ ColumnLayout{
     spacing: 3
 
     ListView {
+        id : listBat
         orientation: ListView.Vertical
         Layout.fillWidth: true
         Layout.fillHeight: true
+
 
         model: ModelBateaux{}
 

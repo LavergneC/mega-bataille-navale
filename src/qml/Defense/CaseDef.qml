@@ -10,8 +10,6 @@ ColumnLayout{
     property bool navire: false
     Layout.fillWidth : true
 
-
-
     Connections {
         target : Jeu
         onTir_subit:{
@@ -24,7 +22,7 @@ ColumnLayout{
         id: dropArea
         width: 35
         height: 35
-        onDropped: console.log(num + " " + depth + " " + drag.source.height/35 + " " + drag.source.width/35 + " " + drag.source.rotation)
+        onDropped: console.log(num + " " + depth + " " + drag.source.height/35 + " " + drag.source.width/35 + " " + drag.source.rota)
 
         Rectangle {
             id : rect
@@ -57,7 +55,6 @@ ColumnLayout{
                         duration : 420
                     }
                 }
-
             }
             MouseArea {
                 id : mouseA

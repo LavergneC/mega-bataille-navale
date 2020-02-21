@@ -12,6 +12,7 @@ RowLayout{
     Layout.margins : 20
     anchors.fill : parent
     spacing : 10
+
     Button{
         id: but_att
         text: "Attaque "
@@ -34,6 +35,7 @@ RowLayout{
             StackLayout{
                 id: attaqueswipe
                 Placement_navires{
+                    id : placementNavires
                 }
                 CarteAttaque{
                     id : attaq
