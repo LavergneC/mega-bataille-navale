@@ -23,4 +23,8 @@ ApplicationWindow{
         visible : connecte
         anchors.fill : parent
     }
+
+    Button{
+        onClicked : connecte = true
+    }
 }
