@@ -1,6 +1,7 @@
 from case import *
 from caseattaque import CaseAttaque
 
+
 class Navire:
     """Représente un navire."""
 
