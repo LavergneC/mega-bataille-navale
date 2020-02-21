@@ -9,8 +9,8 @@ class Jeu(QObject):
     def __init__(self):
         """Défini un jeu."""
         super(Jeu, self).__init__()
-        self.carte_perso = Carte()
-        self.carte_adversaire = Carte()
+        self.carte_perso = Carte(False)
+        self.carte_adversaire = Carte(True)
         self.connection = Reseau()
 
     def placer_navire(self, x, y, z, sens, type_navire):
