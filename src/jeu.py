@@ -123,6 +123,13 @@ class Jeu(QObject):
         self.connection.envoyer_trame(message)
         reponse_tir = self.connection.recevoir_trame(3)
         resultat_tir, etat_bateau = self.parse_message(reponse_tir)
+        if resultat_tir:
+            self.carte_adversaire.mise_a_jour_case(x, y, resultat_tir - 1)
+        else:
+            # Pas de bateau touché, impact sur les trois couches
+            self.carte_adversaire.mise_a_jour_case(x, y, 0)
+            self.carte_adversaire.mise_a_jour_case(x, y, 1)
+            self.carte_adversaire.mise_a_jour_case(x, y, 2)
 
     # Partie réseau, passage d'appel de fonction
 
