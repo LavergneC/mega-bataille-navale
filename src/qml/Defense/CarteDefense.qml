@@ -2,8 +2,9 @@ import QtQuick 2.6
 import QtQuick.Controls 2.14
 import QtQuick.Layouts 1.14
 
+RowLayout{ 
+    signal rotationDemande
 
-RowLayout{
     ColumnLayout{
         Layout.margins : 20
         ColumnLayout{}
@@ -15,6 +16,8 @@ RowLayout{
             Repeater{
                 model : 3
                 GridLayout {
+
+                    property int  profondeur: index
                     id : defGrid
                     rowSpacing : 0
                     columnSpacing : 0
@@ -23,6 +26,7 @@ RowLayout{
                         model : 225
                         CaseDef {
                             num : index
+                            depth : defGrid.profondeur
                         }
                     }
                 }
@@ -37,11 +41,12 @@ RowLayout{
         currentIndex: stacklayout.currentIndex
         count: stacklayout.count
     }
-    onVisibleChanged:{
-        focus = true
-    }
+    //        onVisibleChanged:{
+    //            focus = true
+    //        }
 
     Keys.onPressed: {
+
         console.log(event.key)
         if (event.key == Qt.Key_1 || event.key == 38) {
             stacklayout.currentIndex = 0

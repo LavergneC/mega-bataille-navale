@@ -30,6 +30,54 @@ class Jeu(QObject):
             x, y, z, sens, type_navire, len(self.carte_perso.navires)
         )
 
+    @Signal
+    def navire_place(self):
+        """a appeler quand un navire est placé"""
+        pass
+
+    @Slot(int, int, int, int, int)
+    def ajouter_navire(self, index_case, profondeur, long, larg, rot):
+        sens = ""
+        type_navire = ""
+        print(f"{index_case}-{profondeur}")
+        if rot == 90:
+            sens = "Vertical"
+        else:
+            sens = "Horizontal"
+
+        if long == 5 and larg == 2:
+            type_navire = "porte-container"
+
+        elif long == 5 and larg == 1:
+            type_navire = "Porte-avion"
+
+        elif long == 4 and larg == 1:
+            type_navire = "Destroyer"
+
+        elif long == 3 and larg == 2:
+            type_navire = "Torpilleur"
+
+        elif long == 6 and larg == 1:
+            type_navire = "Sous-marin nucléaire"
+
+        elif long == 3 and larg == 1:
+            type_navire = "Sous-marin de combat"
+
+        elif long == 2 and larg == 1:
+            type_navire = "Sous-marin de reconnaissance"
+        else:
+            type_navire = "Erreur"
+
+        if type_navire != "Erreur":
+            self.placer_navire(
+                index_case % 15,
+                index_case // 15,
+                profondeur,
+                sens,
+                type_navire,
+            )
+            self.navire_place.emit()
+
     # QML Link part
 
     # Défense :
@@ -143,7 +191,7 @@ class Jeu(QObject):
             return (x, y)
         elif trame[0] == 3:
             # Récupération du résultat d'un tir
-            if trame[1] == 0:  #  Raté
+            if trame[1] == 0:  # Raté
                 resultat_tir = "Rate"
             elif trame[1] == 1:  # Touché bateau
                 resultat_tir = "Touche_bateau"

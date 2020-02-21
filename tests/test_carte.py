@@ -21,7 +21,7 @@ def test_check_ship():
 
 def test_positionner_navire():
     carte = Carte(False)
-    carte.positionner_navire(5, 5, 1, "Vertical", "destroyer", 0)
+    carte.positionner_navire(5, 5, 1, "Vertical", "Destroyer", 0)
 
     assert carte.navires[0].cases[0].x == 5
     assert carte.navires[0].cases[0].y == 5
@@ -44,18 +44,18 @@ def test_positionner_navire():
     assert carte.navires[1].cases[9].y == 1
     assert carte.navires[1].cases[4].y == 0
 
-    carte.positionner_navire(0, 2, 0, "Horizontal", "porte-avions", 2)
+    carte.positionner_navire(0, 2, 0, "Horizontal", "Porte-avion", 2)
     assert carte.navires[2].cases[4].x == 4
     assert carte.navires[2].cases[4].y == 2
 
-    carte.positionner_navire(6, 0, 0, "Vertical", "torpilleur", 3)
+    carte.positionner_navire(6, 0, 0, "Vertical", "Torpilleur", 3)
     assert carte.navires[3].cases[5].x == 7
     assert carte.navires[3].cases[5].y == 2
 
 
 def test_mise_a_jour():
     carte = Carte(False)
-    carte.positionner_navire(0, 0, 0, "Vertical", "destroyer", 0)
+    carte.positionner_navire(0, 0, 0, "Vertical", "Destroyer", 0)
 
     carte.mise_a_jour_case(0, 0, 0)
     assert carte.cases[0].impact is True
