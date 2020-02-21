@@ -92,7 +92,7 @@ class Carte:
             largeur = 1
         elif type_navire == "Sous-marin de combat":
             longueur = 3
-            largeur = 2
+            largeur = 1
         elif type_navire == "Sous-marin de reconnaissance":
             longueur = 2
             largeur = 1

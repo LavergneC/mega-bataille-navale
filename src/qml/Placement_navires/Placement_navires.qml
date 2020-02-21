@@ -37,6 +37,7 @@ ColumnLayout{
                 styleColor: "blue"
                 Layout.alignment: Qt.AlignVCenter
             }
+
             Text {
                 Layout.column: 1
                 Layout.row: 1
@@ -46,13 +47,13 @@ ColumnLayout{
                 styleColor: "blue"
                 Layout.alignment: Qt.AlignVCenter
             }
+
             Drag_navires{
                 id: gestionnavire
                 Layout.column: 0
                 Layout.row: 1
                 nbRestant: boot.nbRestant
                 onBateauDroped: boot.nbRestant --
-
             }
         }
     }

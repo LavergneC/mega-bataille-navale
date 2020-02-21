@@ -15,6 +15,9 @@ ColumnLayout{
         onTir_subit:{
             touche = Jeu.get_defense_touche(num, depth)
         }
+        onNavire_place:{
+            navire = Jeu.get_navire_at(num, depth)
+        }
     }
 
     DropArea {
@@ -22,7 +25,8 @@ ColumnLayout{
         id: dropArea
         width: 35
         height: 35
-        onDropped: console.log(num + " " + depth + " " + drag.source.height/35 + " " + drag.source.width/35 + " " + drag.source.rota)
+        onDropped: Jeu.ajouter_navire(num, depth,drag.source.width/35, drag.source.height/35, drag.source.rota)
+                       //console.log(num + " " + depth + " " + drag.source.height/35 + " " + drag.source.width/35 + " " + drag.source.rota)
 
         Rectangle {
             id : rect
@@ -61,15 +65,6 @@ ColumnLayout{
                 anchors.fill : parent
                 acceptedButtons: Qt.LeftButton | Qt.RightButton
                 hoverEnabled : true
-                onClicked:{
-                    if(mouse.button == Qt.LeftButton){
-                        navire = !navire
-                    }
-                    if(mouse.button  == Qt.RightButton){
-                        touche = !touche
-                    }
-                    console.log("index: " + num + " depth : " + depth)
-                }
             }
         }
     }

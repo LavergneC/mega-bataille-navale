@@ -30,37 +30,48 @@ class Jeu(QObject):
             x, y, z, sens, type_navire, len(self.carte_perso.navires)
         )
 
+    @Signal
+    def navire_place(self):
+        """a appeler quand un navire est placé"""
+        pass
+
+    @Slot(int, int, int, int, int)
     def ajouter_navire(self, index_case, profondeur, long, larg, rot):
         sens = ""
         type_navire = ""
-        
-        if (rot == 90):
+        print(f"{index_case}-{profondeur}")
+        if rot == 90:
             sens = "Vertical"
         else:
             sens = "Horizontal"
-        
-        if (long == 5 and larg == 2):
-            type_navire = "Porte-container"
 
-        elif (long == 5 and larg == 1):
-            type_navire = "Porte-avions"
+        if long == 5 and larg == 2:
+            type_navire = "porte-container"
 
-        elif (long == 4 and larg == 1):
+        elif long == 5 and larg == 1:
+            type_navire = "Porte-avion"
+
+        elif long == 4 and larg == 1:
             type_navire = "Destroyer"
 
-        elif (long == 3 and larg == 2):
+        elif long == 3 and larg == 2:
             type_navire = "Torpilleur"
 
-        elif (long == 6 and larg == 1):
+        elif long == 6 and larg == 1:
             type_navire = "Sous-marin nucléaire"
 
-        elif(long == 3 and larg == 1):
+        elif long == 3 and larg == 1:
             type_navire = "Sous-marin de combat"
 
-        elif (long == 2 and larg == 1):
+        elif long == 2 and larg == 1:
             type_navire = "Sous-marin de reconnaissance"
         else:
-            type_navire ="Erreur"
+            type_navire = "Erreur"
+
+        self.placer_navire(
+            index_case % 15, index_case // 15, profondeur, sens, type_navire
+        )
+        self.navire_place.emit()
 
     # QML Link part
 
@@ -235,4 +246,3 @@ class Jeu(QObject):
     @Slot()
     def heberger(self):
         return self.connection.heberger()
-
