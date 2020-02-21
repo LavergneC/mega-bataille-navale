@@ -6,7 +6,7 @@ from carte import *
 
 
 def test_check_ship():
-    carte = Carte()
+    carte = Carte(False)
     navire = Navire(0, 3, 1, "Calypso")
     navire.cases.append(Case(1, 2, 1))
     navire.cases.append(Case(2, 2, 1))
@@ -20,7 +20,7 @@ def test_check_ship():
 
 
 def test_positionner_navire():
-    carte = Carte()
+    carte = Carte(False)
     carte.positionner_navire(5, 5, 1, "Vertical", "destroyer", 0)
 
     assert carte.navires[0].cases[0].x == 5
@@ -54,7 +54,7 @@ def test_positionner_navire():
 
 
 def test_mise_a_jour():
-    carte = Carte()
+    carte = Carte(False)
     carte.positionner_navire(0, 0, 0, "Vertical", "destroyer", 0)
 
     carte.mise_a_jour_case(0, 0, 0)
@@ -62,6 +62,6 @@ def test_mise_a_jour():
 
 
 def test_trouver_navire():
-    carte = Carte()
+    carte = Carte(False)
 
     assert carte.trouver_navire(1) == "ERR"

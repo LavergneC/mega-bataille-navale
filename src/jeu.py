@@ -11,8 +11,8 @@ class Jeu(QObject):
     def __init__(self):
         """Définit un jeu."""
         super(Jeu, self).__init__()
-        self.carte_perso = Carte()
-        self.carte_adversaire = Carte()
+        self.carte_perso = Carte(False)
+        self.carte_adversaire = Carte(True)
         self.connection = Reseau()
 
     def placer_navire(self, x, y, z, sens, type_navire):
@@ -66,7 +66,8 @@ class Jeu(QObject):
 
     @Slot(int, result="QVariantList")
     def get_case_attaque(self, index):
-        """Return une liste de taille 3, indiquant à quels niveaux  des bateaux ont été touchés"""
+        """Return une liste de taille 3, indiquant à quels niveaux
+                                            des bateaux ont été touchés"""
         liste_touche = []
         niveau = 0
         while niveau < 3:
