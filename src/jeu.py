@@ -4,17 +4,28 @@ from PySide2.QtCore import Slot, QObject, Signal, Property
 
 
 class Jeu(QObject):
-    """Represente le jeu."""
+    """Instance de jeu, c'est cette instance qui va s'occuper du déroulement
+    de la partie et de la gestion des différents éléments composant
+    cette partie"""
 
     def __init__(self):
-        """Défini un jeu."""
+        """Définit un jeu."""
         super(Jeu, self).__init__()
-        self.carte_perso = Carte()
-        self.carte_adversaire = Carte()
+        self.carte_perso = Carte(False)
+        self.carte_adversaire = Carte(True)
         self.connection = Reseau()
 
     def placer_navire(self, x, y, z, sens, type_navire):
-        """Place un bateau sur jeu."""
+        """Place un navire sur la carte
+
+        Parameters:
+            x (int): Abscisse du navire (0 <= x < 15)
+            y (int): Ordonnée du navire (0 <= y < 15)
+            z (int): Profondeur du navire (0 <= z < 3)
+            sens (str): Sens du navire (Vertical ou horizontal)
+            type_navire (str): Type du navire
+        """
+
         self.carte_perso.positionner_navire(
             x, y, z, sens, type_navire, len(self.carte_perso.navires)
         )
@@ -55,7 +66,8 @@ class Jeu(QObject):
 
     @Slot(int, result="QVariantList")
     def get_case_attaque(self, index):
-        """Return une liste de taille 3, indiquant à quels niveaux  des bateaux ont été touchés"""
+        """Return une liste de taille 3, indiquant à quels niveaux
+                                            des bateaux ont été touchés"""
         liste_touche = []
         niveau = 0
         while niveau < 3:
@@ -80,7 +92,18 @@ class Jeu(QObject):
         self.recevoir_tir(1, 2)
 
     def recevoir_tir(self, x, y):
-        """Gere la reception d'un tir."""
+        """Gère les opérations liées à la réception d'un tir :
+            - Mise à jour de l'état de la case
+            - Analyse du résulat du tir (touché ou non) et de l'étage concerné
+
+            Parameters:
+                x (int): Abscisse du tir (0 <= x < 15)
+                y (int): Ordonnée du tir (0 <= y < 15)
+
+            Returns:
+                (bool, int): Tuple contenant l'état du tir et l'étage concerné
+        """
+
         etage = 0
         etat_tir = False
         while not etat_tir and etage < 3:
@@ -90,7 +113,27 @@ class Jeu(QObject):
         return (etat_tir, etage - 1)
 
     def parse_message(self, trame):
-        """Découpe les trames reçues."""
+        """ Découpe la trame en fonction de son type:
+            - Connexion(ID=1) : Trame de connexion envoyée par le client.
+            Renvoie :
+                - Longueur du nom d'un joueur
+                - Nom du joueur
+            - Lancé de missile(ID=2) : Trame d'envoi de tir. Renvoie :
+                - Abscisse (entre 1 et 15)
+                - Ordonnée (entre 1 et 15)
+            - Réponse au lancé(ID=3) : Trame de réponse à un tir adverse.
+            Renvoie :
+                - Résultat du tir :
+                    - 0: Raté
+                    - 1: bateau touché
+                    - 2: sous-marin de surface touché
+                    - 3: sous-marin profond touché
+                - Etat bateau :
+                    - 0: non-coulé
+                    - 1: coulé
+
+        """
+
         if trame[0] == 2:
             # Reception d'un tir
             x = trame[1]
@@ -118,6 +161,18 @@ class Jeu(QObject):
             return (None, None)
 
     def tirer(self, x, y):
+        """ Envoi d'un tir à l"adversaire et récupération du résultat de ce
+        tir, ainsi que l'état de l'éventuel bateau touché (coulé ou non coulé)
+
+        Parameters:
+            x(int): abscisse du tir (1 <= x <= 15)
+            y(int): ordonnée du tir (1 <= y <= 15)
+
+        Returns:
+            (int, bool): Tuple contenant le résultat du tir envoyé ainsi que
+                         l'état de l'éventuel bateau concerné.
+        """
+
         message = bytearray([2, x, y])
         self.connection.envoyer_trame(message)
         reponse_tir = self.connection.recevoir_trame(3)
