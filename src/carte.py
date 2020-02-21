@@ -4,17 +4,21 @@ from navire import *
 class Carte:
     """Représente une carte."""
 
-    def __init__(self):
+    def __init__(self, is_carte_attaque):
         """Définition d'une carte."""
         self.navires = []
         self.cases = []
+        self.is_carte_attaque = is_carte_attaque
         z = 0
         while z < 3:
             y = 0
             while y < 15:
                 x = 0
                 while x < 15:
-                    self.cases.append(Case(x, y, z))
+                    if self.is_carte_attaque:
+                        self.cases.append(CaseAttaque(x, y, z))
+                    else:
+                        self.cases.append(Case(x, y, z))
                     x += 1
                 y += 1
             z += 1

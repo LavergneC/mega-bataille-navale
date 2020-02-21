@@ -1,4 +1,5 @@
 from carte import Carte, Case, Navire
+from reseau import *
 from PySide2.QtCore import Slot, QObject, Signal, Property
 
 
@@ -10,11 +11,12 @@ class Jeu(QObject):
         super(Jeu, self).__init__()
         self.carte_perso = Carte()
         self.carte_adversaire = Carte()
+        self.connection = Reseau()
 
     def placer_navire(self, x, y, z, sens, type_navire):
         """Place un bateau sur jeu."""
         self.carte_perso.positionner_navire(
-            x, y, z, "Vertical", type_navire, len(self.carte_perso.navires)
+            x, y, z, sens, type_navire, len(self.carte_perso.navires)
         )
 
     def ajouter_navire(self, index_case, profondeur, long, larg, rot):
@@ -52,37 +54,59 @@ class Jeu(QObject):
     # QML Link part
 
     # Défense :
-    # A appeller dès que la carte de défense est modifiée
     @Signal
     def tir_subit(self):
+        """A appeller dès que la carte de défense est modifiée"""
         pass
 
-    # return true si un bateau est présent
     @Slot(int, int, result=bool)
     def get_navire_at(self, case_index, depth):
-        return True
+        """return true si un bateau est présent"""
+        x = case_index % 15
+        y = case_index // 15
+        for navire in self.carte_perso.navires:
+            for case in navire.cases:
+                if x == case.x and y == case.y and depth == case.z:
+                    return True
+        return False
 
-    # Return true si cette case à subit un tir (idépendant de bateau)
     @Slot(int, int, result=bool)
     def get_defense_touche(self, case_index, depth):
-        return True
+        """Return true si cette case à subit un tir (idépendant de bateau)"""
+        x = case_index % 15
+        y = case_index // 15
+        for case in self.carte_perso.cases:
+            if x == case.x and y == case.y and depth == case.z:
+                return case.impact
 
     # Attaque :
-    # A appeller dès que notre carte d'attaque est mise à jour
     @Signal
     def tir_feedback_received(self):
+        """A appeller dès que notre carte d'attaque est mise à jour"""
         pass
 
-    # Return une liste de taille 3, indiquant à quels niveaux
-    # des bateaux ont été touchés
     @Slot(int, result="QVariantList")
     def get_case_attaque(self, index):
-        return [0, 1, 0]
+        """Return une liste de taille 3, indiquant à quels niveaux  des bateaux ont été touchés"""
+        liste_touche = []
+        niveau = 0
+        while niveau < 3:
+            # TODO && bateau présent
+            case = self.carte_adversaire.cases[niveau * 225 + index]
+            liste_touche.append(case.impact)
+            niveau += 1
+        return liste_touche
 
-    # return true si on a tire sur la case mais que rien n'a été touché
     @Slot(int, result=bool)
-    def get_case_manque(index):
-        return True
+    def get_case_manque(self, index):
+        """return true si on a tire sur la case mais que rien n'a été touché"""
+        navire = False
+        niveau = 0
+        while niveau < 3:
+            navire &= self.cartek
+            niveau += 1
+
+        return sum(get_case_attaque(index)) == 3
 
     @Slot()
     def simulate(self):
@@ -93,10 +117,10 @@ class Jeu(QObject):
         etage = 0
         etat_tir = False
         while not etat_tir and etage < 3:
+            etat_tir = self.carte_perso.mise_a_jour_case(x, y, etage)
             etage += 1
-            etat_tir = self.carte_perso.check_ship(x, y, etage)
         self.tir_subit.emit()
-        return (etat_tir, etage)
+        return (etat_tir, etage - 1)
 
     def parse_message(self, trame):
         """Découpe les trames reçues."""
@@ -105,5 +129,55 @@ class Jeu(QObject):
             x = trame[1]
             y = trame[2]
             return (x, y)
+        elif trame[0] == 3:
+            # Récupération du résultat d'un tir
+            if trame[1] == 0:  #  Raté
+                resultat_tir = "Rate"
+            elif trame[1] == 1:  # Touché bateau
+                resultat_tir = "Touche_bateau"
+            elif trame[1] == 2:  # Touché sous-marin de surface
+                resultat_tir = "Touche_sous_marin_surface"
+            elif trame[1] == 3:  # Touché sous-marin profond
+                resultat_tir = "Touche_sous_marin_profond"
+
+            if trame[2] == 0:
+                etat_bateau = "Coule"
+            elif trame[2] == 1:
+                etat_bateau = "Non_coule"
+
+            return (resultat_tir, etat_bateau)
+
         else:
             return (None, None)
+
+    def tirer(self, x, y):
+        message = bytearray([2, x, y])
+        self.connection.envoyer_trame(message)
+        reponse_tir = self.connection.recevoir_trame(3)
+        resultat_tir, etat_bateau = self.parse_message(reponse_tir)
+        if resultat_tir:
+            self.carte_adversaire.mise_a_jour_case(x, y, resultat_tir - 1)
+        else:
+            # Pas de bateau touché, impact sur les trois couches
+            self.carte_adversaire.mise_a_jour_case(x, y, 0)
+            self.carte_adversaire.mise_a_jour_case(x, y, 1)
+            self.carte_adversaire.mise_a_jour_case(x, y, 2)
+
+    # Partie réseau, passage d'appel de fonction
+
+    @Slot(str, str)
+    def seConnecter(seft, ip, port):
+        self.connection.se_connecter(ip, port)
+
+    @Slot(result=str)
+    def getIP(self):
+        return self.connection.get_ip()
+
+    @Slot(result=str)
+    def getPort(self):
+        return self.connection.port
+
+    @Slot()
+    def heberger(self):
+        return self.connection.heberger()
+

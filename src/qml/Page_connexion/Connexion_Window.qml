@@ -21,6 +21,21 @@ ColumnLayout{
         Layout.rightMargin: 22
         Layout.topMargin: 10
     }
+    RowLayout{
+        id : nomjoueur
+        spacing: 15
+
+        Text {
+            text: ("Nom du joueur")
+            font.pointSize: 14
+        }
+
+        TextField {
+            placeholderText: qsTr("Xx_Captain_Crochet_xX")
+            Layout.fillWidth: true
+            horizontalAlignment: Text.AlignHCenter
+        }
+    }
 
     TabBar {
         id: bar
