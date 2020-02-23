@@ -18,13 +18,13 @@ RowLayout{
         visible: !displayBusy && !tickState
         id: pasok
         source: "../Images/mauvaiseinfo.svg"
-        sourceSize.width: 50
+        sourceSize.width: 40
     }
     Image {
 
         visible: !displayBusy && tickState
         id: ok
         source: "../Images/bonneinfo.svg"
-        sourceSize.width: 50
+        sourceSize.width: 40
     }
 }

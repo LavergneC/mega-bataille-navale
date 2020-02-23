@@ -21,6 +21,7 @@ def test_check_ship():
 
 def test_positionner_navire():
     carte = Carte(False)
+
     assert (
         carte.positionner_navire(5, 5, 1, "Vertical", "destroyer", 0) is True
     )
@@ -81,7 +82,7 @@ def test_positionner_navire():
 
 def test_mise_a_jour():
     carte = Carte(False)
-    carte.positionner_navire(0, 0, 0, "Vertical", "destroyer", 0)
+    carte.positionner_navire(0, 0, 0, "Vertical", "Destroyer", 0)
 
     carte.mise_a_jour_case(0, 0, 0)
     assert carte.cases[0].impact is True
