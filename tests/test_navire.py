@@ -51,3 +51,17 @@ def test_set_position():
     assert navire2.cases[2].x == 3
     assert navire2.cases[2].y == 3
     assert not navire2.cases[2].y == 4
+
+
+def test_contient_case():
+    navire = Navire(1, 3, 2, "Bat")
+    navire.set_position(0, 0, 1, "Horizontal")
+
+    assert navire.contient_case(0, 0, 1) is True
+    assert navire.contient_case(0, 1, 1) is True
+    assert navire.contient_case(1, 0, 1) is True
+    assert navire.contient_case(2, 0, 1) is True
+    assert navire.contient_case(2, 1, 1) is True
+    assert navire.contient_case(3, 0, 1) is False
+    assert navire.contient_case(0, 2, 1) is False
+    assert navire.contient_case(1, 1, 0) is False
