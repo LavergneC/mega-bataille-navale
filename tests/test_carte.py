@@ -75,7 +75,9 @@ def test_positionner_navire():
         is False
     )
     assert (
-        carte.positionner_navire(8, 11, 0, "Horizontal", "Sous-marin de reconnaissance", 4)
+        carte.positionner_navire(
+            8, 11, 0, "Horizontal", "Sous-marin de reconnaissance", 4
+        )
         is False
     )
 
