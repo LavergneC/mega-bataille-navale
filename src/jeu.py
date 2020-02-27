@@ -241,7 +241,7 @@ class Jeu(QObject):
             self.carte_adversaire.mise_a_jour_case(x, y, 0)
             self.carte_adversaire.mise_a_jour_case(x, y, 1)
             self.carte_adversaire.mise_a_jour_case(x, y, 2)
-    @Slot
+    @Slot(result=bool)
     def droit_de_tirer(self):
         return self.droit_de_tir
 
