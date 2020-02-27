@@ -14,13 +14,10 @@ class Jeu(QObject):
         self.carte_perso = Carte(False)
         self.carte_adversaire = Carte(True)
         self.connection = Reseau()
-<<<<<<< HEAD
         self.partie_perdue = False
         self.partie_gagnee = False
         self.compteur_bateau_coule = 0
-=======
         self.nom_adversaire = ""
->>>>>>> 977eea8a62af2c5a0cd9a2dca9b4774760b201e2
 
     def placer_navire(self, x, y, z, sens, type_navire):
         """Place un navire sur la carte
@@ -76,7 +73,11 @@ class Jeu(QObject):
 
         if type_navire != "Erreur":
             self.placer_navire(
-                index_case % 15, index_case // 15, profondeur, sens, type_navire,
+                index_case % 15,
+                index_case // 15,
+                profondeur,
+                sens,
+                type_navire,
             )
             self.navire_place.emit()
 
@@ -131,7 +132,9 @@ class Jeu(QObject):
         navire = False
         niveau = 0
         while niveau < 3:
-            navire |= self.carte_adversaire.cases[niveau * 225 + index].presence_bateau
+            navire |= self.carte_adversaire.cases[
+                niveau * 225 + index
+            ].presence_bateau
             niveau += 1
         return sum(get_case_attaque(index)) == 3
 
@@ -283,14 +286,13 @@ class Jeu(QObject):
         c'est nous qui avons perdu ou l'adversaire
         """
         for navire in self.navires:
-            if navire.isdetruit == False:
+            if navire.isdetruit is False:
                 self.partie_perdue = False
                 break
         else:
             self.partie_perdue = True
 
         if self.compteur_bateau_coule == 18:
-            self.partie_gagnee == True
+            self.partie_gagnee = True
         else:
-            self.partie_gagnee == False
-
+            self.partie_gagnee = False
