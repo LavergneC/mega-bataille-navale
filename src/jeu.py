@@ -15,6 +15,7 @@ class Jeu(QObject):
         self.carte_adversaire = Carte(True)
         self.connection = Reseau()
         self.nom_adversaire = ""
+        self.nom = ""
 
     def placer_navire(self, x, y, z, sens, type_navire):
         """Place un navire sur la carte
@@ -188,8 +189,10 @@ class Jeu(QObject):
         if trame[0] == 1:
             longueur_nom = trame[1]
             index = 2
+            nom_adv = ""
             while index < longueur_nom:
-                self.nom_adversaire += chr(trame[index])
+                nom_adv += chr(trame[index])
+            return nom_adv
         elif trame[0] == 2:
             # Reception d'un tir
             x = trame[1]
@@ -264,6 +267,11 @@ class Jeu(QObject):
     @Slot(str, str)
     def seConnecter(seft, ip, port):
         self.connection.se_connecter(ip, port)
+        liste_car = list(map(ord, self.nom))
+        message = bytearray([1, len(self.nom), *liste_car])
+        self.connection.envoyer_trame(message)
+        message = self.connection.recevoir_trame(1024)
+        self.nom_adversaire =  self.parse_message(message)
         self.partie()
 
     @Slot(result=str)
@@ -277,4 +285,8 @@ class Jeu(QObject):
     @Slot()
     def heberger(self):
         self.connection.heberger()
+        message = self.connection.recevoir_trame(1024)
+        self.nom_adversaire = self.parse_message(message)
+        liste_car = list(map(ord, self.nom))
+        message = bytearray([1, len(self.nom), *liste_car])
         self.partie()
