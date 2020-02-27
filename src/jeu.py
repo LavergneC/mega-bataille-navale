@@ -14,11 +14,8 @@ class Jeu(QObject):
         self.carte_perso = Carte(False)
         self.carte_adversaire = Carte(True)
         self.connection = Reseau()
-<<<<<<< HEAD
         self.nom_joueur = "Capichef"
-=======
         self.nom_adversaire = ""
->>>>>>> master
 
     def placer_navire(self, x, y, z, sens, type_navire):
         """Place un navire sur la carte
@@ -286,7 +283,4 @@ class Jeu(QObject):
     @Slot()
     def heberger(self):
         self.connection.heberger()
-<<<<<<< HEAD
-=======
         self.partie()
->>>>>>> master
