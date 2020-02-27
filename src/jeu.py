@@ -241,7 +241,7 @@ class Jeu(QObject):
             self.carte_adversaire.mise_a_jour_case(x, y, 2)
 
     def partie(self):
-        while not self.is_fin_partie():
+        while not self.fin_partie():
             tour = 0
             while tour < 2:
                 if (tour == 0 and self.reseau.isclient) or (
