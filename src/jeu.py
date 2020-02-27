@@ -233,7 +233,7 @@ class Jeu(QObject):
         self.connection.envoyer_trame(message)
         reponse_tir = self.connection.recevoir_trame(3)
         resultat_tir, etat_bateau = self.parse_message(reponse_tir)
-        if etat_bateau == "coule":
+        if etat_bateau == "Coule":
             self.compteur_bateau_coule += 1
         if resultat_tir:
             self.carte_adversaire.mise_a_jour_case(x, y, resultat_tir - 1)
