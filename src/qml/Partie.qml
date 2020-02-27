@@ -32,6 +32,17 @@ RowLayout{
                 Layout.alignment: Qt.AlignHCenter
                 font.pointSize: 24
             }
+            Text {
+                id: infopartie
+                text: {
+                    if(Jeu.droit_de_tirer())
+                        "A toi de jouer !"
+
+                    else {
+                        "En attente du tir adverse"
+                    }
+                }
+            }
             StackLayout {
                 id: attaqueswipe
                 Placement_navires{
@@ -40,6 +51,10 @@ RowLayout{
                 CarteAttaque{
                     id : attaq
                 }
+                Fin_jeu{
+
+                }
+
                 onCurrentIndexChanged: carteDef.focus = true
             }
             ColumnLayout{}
