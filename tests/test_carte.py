@@ -51,13 +51,14 @@ def test_positionner_navire():
     assert carte.navires[2].cases[4].x == 4
     assert carte.navires[2].cases[4].y == 2
     carte.positionner_navire(6, 0, 0, "Vertical", "Torpilleur", 3)
-    
+
     assert carte.navires[3].cases[5].x == 7
     assert carte.navires[3].cases[5].y == 2
 
     carte.positionner_navire(0, 0, 0, "Vertical", "porte-container", 4)
     carte.positionner_navire(1, 0, 0, "Vertical", "Destroyer", 4)
     carte.positionner_navire(4, 0, 0, "Horizontal", "Destroyer", 4)
+
 
 def test_mise_a_jour():
     carte = Carte(False)

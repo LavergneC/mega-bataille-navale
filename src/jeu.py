@@ -36,8 +36,10 @@ class Jeu(QObject):
         """a appeler quand un navire est placé"""
         pass
 
-    @Slot(int, int, int, int, int, result = bool)
-    def position_navire_disponible(self,  index_case, profondeur, long, larg, rot):
+    @Slot(int, int, int, int, int, result=bool)
+    def position_navire_disponible(
+        self, index_case, profondeur, long, larg, rot
+    ):
         """ Return si il est possible de placer un bateau à l'endroit ciblé
         
         Parameters:
@@ -78,7 +80,6 @@ class Jeu(QObject):
         else:
             return False
 
-        
         if sens == "Vertical":
             taille_x = larg
             taille_y = long
@@ -86,7 +87,9 @@ class Jeu(QObject):
             taille_x = long
             taille_y = larg
 
-        if (not ("marin" in type_navire)) and (profondeur == 1 or profondeur == 2):
+        if (not ("marin" in type_navire)) and (
+            profondeur == 1 or profondeur == 2
+        ):
             return False
 
         x = index_case % 15
@@ -104,7 +107,7 @@ class Jeu(QObject):
             cpt_x += 1
         return True
 
-    @Slot(int, int, int, int, int, result = bool)
+    @Slot(int, int, int, int, int, result=bool)
     def ajouter_navire(self, index_case, profondeur, long, larg, rot):
         sens = ""
         type_navire = ""

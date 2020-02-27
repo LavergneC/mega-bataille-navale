@@ -160,6 +160,7 @@ def test_ajouter_navire():
 
     assert jeu.get_navire_at(105, 1) is False
 
+
 def test_position_navire_disponible():
     jeu = Jeu()
 
@@ -171,6 +172,6 @@ def test_position_navire_disponible():
     assert jeu.position_navire_disponible(0, 0, 4, 1, 0) is True
 
     assert jeu.position_navire_disponible(13, 0, 3, 2, 0) is False
-    assert jeu.position_navire_disponible(15*10, 0, 6, 1, 90) is False
-    assert jeu.position_navire_disponible(2*15, 2 , 3, 4, 0) is False
+    assert jeu.position_navire_disponible(15 * 10, 0, 6, 1, 90) is False
+    assert jeu.position_navire_disponible(2 * 15, 2, 3, 4, 0) is False
     assert jeu.position_navire_disponible(1, 1, 2, 1, 90) is False
