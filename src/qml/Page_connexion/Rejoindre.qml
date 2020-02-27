@@ -56,8 +56,11 @@ ColumnLayout{
             Layout.alignment: Qt.AlignRight
             text : "Connexion"
             onClicked: {
-                if (entreescorrects)
+                if (entreescorrects){
                     coencours = !coencours
+                    Jeu.set_nom(nom_joueur.text)
+                    Jeu.seConnecter(ip.text, saisiport.text)
+                }
                 else
                     pop.open()
             }

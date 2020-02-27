@@ -11,12 +11,16 @@ class Reseau:
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.port = 12800
         self.isclient = True
+        self.find_ip()
 
-    def get_ip(self):
+    def find_ip(self):
         """Attribue la valeur de l'adresse IP de l'hôte à l'attribut
            concerné."""
         hostname = socket.gethostname()
         self.ip_address = socket.gethostbyname(hostname)
+
+    def get_ip(self):
+        return self.ip_address
 
     def se_connecter(self, ip, port):
         """ (Client) Se connecte à l'hôte auquel appartient l'adresse IP

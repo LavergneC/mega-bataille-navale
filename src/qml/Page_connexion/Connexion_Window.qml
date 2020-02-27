@@ -31,6 +31,7 @@ ColumnLayout{
         }
 
         TextField {
+            id : nom_joueur
             placeholderText: qsTr("Xx_Captain_Crochet_xX")
             Layout.fillWidth: true
             horizontalAlignment: Text.AlignHCenter
@@ -54,6 +55,7 @@ ColumnLayout{
         currentIndex: bar.currentIndex
         Layout.fillWidth: true
         Layout.alignment: Qt.AlignTop
+        interactive: false
         Rejoindre{
         }
         Heberger{

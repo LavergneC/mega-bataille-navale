@@ -28,7 +28,7 @@ ColumnLayout{
         TextField {
             enabled: false
             id:ip
-            placeholderText: qsTr("87.125.12.201")
+            text : Jeu.getIP()
             Layout.fillWidth: true
         }
         Text {
@@ -40,7 +40,7 @@ ColumnLayout{
         TextField {
             enabled: false
             id: saisiport
-            placeholderText: qsTr("5000")
+            text: Jeu.getPort()
             Layout.fillWidth: true
         }
 
@@ -53,7 +53,11 @@ ColumnLayout{
             Layout.minimumWidth: 200
             Layout.alignment: Qt.AlignRight
             text : "Mise en ligne du serveur"
-            onClicked: popartie.open()
+            onClicked: {
+                Jeu.set_nom(nom_joueur.text)
+                popartie.open()
+                Jeu.heberger()
+            }
         }
         RowLayout{
         }

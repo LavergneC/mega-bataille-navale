@@ -14,6 +14,7 @@ class Jeu(QObject):
         self.carte_perso = Carte(False)
         self.carte_adversaire = Carte(True)
         self.connection = Reseau()
+        self.nom_joueur = "Capichef"
 
     def placer_navire(self, x, y, z, sens, type_navire):
         """Place un navire sur la carte
@@ -34,6 +35,11 @@ class Jeu(QObject):
     def navire_place(self):
         """a appeler quand un navire est placé"""
         pass
+
+    @Slot(str)
+    def set_nom(self, new_nom):
+        print(new_nom)
+        self.nom_joueur = new_nom
 
     @Slot(int, int, int, int, int)
     def ajouter_navire(self, index_case, profondeur, long, larg, rot):
@@ -238,17 +244,17 @@ class Jeu(QObject):
     # Partie réseau, passage d'appel de fonction
 
     @Slot(str, str)
-    def seConnecter(seft, ip, port):
-        self.connection.se_connecter(ip, port)
+    def seConnecter(self, ip, port):
+        self.connection.se_connecter(ip, int(port))
 
     @Slot(result=str)
     def getIP(self):
         return self.connection.get_ip()
 
-    @Slot(result=str)
+    @Slot(result=int)
     def getPort(self):
         return self.connection.port
 
     @Slot()
     def heberger(self):
-        return self.connection.heberger()
+        self.connection.heberger()
