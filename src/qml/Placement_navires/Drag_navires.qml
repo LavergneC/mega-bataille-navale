@@ -31,7 +31,7 @@ Item {
     MouseArea {
         id: dragArea
         anchors.fill: parent
-        acceptedButtons: Qt.AllButtons
+
         drag.target: bateau
         onReleased: {
             if(mouse.button === Qt.LeftButton){
@@ -46,11 +46,12 @@ Item {
                     parent = root
                     bateau.parent = root
                 }
+                bateau.rotation = 0
             }
-            bateau.rotation = 0
         }
 
         Rectangle {
+            onRotationChanged:console.log(bateau.parent)
             id: bateau
             width: longueur * 35
             height: largeur * 35
