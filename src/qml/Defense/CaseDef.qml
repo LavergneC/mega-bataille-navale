@@ -25,8 +25,10 @@ ColumnLayout{
         id: dropArea
         width: 35
         height: 35
-        onDropped: Jeu.ajouter_navire(num, depth,drag.source.width/35, drag.source.height/35, drag.source.rota)
-                       //console.log(num + " " + depth + " " + drag.source.height/35 + " " + drag.source.width/35 + " " + drag.source.rota)
+        onDropped: {
+            var numEnvoye = drag.source.height/35 != 2 ? num : num - 1 
+            Jeu.ajouter_navire(numEnvoye, depth,drag.source.width/35, drag.source.height/35, drag.source.rota)
+        }
 
         Rectangle {
             id : rect
