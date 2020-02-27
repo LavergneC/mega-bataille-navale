@@ -28,7 +28,7 @@ ColumnLayout{
             id : mouseB
             anchors.fill : parent
             acceptedButtons: Qt.LeftButton
-           // hoverEnabled : true
+            hoverEnabled : true
             onClicked: Jeu.tirer(num % 15, Math.trunc(num/15)) //console.log (num % 15 + " " + Math.trunc(num/15))
         }
 
