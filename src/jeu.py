@@ -14,6 +14,7 @@ class Jeu(QObject):
         self.carte_perso = Carte(False)
         self.carte_adversaire = Carte(True)
         self.connection = Reseau()
+        self.nom_adversaire = ""
 
     def placer_navire(self, x, y, z, sens, type_navire):
         """Place un navire sur la carte
@@ -184,7 +185,12 @@ class Jeu(QObject):
 
         """
 
-        if trame[0] == 2:
+        if trame[0] == 1:
+            longueur_nom = trame[1]
+            index = 2
+            while index < longueur_nom:
+                self.nom_adversaire += chr(trame[index])
+        elif trame[0] == 2:
             # Reception d'un tir
             x = trame[1]
             y = trame[2]
@@ -239,11 +245,15 @@ class Jeu(QObject):
         while not self.is_fin_partie():
             tour = 0
             while tour < 2:
-                if (tour == 0 and self.reseau.isclient) or (tour == 1 and not self.reseau.isclient):
+               if (tour == 0 and self.reseau.isclient) or (
+                    tour == 1 and not self.reseau.isclient
+                ):
                     while not self.a_tire:
                         pass
                     self.a_tire = False
-                elif (tour == 0 and not self.reseau.isclient) or (tour == 1 and self.reseau.isclient):
+                elif (tour == 0 and not self.reseau.isclient) or (
+                    tour == 1 and self.reseau.isclient
+                ):
                     message_tir = self.reseau.recevoir_trame(3)
                     x, y = self.parse_message(message_tir)
                     self.recevoir_tir(x, y)
@@ -268,4 +278,3 @@ class Jeu(QObject):
     def heberger(self):
         self.connection.heberger()
         self.partie()
-
