@@ -229,7 +229,6 @@ class Jeu(QObject):
             (int, bool): Tuple contenant le résultat du tir envoyé ainsi que
                          l'état de l'éventuel bateau concerné.
         """
-        print(f"{x}; {y}")
         self.a_tire = True
         message = bytearray([2, x, y])
         self.connection.envoyer_trame(message)
