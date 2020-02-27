@@ -98,13 +98,6 @@ class Carte:
             longueur = 2
             largeur = 1
 
-        if sens == "Vertical":
-            taille_x = largeur
-            taille_y = longueur
-        else:
-            taille_x = longueur
-            taille_y = largeur
-
         navire = Navire(id, longueur, largeur, type_navire)
         self.navires.append(navire)
         index = self.trouver_navire(id)

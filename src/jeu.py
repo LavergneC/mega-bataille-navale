@@ -41,11 +41,11 @@ class Jeu(QObject):
         self, index_case, profondeur, long, larg, rot
     ):
         """ Return si il est possible de placer un bateau à l'endroit ciblé
-        
+
         Parameters:
             index_case (int): Numéro de la case (0 <= index_case < 225)
             profoncdeur (int): Niveau du bateau (0 <= profondeur < 4)
-            long (int): Longeur du bateau à poser (2 <= long <= 6) 
+            long (int): Longeur du bateau à poser (2 <= long <= 6)
             larg (int): Hauteur du bateau à poser (1 ou 2)
             rot (int): Rotation du bateau (0 ou 90)
         """
