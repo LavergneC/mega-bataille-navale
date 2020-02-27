@@ -8,6 +8,15 @@ Item {
     property int nbRestant
     signal bateauDroped
 
+    Action {
+        enabled : bateau.parent == root
+        id: rotate
+        shortcut: "R"
+        onTriggered: {
+            bateau.rotation = bateau.rotation == 90? 0 : 90
+        }
+    }
+
     id: root
     height: largeur * 35
     width: longueur * 35
@@ -22,13 +31,9 @@ Item {
     MouseArea {
         id: dragArea
         anchors.fill: parent
-        acceptedButtons: Qt.AllButtons
+
         drag.target: bateau
         onReleased: {
-            if(mouse.button  === Qt.RightButton){
-                bateau.rotation = bateau.rotation == 90? 0 : 90
-                console.log("on released : right")
-            }
             if(mouse.button === Qt.LeftButton){
                 parent = bateau.Drag.target !== null ? bateau.Drag.target : root
                 if (bateau.Drag.target === null){
@@ -37,11 +42,11 @@ Item {
                 }
                 else {
                     bateau.Drag.drop()
-                    // bateau.visible = false
                     bateauDroped()
                     parent = root
                     bateau.parent = root
                 }
+                bateau.rotation = 0
             }
         }
 
@@ -54,7 +59,6 @@ Item {
             Drag.hotSpot.x: 15
             Drag.hotSpot.y: 15
             Drag.source: root
-            Drag.onDragStarted: bateau.focus = true
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
 
@@ -65,11 +69,4 @@ Item {
             }
         }
     }
-
-    //    Keys.onPressed: {
-    //        if (event.key === 82) {
-    //            bateau.rotation = bateau.rotation == 90? 0 : 90
-    //            event.accepted = true;
-    //        }
-    //    }
 }
