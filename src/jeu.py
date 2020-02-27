@@ -222,7 +222,7 @@ class Jeu(QObject):
             (int, bool): Tuple contenant le résultat du tir envoyé ainsi que
                          l'état de l'éventuel bateau concerné.
         """
-
+        self.a_tire = True
         message = bytearray([2, x, y])
         self.connection.envoyer_trame(message)
         reponse_tir = self.connection.recevoir_trame(3)
@@ -235,11 +235,26 @@ class Jeu(QObject):
             self.carte_adversaire.mise_a_jour_case(x, y, 1)
             self.carte_adversaire.mise_a_jour_case(x, y, 2)
 
+    def partie(self):
+        while not self.is_fin_partie():
+            tour = 0
+            while tour < 2:
+                if (tour == 0 and self.reseau.isclient) or (tour == 1 and not self.reseau.isclient):
+                    while not self.a_tire:
+                        pass
+                    self.a_tire = False
+                elif (tour == 0 and not self.reseau.isclient) or (tour == 1 and self.reseau.isclient):
+                    message_tir = self.reseau.recevoir_trame(3)
+                    x, y = self.parse_message(message_tir)
+                    self.recevoir_tir(x, y)
+                tour += 1
+
     # Partie réseau, passage d'appel de fonction
 
     @Slot(str, str)
     def seConnecter(seft, ip, port):
         self.connection.se_connecter(ip, port)
+        self.partie()
 
     @Slot(result=str)
     def getIP(self):
@@ -251,4 +266,6 @@ class Jeu(QObject):
 
     @Slot()
     def heberger(self):
-        return self.connection.heberger()
+        self.connection.heberger()
+        self.partie()
+
