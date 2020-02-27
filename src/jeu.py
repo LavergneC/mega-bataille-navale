@@ -245,7 +245,7 @@ class Jeu(QObject):
         while not self.is_fin_partie():
             tour = 0
             while tour < 2:
-               if (tour == 0 and self.reseau.isclient) or (
+                if (tour == 0 and self.reseau.isclient) or (
                     tour == 1 and not self.reseau.isclient
                 ):
                     while not self.a_tire:
