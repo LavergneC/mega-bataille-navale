@@ -271,7 +271,7 @@ class Jeu(QObject):
         message = bytearray([1, len(self.nom), *liste_car])
         self.connection.envoyer_trame(message)
         message = self.connection.recevoir_trame(1024)
-        self.nom_adversaire =  self.parse_message(message)
+        self.nom_adversaire = self.parse_message(message)
         self.partie()
 
     @Slot(result=str)
