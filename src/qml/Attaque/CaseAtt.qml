@@ -1,11 +1,11 @@
 import QtQuick.Layouts 1.14
 import QtQuick 2.14
 
+
 ColumnLayout{
     property var touches: [0,0,0]
     property int num
     property bool manque : false
-
     Layout.fillWidth : true
     
     Connections {
@@ -21,6 +21,16 @@ ColumnLayout{
         height : 35
         width : 35
         border.width : 1
+        color : (mouseB.containsMouse) ? "#54647d" : "transparent"
+        opacity : mouseB.containsMouse ? 0.5 : 1
+
+        MouseArea {
+            id : mouseB
+            anchors.fill : parent
+            acceptedButtons: Qt.LeftButton
+           // hoverEnabled : true
+            onClicked: Jeu.tirer(num % 15, Math.trunc(num/15)) //console.log (num % 15 + " " + Math.trunc(num/15))
+        }
 
         ColumnLayout{
             anchors.fill : parent
@@ -35,7 +45,7 @@ ColumnLayout{
                     Layout.margins : 2
                     radius : 3
                     color : "red"
-                    opacity : touches[index] == 1
+                    opacity : touches[index] === 1
                 }
             }
 

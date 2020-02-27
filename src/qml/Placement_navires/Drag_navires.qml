@@ -45,6 +45,10 @@ Item {
                     bateauDroped()
                     parent = root
                     bateau.parent = root
+                    navireRestant --
+                    if (navireRestant == 0){
+                        attaqueswipe.currentIndex ++
+                    }
                 }
                 bateau.rotation = 0
             }

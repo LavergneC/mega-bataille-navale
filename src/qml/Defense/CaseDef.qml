@@ -66,7 +66,7 @@ ColumnLayout{
                 id : mouseA
                 anchors.fill : parent
                 acceptedButtons: Qt.LeftButton | Qt.RightButton
-                hoverEnabled : true
+               // hoverEnabled : true
             }
         }
     }

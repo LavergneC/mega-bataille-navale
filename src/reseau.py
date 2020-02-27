@@ -50,9 +50,8 @@ class Reseau:
 
         """
 
-        message = str.encode(message)
         if self.isclient:
-            self.socket.send()
+            self.socket.send(message)
         else:
             self.socketclient.send(message)
 

@@ -210,6 +210,7 @@ class Jeu(QObject):
         else:
             return (None, None)
 
+    @Slot(int, int)
     def tirer(self, x, y):
         """ Envoi d'un tir à l"adversaire et récupération du résultat de ce
         tir, ainsi que l'état de l'éventuel bateau touché (coulé ou non coulé)
@@ -234,6 +235,8 @@ class Jeu(QObject):
             self.carte_adversaire.mise_a_jour_case(x, y, 0)
             self.carte_adversaire.mise_a_jour_case(x, y, 1)
             self.carte_adversaire.mise_a_jour_case(x, y, 2)
+
+        print(f"{x} {y}")
 
     # Partie réseau, passage d'appel de fonction
 
