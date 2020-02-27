@@ -75,8 +75,6 @@ class Carte:
             type_navire (str): type du navire
 
         """
-        if "marin" in type_navire and z == 0:
-            return False
 
         if type_navire == "porte-container":
             longueur = 5
@@ -106,22 +104,11 @@ class Carte:
         else:
             taille_x = longueur
             taille_y = largeur
-        cpt_x = 0
-        while cpt_x < taille_x:
-            cpt_y = 0
-            while cpt_y < taille_y:
-                for navire in self.navires:
-                    if navire.contient_case(x + cpt_x, y + cpt_y, z):
-                        return False
-                    if x + cpt_x >= 15 or y + cpt_y >= 15:
-                        return False
-                cpt_y += 1
-            cpt_x += 1
+
         navire = Navire(id, longueur, largeur, type_navire)
         self.navires.append(navire)
         index = self.trouver_navire(id)
         self.navires[index].set_position(x, y, z, sens)
-        return True
 
     def trouver_navire(self, id):
         """ Retoune l'index du bateau correspondant à l'identifiant passé en

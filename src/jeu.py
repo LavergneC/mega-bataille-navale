@@ -36,7 +36,75 @@ class Jeu(QObject):
         """a appeler quand un navire est placé"""
         pass
 
-    @Slot(int, int, int, int, int)
+    @Slot(int, int, int, int, int, result = bool)
+    def position_navire_disponible(self,  index_case, profondeur, long, larg, rot):
+        """ Return si il est possible de placer un bateau à l'endroit ciblé
+        
+        Parameters:
+            index_case (int): Numéro de la case (0 <= index_case < 225)
+            profoncdeur (int): Niveau du bateau (0 <= profondeur < 4)
+            long (int): Longeur du bateau à poser (2 <= long <= 6) 
+            larg (int): Hauteur du bateau à poser (1 ou 2)
+            rot (int): Rotation du bateau (0 ou 90)
+        """
+        sens = ""
+        type_navire = ""
+
+        if rot == 90:
+            sens = "Vertical"
+        else:
+            sens = "Horizontal"
+
+        if long == 5 and larg == 2:
+            type_navire = "porte-container"
+
+        elif long == 5 and larg == 1:
+            type_navire = "Porte-avion"
+
+        elif long == 4 and larg == 1:
+            type_navire = "Destroyer"
+
+        elif long == 3 and larg == 2:
+            type_navire = "Torpilleur"
+
+        elif long == 6 and larg == 1:
+            type_navire = "Sous-marin nucléaire"
+
+        elif long == 3 and larg == 1:
+            type_navire = "Sous-marin de combat"
+
+        elif long == 2 and larg == 1:
+            type_navire = "Sous-marin de reconnaissance"
+        else:
+            return False
+
+        
+        if sens == "Vertical":
+            taille_x = larg
+            taille_y = long
+        else:
+            taille_x = long
+            taille_y = larg
+
+        if (not ("marin" in type_navire)) and (profondeur == 1 or profondeur == 2):
+            return False
+
+        x = index_case % 15
+        y = index_case // 15
+        cpt_x = 0
+        while cpt_x < taille_x:
+            cpt_y = 0
+            while cpt_y < taille_y:
+                for navire in self.carte_perso.navires:
+                    if navire.contient_case(x + cpt_x, y + cpt_y, profondeur):
+                        return False
+                    if x + cpt_x >= 15 or y + cpt_y >= 15:
+                        return False
+                cpt_y += 1
+            cpt_x += 1
+        return True
+
+    @Slot(int, int, int, int, int, result = bool)
     def ajouter_navire(self, index_case, profondeur, long, larg, rot):
         sens = ""
         type_navire = ""
