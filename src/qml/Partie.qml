@@ -32,7 +32,7 @@ RowLayout{
                 Layout.alignment: Qt.AlignHCenter
                 font.pointSize: 24
             }
-            StackLayout{
+            StackLayout {
                 id: attaqueswipe
                 Placement_navires{
                     id : placementNavires
@@ -40,6 +40,7 @@ RowLayout{
                 CarteAttaque{
                     id : attaq
                 }
+                onCurrentIndexChanged: carteDef.focus = true
             }
             ColumnLayout{}
         }
