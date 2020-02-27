@@ -30,7 +30,7 @@ class Navire:
         """
 
         for case in self.cases:
-            if case.impact == False:
+            if case.impact is False:
                 return False
         return True
 
