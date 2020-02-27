@@ -229,7 +229,7 @@ class Jeu(QObject):
             (int, bool): Tuple contenant le résultat du tir envoyé ainsi que
                          l'état de l'éventuel bateau concerné.
         """
-        self.a_tire = True
+        self.droit_de_tir = False
         message = bytearray([2, x, y])
         self.connection.envoyer_trame(message)
         reponse_tir = self.connection.recevoir_trame(3)
@@ -241,6 +241,9 @@ class Jeu(QObject):
             self.carte_adversaire.mise_a_jour_case(x, y, 0)
             self.carte_adversaire.mise_a_jour_case(x, y, 1)
             self.carte_adversaire.mise_a_jour_case(x, y, 2)
+    @Slot
+    def droit_de_tirer(self):
+        return self.droit_de_tir
 
     def partie(self):
         while not self.is_fin_partie():
@@ -249,9 +252,9 @@ class Jeu(QObject):
                 if (tour == 0 and self.reseau.isclient) or (
                     tour == 1 and not self.reseau.isclient
                 ):
-                    while not self.a_tire:
+                    self.droit_de_tir = True
+                    while self.droit_de_tir
                         pass
-                    self.a_tire = False
                 elif (tour == 0 and not self.reseau.isclient) or (
                     tour == 1 and self.reseau.isclient
                 ):
