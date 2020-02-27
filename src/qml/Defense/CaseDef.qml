@@ -26,7 +26,7 @@ ColumnLayout{
         width: 35
         height: 35
         onDropped: {
-            var numEnvoye = drag.source.height/35 != 2 ? num : num - 1 
+            var numEnvoye = drag.source.height/35 != 2 || drag.source.rota != 90 ? num : num - 1 
             Jeu.ajouter_navire(numEnvoye, depth,drag.source.width/35, drag.source.height/35, drag.source.rota)
         }
 

@@ -51,7 +51,6 @@ Item {
         }
 
         Rectangle {
-            onRotationChanged:console.log(bateau.parent)
             id: bateau
             width: longueur * 35
             height: largeur * 35
