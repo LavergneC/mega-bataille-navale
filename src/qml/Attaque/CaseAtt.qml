@@ -1,6 +1,7 @@
 import QtQuick.Layouts 1.14
 import QtQuick 2.14
 
+import "../Page_connexion"
 
 ColumnLayout{
     property var touches: [0,0,0]
@@ -29,9 +30,15 @@ ColumnLayout{
             anchors.fill : parent
             acceptedButtons: Qt.LeftButton
             hoverEnabled : true
-            onClicked: Jeu.tirer(num % 15, Math.trunc(num/15)) //console.log (num % 15 + " " + Math.trunc(num/15))
+            onClicked: {
+                if (Jeu.droit_de_tirer()) {
+                    Jeu.tirer(num % 15, Math.trunc(num/15)) //console.log (num % 15 + " " + Math.trunc(num/15))
+                }
+                else {
+                    attenttontour.open()
+                }
+            }
         }
-
         ColumnLayout{
             anchors.fill : parent
             spacing : 2
@@ -58,5 +65,10 @@ ColumnLayout{
                 visible : manque
             }
         }
+    }
+    Ma_popup{
+        id: attenttontour
+        message : "Attends ton tour s'il te plait :)"
+        bouton: true
     }
 }

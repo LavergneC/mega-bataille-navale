@@ -15,6 +15,7 @@ class Jeu(QObject):
         self.carte_adversaire = Carte(True)
         self.connection = Reseau()
         self.nom_adversaire = ""
+        self.droit_de_tir = False
 
     def placer_navire(self, x, y, z, sens, type_navire):
         """Place un navire sur la carte
@@ -241,6 +242,7 @@ class Jeu(QObject):
             self.carte_adversaire.mise_a_jour_case(x, y, 0)
             self.carte_adversaire.mise_a_jour_case(x, y, 1)
             self.carte_adversaire.mise_a_jour_case(x, y, 2)
+
     @Slot(result=bool)
     def droit_de_tirer(self):
         return self.droit_de_tir
@@ -253,7 +255,7 @@ class Jeu(QObject):
                     tour == 1 and not self.reseau.isclient
                 ):
                     self.droit_de_tir = True
-                    while self.droit_de_tir
+                    while self.droit_de_tir:
                         pass
                 elif (tour == 0 and not self.reseau.isclient) or (
                     tour == 1 and self.reseau.isclient

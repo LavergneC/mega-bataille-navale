@@ -33,6 +33,10 @@ Item {
         anchors.fill: parent
 
         drag.target: bateau
+        onDoubleClicked: {
+            parent = root
+            bateau.parent = root
+        }
         onReleased: {
             if(mouse.button === Qt.LeftButton){
                 parent = bateau.Drag.target !== null ? bateau.Drag.target : root
@@ -40,6 +44,7 @@ Item {
                     parent = root
                     bateau.parent = root
                 }
+
                 else {
                     bateau.Drag.drop()
                     bateauDroped()
