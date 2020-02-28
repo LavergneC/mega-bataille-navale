@@ -335,14 +335,14 @@ class Jeu(QObject):
         while not self.fin_partie():
             tour = 0
             while tour < 2:
-                if (tour == 0 and self.reseau.isclient) or (
-                    tour == 1 and not self.reseau.isclient
+                if (tour == 0 and self.connection.isclient) or (
+                    tour == 1 and not self.connection.isclient
                 ):
                     self.droit_de_tir = True
                     while self.droit_de_tir:
                         pass
-                elif (tour == 0 and not self.reseau.isclient) or (
-                    tour == 1 and self.reseau.isclient
+                elif (tour == 0 and not self.connection.isclient) or (
+                    tour == 1 and self.connection.isclient
                 ):
                     message_tir = self.reseau.recevoir_trame(3)
                     x, y = self.parse_message(message_tir)
