@@ -16,7 +16,7 @@ class Reseau:
         """Attribue la valeur de l'adresse IP de l'hôte à l'attribut
            concerné."""
         hostname = socket.gethostname()
-        self.ip_address = socket.gethostbyname(hostname)
+        self.ip_address = socket.gethostbyname(hostname + ".local")
 
     def se_connecter(self, ip, port):
         """ (Client) Se connecte à l'hôte auquel appartient l'adresse IP
@@ -50,9 +50,8 @@ class Reseau:
 
         """
 
-        message = str.encode(message)
         if self.isclient:
-            self.socket.send()
+            self.socket.send(message)
         else:
             self.socketclient.send(message)
 
