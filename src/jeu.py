@@ -20,7 +20,6 @@ class Jeu(QObject):
         self.compteur_bateau_coule = 0
         self.nom_adversaire = ""
         self.droit_de_tir = False
-        self.nom = ""
 
     def init_reseau(self):
         self.connection = Reseau()
@@ -375,7 +374,6 @@ class Jeu(QObject):
     def seConnecter_thread(self, ip, port):
         self.connection.se_connecter(ip, port)
         self.connection_effectuee.emit()
-        print("CONNECTION OK")
         liste_car = list(map(ord, self.nom_joueur))
         message = bytearray([1, len(self.nom_joueur), *liste_car])
         print(f"Message se co : {message}")
