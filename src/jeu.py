@@ -1,6 +1,7 @@
 from carte import Carte, Case, Navire
 from reseau import *
 import threading
+import time
 from PySide2.QtCore import Slot, QObject, Signal, Property
 
 
@@ -353,7 +354,7 @@ class Jeu(QObject):
                 ):
                     self.droit_de_tir = True
                     while self.droit_de_tir:
-                        pass
+                        time.sleep(0.1)
                 elif (tour == 0 and not self.connection.isclient) or (
                     tour == 1 and self.connection.isclient
                 ):
