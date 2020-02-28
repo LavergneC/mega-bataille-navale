@@ -160,7 +160,7 @@ def test_ajouter_navire():
 
     assert jeu.get_navire_at(105, 1) is False
 
-    
+
 def test_fin_de_partie():
     jeu = Jeu()
 
@@ -193,7 +193,7 @@ def test_fin_de_partie():
     assert jeu.partie_perdue is False
     assert jeu.partie_gagnee is True
 
-    
+
 def test_position_navire_disponible():
     jeu = Jeu()
 
