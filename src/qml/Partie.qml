@@ -23,12 +23,6 @@ RowLayout{
         ColumnLayout{
             Layout.margins: 20
             ColumnLayout{}     
-            Text {
-                id: placementnavires
-                text: qsTr("Veuillez placer vos navires :")
-                Layout.alignment: Qt.AlignHCenter
-                font.pointSize: 24
-            }
             StackLayout {
                 id: attaqueswipe
                 Placement_navires{

@@ -28,6 +28,11 @@ ColumnLayout{
             Jeu.ajouter_navire(numEnvoye, depth,drag.source.width/35, drag.source.height/35, drag.source.rota)
         }
 
+        function positionDisponible(longueur, largeur, rot) {
+            var numEnvoye = drag.source.height/35 != 2 || drag.source.rota != 90 ? num : num - 1 
+            return Jeu.position_navire_disponible(numEnvoye, depth, longueur, largeur, rot)
+        }
+
         Rectangle {
             id : rect
             height : 35
