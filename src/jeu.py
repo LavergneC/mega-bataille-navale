@@ -340,7 +340,7 @@ class Jeu(QObject):
         return self.droit_de_tir
 
     def partie(self):
-        if (self.connection.isclient):
+        if self.connection.isclient:
             self.thread_seConnecter.join()
         else:
             self.thread_heberger.join()
@@ -365,18 +365,20 @@ class Jeu(QObject):
 
     @Slot(str, int)
     def seConnecter(self, ip, port):
-        self.thread_seConnecter = threading.Thread(target = self.seConnecter_thread, args = [ip, port])
-        self.thread_partie = threading.Thread(target = self.partie)
+        self.thread_seConnecter = threading.Thread(
+            target=self.seConnecter_thread, args=[ip, port]
+        )
+        self.thread_partie = threading.Thread(target=self.partie)
         self.thread_seConnecter.start()
         self.thread_partie.start()
-    
+
     def seConnecter_thread(self, ip, port):
         self.connection.se_connecter(ip, port)
         self.connection_effectuee.emit()
         print("CONNECTION OK")
         liste_car = list(map(ord, self.nom_joueur))
         message = bytearray([1, len(self.nom_joueur), *liste_car])
-        print(f'Message se co : {message}')
+        print(f"Message se co : {message}")
         self.connection.envoyer_trame(message)
         message = self.connection.recevoir_trame(1024)
         self.nom_adversaire = self.parse_message(message)
@@ -391,12 +393,12 @@ class Jeu(QObject):
 
     @Slot()
     def heberger(self):
-        self.thread_heberger = threading.Thread(target = self.heberger_thread)
-        self.thread_partie = threading.Thread(target = self.partie)
+        self.thread_heberger = threading.Thread(target=self.heberger_thread)
+        self.thread_partie = threading.Thread(target=self.partie)
         print("Start heberger & partie")
         self.thread_heberger.start()
         self.thread_partie.start()
-    
+
     def heberger_thread(self):
         self.connection.heberger()
         print("CONNECTION OK")
