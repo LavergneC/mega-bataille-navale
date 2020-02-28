@@ -2,7 +2,6 @@ import QtQuick.Layouts 1.14
 import QtQuick 2.14
 
 ColumnLayout{
-
     id: test
     property int num
     property int depth
@@ -21,7 +20,6 @@ ColumnLayout{
     }
 
     DropArea {
-
         id: dropArea
         width: 35
         height: 35
@@ -66,7 +64,7 @@ ColumnLayout{
                 id : mouseA
                 anchors.fill : parent
                 acceptedButtons: Qt.LeftButton | Qt.RightButton
-                hoverEnabled : true
+               // hoverEnabled : true
             }
         }
     }
