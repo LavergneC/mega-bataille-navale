@@ -358,6 +358,8 @@ class Jeu(QObject):
     @Slot(str, int)
     def seConnecter(self, ip, port):
         self.connection.se_connecter(ip, port)
+        self.connection_effectuee.emit()
+        print("CONNECTION OK")
         liste_car = list(map(ord, self.nom))
         message = bytearray([1, len(self.nom), *liste_car])
         self.connection.envoyer_trame(message)
