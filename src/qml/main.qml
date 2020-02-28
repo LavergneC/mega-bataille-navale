@@ -26,6 +26,9 @@ ApplicationWindow{
 
     Connections{
         target : Jeu
-        onConnection_effectuee : connecte = true
+        onConnection_effectuee : {
+            console.log("Connection QML OK")
+            connecte = true
+        }
     }
 }

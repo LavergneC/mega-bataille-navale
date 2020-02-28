@@ -360,8 +360,9 @@ class Jeu(QObject):
         self.connection.se_connecter(ip, port)
         self.connection_effectuee.emit()
         print("CONNECTION OK")
-        liste_car = list(map(ord, self.nom))
-        message = bytearray([1, len(self.nom), *liste_car])
+        liste_car = list(map(ord, self.nom_joueur))
+        message = bytearray([1, len(self.nom_joueur), *liste_car])
+        print(f'Message se co : {message}')
         self.connection.envoyer_trame(message)
         message = self.connection.recevoir_trame(1024)
         self.nom_adversaire = self.parse_message(message)
@@ -382,8 +383,8 @@ class Jeu(QObject):
         self.connection_effectuee.emit()
         message = self.connection.recevoir_trame(1024)
         self.nom_adversaire = self.parse_message(message)
-        liste_car = list(map(ord, self.nom))
-        message = bytearray([1, len(self.nom), *liste_car])
+        liste_car = list(map(ord, self.nom_joueur))
+        message = bytearray([1, len(self.nom_joueur), *liste_car])
         self.partie()
 
     def fin_partie(self):
