@@ -31,7 +31,6 @@ Item {
     MouseArea {
         id: dragArea
         anchors.fill: parent
-
         drag.target: bateau
         onReleased: {
             if(mouse.button === Qt.LeftButton){

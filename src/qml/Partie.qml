@@ -13,6 +13,8 @@ RowLayout{
     anchors.fill : parent
     spacing : 10
 
+    property string etattir: "A toi de jouer !"
+
     Button{
         id: but_att
         text: "Attaque "
@@ -36,13 +38,24 @@ RowLayout{
                 id: infopartie
                 text: {
                     if(Jeu.droit_de_tirer())
-                        "A toi de jouer !"
+                        ""
 
                     else {
                         "En attente du tir adverse"
                     }
                 }
             }
+            Connections{
+                target: Jeu
+                onPartie_en_cours_changed:
+                {
+                    if (Jeu.get_partie_gagnee())
+                        attaqueswipe.currentIndex ++
+                    else
+                        attaqueswipe.currentIndex +=2
+                }
+            }
+
             StackLayout {
                 id: attaqueswipe
                 Placement_navires{
@@ -52,7 +65,10 @@ RowLayout{
                     id : attaq
                 }
                 Fin_jeu{
-
+                    sourceimage :"Images/victoire.jpg"
+                }
+                Fin_jeu{
+                    sourceimage :"Images/defeat.jpg"
                 }
 
                 onCurrentIndexChanged: carteDef.focus = true
