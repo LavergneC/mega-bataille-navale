@@ -101,8 +101,8 @@ class Jeu(QObject):
                 for navire in self.carte_perso.navires:
                     if navire.contient_case(x + cpt_x, y + cpt_y, profondeur):
                         return False
-                    if x + cpt_x >= 15 or y + cpt_y >= 15:
-                        return False
+                if x + cpt_x >= 15 or y + cpt_y >= 15:
+                    return False
                 cpt_y += 1
             cpt_x += 1
         return True
