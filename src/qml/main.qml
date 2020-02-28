@@ -24,7 +24,8 @@ ApplicationWindow{
         anchors.fill : parent
     }
 
-    Button{
-        onClicked : connecte = true
+    Connections{
+        target : Jeu
+        onConnection_effectuee : connecte = true
     }
 }
