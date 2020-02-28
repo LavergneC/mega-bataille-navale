@@ -7,6 +7,7 @@ from jeu import *
 
 if __name__ == "__main__":
     jeu = Jeu()
+    jeu.connection = Reseau()
 
     app = QApplication(sys.argv)
     engine = QQmlApplicationEngine()

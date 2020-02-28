@@ -13,7 +13,6 @@ class Jeu(QObject):
         super().__init__()
         self.carte_perso = Carte(False)
         self.carte_adversaire = Carte(True)
-        self.connection = Reseau()
         self.nom_joueur = "Capichef"
         self.partie_perdue = False
         self.partie_gagnee = False
