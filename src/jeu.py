@@ -309,7 +309,6 @@ class Jeu(QObject):
             (int, bool): Tuple contenant le résultat du tir envoyé ainsi que
                          l'état de l'éventuel bateau concerné.
         """
-        self.droit_de_tir = False
         message = bytearray([2, x, y])
         self.connection.envoyer_trame(message)
         reponse_tir = self.connection.recevoir_trame(3)
@@ -323,6 +322,8 @@ class Jeu(QObject):
             self.carte_adversaire.mise_a_jour_case(x, y, 0)
             self.carte_adversaire.mise_a_jour_case(x, y, 1)
             self.carte_adversaire.mise_a_jour_case(x, y, 2)
+        self.tir_feedback_received.emit()
+        self.droit_de_tir = False
 
     @Slot(result=bool)
     def droit_de_tirer(self):
