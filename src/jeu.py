@@ -73,7 +73,11 @@ class Jeu(QObject):
 
         if type_navire != "Erreur":
             self.placer_navire(
-                index_case % 15, index_case // 15, profondeur, sens, type_navire,
+                index_case % 15,
+                index_case // 15,
+                profondeur,
+                sens,
+                type_navire,
             )
             self.navire_place.emit()
 
@@ -128,7 +132,9 @@ class Jeu(QObject):
         navire = False
         niveau = 0
         while niveau < 3:
-            navire |= self.carte_adversaire.cases[niveau * 225 + index].presence_bateau
+            navire |= self.carte_adversaire.cases[
+                niveau * 225 + index
+            ].presence_bateau
             niveau += 1
         return sum(get_case_attaque(index)) == 3
 
