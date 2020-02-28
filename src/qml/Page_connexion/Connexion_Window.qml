@@ -35,6 +35,7 @@ ColumnLayout{
             placeholderText: qsTr("Xx_Captain_Crochet_xX")
             Layout.fillWidth: true
             horizontalAlignment: Text.AlignHCenter
+            onTextChanged : Jeu.set_nom(text)
         }
     }
 

@@ -24,7 +24,11 @@ ApplicationWindow{
         anchors.fill : parent
     }
 
-    Button{
-        onClicked : connecte = true
+    Connections{
+        target : Jeu
+        onConnection_effectuee : {
+            console.log("Connection QML OK")
+            connecte = true
+        }
     }
 }

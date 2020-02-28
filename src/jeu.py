@@ -43,6 +43,10 @@ class Jeu(QObject):
     def navire_place(self):
         """a appeler quand un navire est placé"""
 
+    @Signal
+    def connection_effectuee(self):
+        pass
+
     @Slot(str)
     def set_nom(self, new_nom):
         print(new_nom)
@@ -268,10 +272,13 @@ class Jeu(QObject):
 
         if trame[0] == 1:
             longueur_nom = trame[1]
-            index = 2
+            print(longueur_nom)
+            index = 0
             nom_adv = ""
             while index < longueur_nom:
-                nom_adv += chr(trame[index])
+                nom_adv += chr(trame[index + 2])
+                index += 1
+            print(nom_adv)
             return nom_adv
         elif trame[0] == 2:
             # Reception d'un tir
@@ -335,27 +342,30 @@ class Jeu(QObject):
         while not self.fin_partie():
             tour = 0
             while tour < 2:
-                if (tour == 0 and self.reseau.isclient) or (
-                    tour == 1 and not self.reseau.isclient
+                if (tour == 0 and self.connection.isclient) or (
+                    tour == 1 and not self.connection.isclient
                 ):
                     self.droit_de_tir = True
                     while self.droit_de_tir:
                         pass
-                elif (tour == 0 and not self.reseau.isclient) or (
-                    tour == 1 and self.reseau.isclient
+                elif (tour == 0 and not self.connection.isclient) or (
+                    tour == 1 and self.connection.isclient
                 ):
-                    message_tir = self.reseau.recevoir_trame(3)
+                    message_tir = self.connection.recevoir_trame(3)
                     x, y = self.parse_message(message_tir)
                     self.recevoir_tir(x, y)
                 tour += 1
 
     # Partie réseau, passage d'appel de fonction
 
-    @Slot(str, str)
+    @Slot(str, int)
     def seConnecter(self, ip, port):
         self.connection.se_connecter(ip, port)
-        liste_car = list(map(ord, self.nom))
-        message = bytearray([1, len(self.nom), *liste_car])
+        self.connection_effectuee.emit()
+        print("CONNECTION OK")
+        liste_car = list(map(ord, self.nom_joueur))
+        message = bytearray([1, len(self.nom_joueur), *liste_car])
+        print(f'Message se co : {message}')
         self.connection.envoyer_trame(message)
         message = self.connection.recevoir_trame(1024)
         self.nom_adversaire = self.parse_message(message)
@@ -372,10 +382,15 @@ class Jeu(QObject):
     @Slot()
     def heberger(self):
         self.connection.heberger()
+        print("CONNECTION OK")
+        self.connection_effectuee.emit()
         message = self.connection.recevoir_trame(1024)
+        print("Message reçue")
         self.nom_adversaire = self.parse_message(message)
-        liste_car = list(map(ord, self.nom))
-        message = bytearray([1, len(self.nom), *liste_car])
+        print(f"Nom adv : {self.nom_adversaire}")
+        liste_car = list(map(ord, self.nom_joueur))
+        message = bytearray([1, len(self.nom_joueur), *liste_car])
+        self.connection.envoyer_trame(message)
         self.partie()
 
     def fin_partie(self):
