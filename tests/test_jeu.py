@@ -161,6 +161,39 @@ def test_ajouter_navire():
     assert jeu.get_navire_at(105, 1) is False
 
 
+def test_fin_de_partie():
+    jeu = Jeu()
+
+    jeu.placer_navire(1, 2, 0, "Horizontal", "Sous-marin de reconnaissance")
+    jeu.fin_partie()
+    assert jeu.partie_gagnee is False
+    assert jeu.partie_perdue is False
+
+    jeu.recevoir_tir(1, 2)
+    jeu.recevoir_tir(2, 2)
+    jeu.recevoir_tir(3, 2)
+    jeu.fin_partie()
+    assert jeu.partie_perdue is True
+    assert jeu.partie_gagnee is False
+
+    jeu.compteur_bateau_coule = 18
+    jeu.fin_partie()
+    assert jeu.partie_gagnee is True
+    assert jeu.partie_perdue is True
+
+    jeu = Jeu()
+
+    jeu.placer_navire(1, 2, 0, "Horizontal", "Sous-marin de reconnaissance")
+    jeu.fin_partie()
+    assert jeu.partie_gagnee is False
+    assert jeu.partie_perdue is False
+
+    jeu.compteur_bateau_coule = 18
+    jeu.fin_partie()
+    assert jeu.partie_perdue is False
+    assert jeu.partie_gagnee is True
+
+
 def test_position_navire_disponible():
     jeu = Jeu()
 
