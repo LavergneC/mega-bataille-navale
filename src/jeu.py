@@ -21,6 +21,9 @@ class Jeu(QObject):
         self.droit_de_tir = False
         self.nom = ""
 
+    def init_reseau(self):
+        self.connection = Reseau()
+
     def placer_navire(self, x, y, z, sens, type_navire):
         """Place un navire sur la carte
 
