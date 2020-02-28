@@ -10,12 +10,17 @@ class Jeu(QObject):
 
     def __init__(self):
         """Définit un jeu."""
-        super(Jeu, self).__init__()
+        super().__init__()
         self.carte_perso = Carte(False)
         self.carte_adversaire = Carte(True)
         self.connection = Reseau()
         self.nom_joueur = "Capichef"
+        self.partie_perdue = False
+        self.partie_gagnee = False
+        self.compteur_bateau_coule = 0
         self.nom_adversaire = ""
+        self.droit_de_tir = False
+        self.nom = ""
 
     def placer_navire(self, x, y, z, sens, type_navire):
         """Place un navire sur la carte
@@ -35,14 +40,84 @@ class Jeu(QObject):
     @Signal
     def navire_place(self):
         """a appeler quand un navire est placé"""
-        pass
 
     @Slot(str)
     def set_nom(self, new_nom):
         print(new_nom)
         self.nom_joueur = new_nom
 
-    @Slot(int, int, int, int, int)
+    @Slot(int, int, int, int, int, result=bool)
+    def position_navire_disponible(
+        self, index_case, profondeur, long, larg, rot
+    ):
+        """ Return si il est possible de placer un bateau à l'endroit ciblé
+
+        Parameters:
+            index_case (int): Numéro de la case (0 <= index_case < 225)
+            profoncdeur (int): Niveau du bateau (0 <= profondeur < 4)
+            long (int): Longeur du bateau à poser (2 <= long <= 6)
+            larg (int): Hauteur du bateau à poser (1 ou 2)
+            rot (int): Rotation du bateau (0 ou 90)
+        """
+        sens = ""
+        type_navire = ""
+
+        if rot == 90:
+            sens = "Vertical"
+        else:
+            sens = "Horizontal"
+
+        if long == 5 and larg == 2:
+            type_navire = "porte-container"
+
+        elif long == 5 and larg == 1:
+            type_navire = "Porte-avion"
+
+        elif long == 4 and larg == 1:
+            type_navire = "Destroyer"
+
+        elif long == 3 and larg == 2:
+            type_navire = "Torpilleur"
+
+        elif long == 6 and larg == 1:
+            type_navire = "Sous-marin nucléaire"
+
+        elif long == 3 and larg == 1:
+            type_navire = "Sous-marin de combat"
+
+        elif long == 2 and larg == 1:
+            type_navire = "Sous-marin de reconnaissance"
+        else:
+            return False
+
+        if sens == "Vertical":
+            taille_x = larg
+            taille_y = long
+        else:
+            taille_x = long
+            taille_y = larg
+
+        if (not ("marin" in type_navire)) and (
+            profondeur == 1 or profondeur == 2
+        ):
+            return False
+
+        x = index_case % 15
+        y = index_case // 15
+        cpt_x = 0
+        while cpt_x < taille_x:
+            cpt_y = 0
+            while cpt_y < taille_y:
+                for navire in self.carte_perso.navires:
+                    if navire.contient_case(x + cpt_x, y + cpt_y, profondeur):
+                        return False
+                if x + cpt_x >= 15 or y + cpt_y >= 15:
+                    return False
+                cpt_y += 1
+            cpt_x += 1
+        return True
+
+    @Slot(int, int, int, int, int, result=bool)
     def ajouter_navire(self, index_case, profondeur, long, larg, rot):
         sens = ""
         type_navire = ""
@@ -91,7 +166,6 @@ class Jeu(QObject):
     @Signal
     def tir_subit(self):
         """A appeller dès que la carte de défense est modifiée"""
-        pass
 
     @Slot(int, int, result=bool)
     def get_navire_at(self, case_index, depth):
@@ -117,7 +191,6 @@ class Jeu(QObject):
     @Signal
     def tir_feedback_received(self):
         """A appeller dès que notre carte d'attaque est mise à jour"""
-        pass
 
     @Slot(int, result="QVariantList")
     def get_case_attaque(self, index):
@@ -194,8 +267,10 @@ class Jeu(QObject):
         if trame[0] == 1:
             longueur_nom = trame[1]
             index = 2
+            nom_adv = ""
             while index < longueur_nom:
-                self.nom_adversaire += chr(trame[index])
+                nom_adv += chr(trame[index])
+            return nom_adv
         elif trame[0] == 2:
             # Reception d'un tir
             x = trame[1]
@@ -213,15 +288,16 @@ class Jeu(QObject):
                 resultat_tir = "Touche_sous_marin_profond"
 
             if trame[2] == 0:
-                etat_bateau = "Coule"
-            elif trame[2] == 1:
                 etat_bateau = "Non_coule"
+            elif trame[2] == 1:
+                etat_bateau = "Coule"
 
             return (resultat_tir, etat_bateau)
 
         else:
             return (None, None)
 
+    @Slot(int, int)
     def tirer(self, x, y):
         """ Envoi d'un tir à l"adversaire et récupération du résultat de ce
         tir, ainsi que l'état de l'éventuel bateau touché (coulé ou non coulé)
@@ -234,11 +310,13 @@ class Jeu(QObject):
             (int, bool): Tuple contenant le résultat du tir envoyé ainsi que
                          l'état de l'éventuel bateau concerné.
         """
-        self.a_tire = True
+        self.droit_de_tir = False
         message = bytearray([2, x, y])
         self.connection.envoyer_trame(message)
         reponse_tir = self.connection.recevoir_trame(3)
         resultat_tir, etat_bateau = self.parse_message(reponse_tir)
+        if etat_bateau == "Coule":
+            self.compteur_bateau_coule += 1
         if resultat_tir:
             self.carte_adversaire.mise_a_jour_case(x, y, resultat_tir - 1)
         else:
@@ -247,16 +325,20 @@ class Jeu(QObject):
             self.carte_adversaire.mise_a_jour_case(x, y, 1)
             self.carte_adversaire.mise_a_jour_case(x, y, 2)
 
+    @Slot(result=bool)
+    def droit_de_tirer(self):
+        return self.droit_de_tir
+
     def partie(self):
-        while not self.is_fin_partie():
+        while not self.fin_partie():
             tour = 0
             while tour < 2:
                 if (tour == 0 and self.reseau.isclient) or (
                     tour == 1 and not self.reseau.isclient
                 ):
-                    while not self.a_tire:
+                    self.droit_de_tir = True
+                    while self.droit_de_tir:
                         pass
-                    self.a_tire = False
                 elif (tour == 0 and not self.reseau.isclient) or (
                     tour == 1 and self.reseau.isclient
                 ):
@@ -268,8 +350,13 @@ class Jeu(QObject):
     # Partie réseau, passage d'appel de fonction
 
     @Slot(str, str)
-    def seConnecter(seft, ip, port):
-        self.connection.se_connecter(ip, int(port))
+    def seConnecter(self, ip, port):
+        self.connection.se_connecter(ip, port)
+        liste_car = list(map(ord, self.nom))
+        message = bytearray([1, len(self.nom), *liste_car])
+        self.connection.envoyer_trame(message)
+        message = self.connection.recevoir_trame(1024)
+        self.nom_adversaire = self.parse_message(message)
         self.partie()
 
     @Slot(result=str)
@@ -283,4 +370,24 @@ class Jeu(QObject):
     @Slot()
     def heberger(self):
         self.connection.heberger()
+        message = self.connection.recevoir_trame(1024)
+        self.nom_adversaire = self.parse_message(message)
+        liste_car = list(map(ord, self.nom))
+        message = bytearray([1, len(self.nom), *liste_car])
         self.partie()
+
+    def fin_partie(self):
+        """Cette méthode sert à savoir quand la partie est finie et si
+        c'est nous qui avons perdu ou l'adversaire
+        """
+        for navire in self.navires:
+            if navire.isdetruit is False:
+                self.partie_perdue = False
+                break
+        else:
+            self.partie_perdue = True
+
+        if self.compteur_bateau_coule == 18:
+            self.partie_gagnee = True
+        else:
+            self.partie_gagnee = False

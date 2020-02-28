@@ -42,12 +42,12 @@ liste_parametres.append(([-5, 18, 0], (None, None)))
 liste_parametres.append(([2, -5, 15], (-5, 15)))
 liste_parametres.append(([2.0, 2.5, 5.5], (2.5, 5.5)))
 
-liste_parametres.append(([3, 0, 1], ("Rate", "Non_coule")))
-liste_parametres.append(([3, 1, 1], ("Touche_bateau", "Non_coule")))
+liste_parametres.append(([3, 0, 0], ("Rate", "Non_coule")))
+liste_parametres.append(([3, 1, 0], ("Touche_bateau", "Non_coule")))
 liste_parametres.append(
-    ([3, 2, 1], ("Touche_sous_marin_surface", "Non_coule"))
+    ([3, 2, 0], ("Touche_sous_marin_surface", "Non_coule"))
 )
-liste_parametres.append(([3, 3, 0], ("Touche_sous_marin_profond", "Coule")))
+liste_parametres.append(([3, 3, 1], ("Touche_sous_marin_profond", "Coule")))
 
 
 @pytest.mark.parametrize("test_input,expected", liste_parametres)
@@ -159,3 +159,19 @@ def test_ajouter_navire():
     assert jeu.get_navire_at(106, 2) is False
 
     assert jeu.get_navire_at(105, 1) is False
+
+
+def test_position_navire_disponible():
+    jeu = Jeu()
+
+    jeu.placer_navire(0, 1, 1, "Horizontal", "Sous-marin de combat")
+
+    assert jeu.position_navire_disponible(0, 0, 3, 1, 0) is True
+    assert jeu.position_navire_disponible(0, 0, 5, 2, 0) is True
+    assert jeu.position_navire_disponible(0, 0, 5, 1, 0) is True
+    assert jeu.position_navire_disponible(0, 0, 4, 1, 0) is True
+
+    assert jeu.position_navire_disponible(13, 0, 3, 2, 0) is False
+    assert jeu.position_navire_disponible(15 * 10, 0, 6, 1, 90) is False
+    assert jeu.position_navire_disponible(2 * 15, 2, 3, 4, 0) is False
+    assert jeu.position_navire_disponible(1, 1, 2, 1, 90) is False

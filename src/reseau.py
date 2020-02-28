@@ -17,7 +17,7 @@ class Reseau:
         """Attribue la valeur de l'adresse IP de l'hôte à l'attribut
            concerné."""
         hostname = socket.gethostname()
-        self.ip_address = socket.gethostbyname(hostname)
+        self.ip_address = socket.gethostbyname(hostname + ".local")
 
     def get_ip(self):
         return self.ip_address
@@ -54,9 +54,8 @@ class Reseau:
 
         """
 
-        message = str.encode(message)
         if self.isclient:
-            self.socket.send()
+            self.socket.send(message)
         else:
             self.socketclient.send(message)
 

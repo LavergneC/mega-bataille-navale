@@ -5,6 +5,7 @@ import QtQuick.Layouts 1.0
 
 Item {
     property int rota: bateau.rotation
+    property string color : "grey"
     property int nbRestant
     signal bateauDroped
 
@@ -24,19 +25,23 @@ Item {
     Rectangle {
         width: longueur * 35
         height: largeur * 35
-        color: "grey"
+        color: "gray"
         visible : nbRestant > 1
     }
 
     MouseArea {
         id: dragArea
         anchors.fill: parent
-
         drag.target: bateau
         onReleased: {
+            root.color = "gray"
             if(mouse.button === Qt.LeftButton){
                 parent = bateau.Drag.target !== null ? bateau.Drag.target : root
                 if (bateau.Drag.target === null){
+                    parent = root
+                    bateau.parent = root
+                }
+                else if (!bateau.Drag.target.positionDisponible(longueur, largeur, rota)){
                     parent = root
                     bateau.parent = root
                 }
@@ -45,20 +50,29 @@ Item {
                     bateauDroped()
                     parent = root
                     bateau.parent = root
+                    navireRestant --
+                    if (navireRestant == 0){
+                        attaqueswipe.currentIndex ++
+                    }
                 }
                 bateau.rotation = 0
             }
         }
 
         Rectangle {
+            z : 10
             id: bateau
             width: longueur * 35
             height: largeur * 35
-            color: "grey"
+            color: root.color
             Drag.active: dragArea.drag.active
             Drag.hotSpot.x: 15
             Drag.hotSpot.y: 15
             Drag.source: root
+            Drag.onTargetChanged:{
+                if (bateau.Drag.target !== null)
+                    root.color = Drag.target.positionDisponible(longueur, largeur, rota) ? "grey" : "red"
+            }
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
 
