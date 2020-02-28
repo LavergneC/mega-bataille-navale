@@ -54,14 +54,13 @@ class Carte:
             bool: Retourne si l'attaque subie a touché l'un de nos bateaux
 
         """
-
         for index, navire in enumerate(self.navires):
             case_touche, etat_attaque = self.navires[index].test_impact(
                 x, y, z
             )
             if etat_attaque:
-                return True
-        return False
+                return (True, self.navires[index].test_bateau_detruit())
+        return (False, False)
 
     def positionner_navire(self, x, y, z, sens, type_navire, id):
         """Créé un bateau et initialise sa taille et sa position dans la carte.
