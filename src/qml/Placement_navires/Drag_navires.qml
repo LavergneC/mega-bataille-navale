@@ -32,7 +32,6 @@ Item {
     MouseArea {
         id: dragArea
         anchors.fill: parent
-
         drag.target: bateau
         onReleased: {
             root.color = "gray"
@@ -46,11 +45,15 @@ Item {
                     parent = root
                     bateau.parent = root
                 }
-                else{
+                else {
                     bateau.Drag.drop()
                     bateauDroped()
                     parent = root
                     bateau.parent = root
+                    navireRestant --
+                    if (navireRestant == 0){
+                        attaqueswipe.currentIndex ++
+                    }
                 }
                 bateau.rotation = 0
             }
