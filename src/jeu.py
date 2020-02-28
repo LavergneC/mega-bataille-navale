@@ -13,13 +13,16 @@ class Jeu(QObject):
         super().__init__()
         self.carte_perso = Carte(False)
         self.carte_adversaire = Carte(True)
-        self.connection = Reseau()
+        self.nom_joueur = "Capichef"
         self.partie_perdue = False
         self.partie_gagnee = False
         self.compteur_bateau_coule = 0
         self.nom_adversaire = ""
         self.droit_de_tir = False
         self.nom = ""
+
+    def init_reseau(self):
+        self.connection = Reseau()
 
     def placer_navire(self, x, y, z, sens, type_navire):
         """Place un navire sur la carte
@@ -39,6 +42,11 @@ class Jeu(QObject):
     @Signal
     def navire_place(self):
         """a appeler quand un navire est placé"""
+
+    @Slot(str)
+    def set_nom(self, new_nom):
+        print(new_nom)
+        self.nom_joueur = new_nom
 
     @Slot(int, int, int, int, int, result=bool)
     def position_navire_disponible(
@@ -357,7 +365,7 @@ class Jeu(QObject):
     def getIP(self):
         return self.connection.get_ip()
 
-    @Slot(result=str)
+    @Slot(result=int)
     def getPort(self):
         return self.connection.port
 
