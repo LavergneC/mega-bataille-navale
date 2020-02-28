@@ -20,6 +20,19 @@ class Navire:
         self.nom = nom
         self.id = id
         self.cases = []
+        self.isdetruit = False
+
+    def test_bateau_detruit(self):
+        """Teste si le navire est detruit en parcourant les cases.
+
+        Returns :
+            True si bateau est detruit False si le bateau est pas detruit.
+        """
+
+        for case in self.cases:
+            if case.impact is False:
+                return False
+        return True
 
     def test_impact(self, x, y, z):
         """Teste si le navire est concerné par un tir adverse aux coordonnées
@@ -40,6 +53,7 @@ class Navire:
             if case.x == x and case.y == y and case.z == z:
                 self.cases[index].impact = True
                 return (case, True)
+            self.isdetruit = self.test_bateau_detruit()
         return (None, False)
 
     def set_position(self, x, y, z, sens):

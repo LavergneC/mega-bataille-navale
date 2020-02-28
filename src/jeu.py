@@ -10,11 +10,15 @@ class Jeu(QObject):
 
     def __init__(self):
         """Définit un jeu."""
-        super(Jeu, self).__init__()
+        super().__init__()
         self.carte_perso = Carte(False)
         self.carte_adversaire = Carte(True)
         self.connection = Reseau()
+        self.partie_perdue = False
+        self.partie_gagnee = False
+        self.compteur_bateau_coule = 0
         self.nom_adversaire = ""
+        self.nom = ""
 
     def placer_navire(self, x, y, z, sens, type_navire):
         """Place un navire sur la carte
@@ -34,7 +38,6 @@ class Jeu(QObject):
     @Signal
     def navire_place(self):
         """a appeler quand un navire est placé"""
-        pass
 
     @Slot(int, int, int, int, int)
     def ajouter_navire(self, index_case, profondeur, long, larg, rot):
@@ -85,7 +88,6 @@ class Jeu(QObject):
     @Signal
     def tir_subit(self):
         """A appeller dès que la carte de défense est modifiée"""
-        pass
 
     @Slot(int, int, result=bool)
     def get_navire_at(self, case_index, depth):
@@ -111,7 +113,6 @@ class Jeu(QObject):
     @Signal
     def tir_feedback_received(self):
         """A appeller dès que notre carte d'attaque est mise à jour"""
-        pass
 
     @Slot(int, result="QVariantList")
     def get_case_attaque(self, index):
@@ -188,8 +189,10 @@ class Jeu(QObject):
         if trame[0] == 1:
             longueur_nom = trame[1]
             index = 2
+            nom_adv = ""
             while index < longueur_nom:
-                self.nom_adversaire += chr(trame[index])
+                nom_adv += chr(trame[index])
+            return nom_adv
         elif trame[0] == 2:
             # Reception d'un tir
             x = trame[1]
@@ -207,9 +210,9 @@ class Jeu(QObject):
                 resultat_tir = "Touche_sous_marin_profond"
 
             if trame[2] == 0:
-                etat_bateau = "Coule"
-            elif trame[2] == 1:
                 etat_bateau = "Non_coule"
+            elif trame[2] == 1:
+                etat_bateau = "Coule"
 
             return (resultat_tir, etat_bateau)
 
@@ -233,6 +236,8 @@ class Jeu(QObject):
         self.connection.envoyer_trame(message)
         reponse_tir = self.connection.recevoir_trame(3)
         resultat_tir, etat_bateau = self.parse_message(reponse_tir)
+        if etat_bateau == "Coule":
+            self.compteur_bateau_coule += 1
         if resultat_tir:
             self.carte_adversaire.mise_a_jour_case(x, y, resultat_tir - 1)
         else:
@@ -242,7 +247,7 @@ class Jeu(QObject):
             self.carte_adversaire.mise_a_jour_case(x, y, 2)
 
     def partie(self):
-        while not self.is_fin_partie():
+        while not self.fin_partie():
             tour = 0
             while tour < 2:
                 if (tour == 0 and self.reseau.isclient) or (
@@ -262,8 +267,13 @@ class Jeu(QObject):
     # Partie réseau, passage d'appel de fonction
 
     @Slot(str, str)
-    def seConnecter(seft, ip, port):
+    def seConnecter(self, ip, port):
         self.connection.se_connecter(ip, port)
+        liste_car = list(map(ord, self.nom))
+        message = bytearray([1, len(self.nom), *liste_car])
+        self.connection.envoyer_trame(message)
+        message = self.connection.recevoir_trame(1024)
+        self.nom_adversaire = self.parse_message(message)
         self.partie()
 
     @Slot(result=str)
@@ -277,4 +287,24 @@ class Jeu(QObject):
     @Slot()
     def heberger(self):
         self.connection.heberger()
+        message = self.connection.recevoir_trame(1024)
+        self.nom_adversaire = self.parse_message(message)
+        liste_car = list(map(ord, self.nom))
+        message = bytearray([1, len(self.nom), *liste_car])
         self.partie()
+
+    def fin_partie(self):
+        """Cette méthode sert à savoir quand la partie est finie et si
+        c'est nous qui avons perdu ou l'adversaire
+        """
+        for navire in self.navires:
+            if navire.isdetruit is False:
+                self.partie_perdue = False
+                break
+        else:
+            self.partie_perdue = True
+
+        if self.compteur_bateau_coule == 18:
+            self.partie_gagnee = True
+        else:
+            self.partie_gagnee = False
