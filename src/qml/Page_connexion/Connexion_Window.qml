@@ -73,5 +73,6 @@ ColumnLayout{
         message : "En attente d'adversaire !! Préparez-vous à la bataille"
         bouton: false
         busyindi: true
+        closePolicy: Popup.NoAutoClose
     }
 }

@@ -67,4 +67,7 @@ RowLayout{
         }
         console.log(stacklayout.currentIndex)
     }
+    onVisibleChanged:{
+        focus  = true
+    }
 }

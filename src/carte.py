@@ -55,8 +55,10 @@ class Carte:
 
         """
 
-        for navire in self.navires:
-            case_touche, etat_attaque = navire.test_impact(x, y, z)
+        for index, navire in enumerate(self.navires):
+            case_touche, etat_attaque = self.navires[index].test_impact(
+                x, y, z
+            )
             if etat_attaque:
                 return True
         return False
@@ -75,6 +77,7 @@ class Carte:
             type_navire (str): type du navire
 
         """
+
         if type_navire == "porte-container":
             longueur = 5
             largeur = 2
@@ -96,6 +99,7 @@ class Carte:
         elif type_navire == "Sous-marin de reconnaissance":
             longueur = 2
             largeur = 1
+
         navire = Navire(id, longueur, largeur, type_navire)
         self.navires.append(navire)
         index = self.trouver_navire(id)

@@ -2,7 +2,6 @@ import QtQuick.Layouts 1.14
 import QtQuick 2.14
 
 ColumnLayout{
-
     id: test
     property int num
     property int depth
@@ -21,13 +20,17 @@ ColumnLayout{
     }
 
     DropArea {
-
         id: dropArea
         width: 35
         height: 35
         onDropped: {
             var numEnvoye = drag.source.height/35 != 2 || drag.source.rota != 90 ? num : num - 1 
             Jeu.ajouter_navire(numEnvoye, depth,drag.source.width/35, drag.source.height/35, drag.source.rota)
+        }
+
+        function positionDisponible(longueur, largeur, rot) {
+            var numEnvoye = drag.source.height/35 != 2 || drag.source.rota != 90 ? num : num - 1 
+            return Jeu.position_navire_disponible(numEnvoye, depth, longueur, largeur, rot)
         }
 
         Rectangle {
@@ -66,7 +69,7 @@ ColumnLayout{
                 id : mouseA
                 anchors.fill : parent
                 acceptedButtons: Qt.LeftButton | Qt.RightButton
-                hoverEnabled : true
+               // hoverEnabled : true
             }
         }
     }

@@ -80,3 +80,21 @@ class Navire:
                 self.cases.append(Case(x + cpt_longueur, y + cpt_largeur, z))
                 cpt_largeur += 1
             cpt_longueur += 1
+
+    def contient_case(self, x, y, z):
+        """ Teste si les coordonnées passées en paramètre sont couverts par une
+            case d'un bateau.
+
+        Parameters:
+            x (int): abscisse de la case testée (0 <= x  15)
+            y (int): ordonnée de case testée (0 <= y < 15)
+            z (int): profondeur de la case testée (0 <= z < 3)
+
+        Returns:
+            bool: True si la case appartient au navire sinon False
+        """
+
+        for case in self.cases:
+            if case.x == x and case.y == y and case.z == z:
+                return True
+        return False
