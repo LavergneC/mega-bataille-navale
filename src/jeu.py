@@ -43,6 +43,10 @@ class Jeu(QObject):
     def navire_place(self):
         """a appeler quand un navire est placé"""
 
+    @Signal
+    def connection_effectuee(self):
+        pass
+
     @Slot(str)
     def set_nom(self, new_nom):
         print(new_nom)
@@ -351,7 +355,7 @@ class Jeu(QObject):
 
     # Partie réseau, passage d'appel de fonction
 
-    @Slot(str, str)
+    @Slot(str, int)
     def seConnecter(self, ip, port):
         self.connection.se_connecter(ip, port)
         liste_car = list(map(ord, self.nom))
@@ -372,6 +376,8 @@ class Jeu(QObject):
     @Slot()
     def heberger(self):
         self.connection.heberger()
+        print("CONNECTION OK")
+        self.connection_effectuee.emit()
         message = self.connection.recevoir_trame(1024)
         self.nom_adversaire = self.parse_message(message)
         liste_car = list(map(ord, self.nom))
