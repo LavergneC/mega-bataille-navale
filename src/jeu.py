@@ -206,23 +206,18 @@ class Jeu(QObject):
         liste_touche = []
         niveau = 0
         while niveau < 3:
-            # TODO && bateau présent
             case = self.carte_adversaire.cases[niveau * 225 + index]
-            liste_touche.append(case.impact)
+            liste_touche.append(case.impact and case.presence_bateau)
             niveau += 1
         return liste_touche
 
     @Slot(int, result=bool)
     def get_case_manque(self, index):
         """return true si on a tire sur la case mais que rien n'a été touché"""
-        navire = False
-        niveau = 0
-        while niveau < 3:
-            navire |= self.carte_adversaire.cases[
-                niveau * 225 + index
-            ].presence_bateau
-            niveau += 1
-        return sum(get_case_attaque(index)) == 3
+        return (
+            sum(self.get_case_attaque(index)) == 0
+            and self.carte_adversaire.cases[2 * 225 + index].impact
+        )
 
     @Slot()
     def simulate(self):
@@ -338,6 +333,7 @@ class Jeu(QObject):
             self.thread_seConnecter.join()
         else:
             self.thread_heberger.join()
+        print("Connection OK")
         while not self.fin_partie():
             tour = 0
             while tour < 2:
@@ -345,18 +341,23 @@ class Jeu(QObject):
                     tour == 1 and not self.connection.isclient
                 ):
                     self.droit_de_tir = True
+                    print("Attente tire...")
                     while self.droit_de_tir:
                         time.sleep(0.1)
+                    print("Tire OK")
                 elif (tour == 0 and not self.connection.isclient) or (
                     tour == 1 and self.connection.isclient
                 ):
+                    print("Attente tir adv...")
                     message_tir = self.connection.recevoir_trame(3)
+                    print("Tir adv OK...")
                     x, y = self.parse_message(message_tir)
                     etat_tir, etage, etat_navire = self.recevoir_tir(x, y)
                     if etat_tir:
                         message = bytearray([3, etage, etat_navire])
                     message = bytearray([3, 0, 0])
                     self.connection.envoyer_trame(message)
+                    print("retour tir Adv OK")
 
                 tour += 1
         self.partie_en_cours_changed.emit()
