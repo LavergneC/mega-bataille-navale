@@ -355,6 +355,11 @@ class Jeu(QObject):
                     x, y = self.parse_message(message_tir)
                     self.recevoir_tir(x, y)
                 tour += 1
+        self.partie_en_cours_changed.emit()
+
+    @Signal
+    def partie_en_cours_changed(self):
+        pass
 
     # Partie réseau, passage d'appel de fonction
 
@@ -408,3 +413,7 @@ class Jeu(QObject):
             self.partie_gagnee = True
         else:
             self.partie_gagnee = False
+
+    @Slot(result=bool)
+    def get_partie_gagnee(self):
+        return self.partie_gagnee
