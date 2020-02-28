@@ -22,10 +22,10 @@ RowLayout{
     RowLayout{
         ColumnLayout{
             Layout.margins: 20
-            ColumnLayout{}
+            ColumnLayout{}     
             Text {
                 id: placementnavires
-                text: qsTr("Veulliez placer vos navires :")
+                text: qsTr("Veuillez placer vos navires :")
                 Layout.alignment: Qt.AlignHCenter
                 font.pointSize: 24
             }
