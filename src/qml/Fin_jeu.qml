@@ -3,6 +3,7 @@ import QtQuick.Window 2.2
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.0
 
+
 ColumnLayout{
     Layout.leftMargin: 20
     Layout.rightMargin: 20
@@ -10,10 +11,20 @@ ColumnLayout{
     Layout.fillWidth: true
     spacing: 3
 
+    property string sourceimage
+    property int taillelong
+    property int taillelarg
+
+ColumnLayout{}
+
     Image{
         id : img
-        source : "../qml/Images/"../qml   // "../qml/Images/victoire.jpg"
-        Layout.fillWidth: parent
+        source : sourceimage
+        sourceSize.width: taillelong
+        sourceSize.height: taillelarg
+
     }
+
+ColumnLayout{}
 
 }

@@ -13,10 +13,10 @@ def test_check_ship():
     navire.cases.append(Case(3, 2, 1))
     carte.navires.append(navire)
 
-    assert carte.check_ship(2, 2, 1) is True
-    assert carte.check_ship(2, 2, 2) is False
-    assert carte.check_ship(2, 3, 1) is False
-    assert carte.check_ship(4, 2, 1) is False
+    assert carte.check_ship(2, 2, 1) == (True, False)
+    assert carte.check_ship(2, 2, 2) == (False, False)
+    assert carte.check_ship(2, 3, 1) == (False, False)
+    assert carte.check_ship(4, 2, 1) == (False, False)
 
 
 def test_positionner_navire():
