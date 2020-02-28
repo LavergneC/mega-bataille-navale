@@ -31,12 +31,7 @@ Item {
     MouseArea {
         id: dragArea
         anchors.fill: parent
-
         drag.target: bateau
-        onDoubleClicked: {
-            parent = root
-            bateau.parent = root
-        }
         onReleased: {
             if(mouse.button === Qt.LeftButton){
                 parent = bateau.Drag.target !== null ? bateau.Drag.target : root
