@@ -9,6 +9,9 @@ import "Placement_navires"
 
 
 RowLayout{
+
+    property int navireRestant: 18
+
     Layout.margins : 20
     anchors.fill : parent
     spacing : 10
@@ -16,13 +19,7 @@ RowLayout{
     property string etattir: "A toi de jouer !"
 
     Button{
-        id: but_att
-        text: "Attaque "
-        onClicked: {
-            //  Jeu.simulate();
-            attaqueswipe.currentIndex ++
-
-        }
+        onClicked: attaqueswipe.currentIndex ++
     }
     RowLayout{
         ColumnLayout{
@@ -30,7 +27,7 @@ RowLayout{
             ColumnLayout{}
             Text {
                 id: placementnavires
-                text: qsTr("Veulliez placer vos navires :")
+                text: qsTr("Veuillez placer vos navires :")
                 Layout.alignment: Qt.AlignHCenter
                 font.pointSize: 24
             }
@@ -56,6 +53,7 @@ RowLayout{
                 }
             }
 
+            ColumnLayout{}     
             StackLayout {
                 id: attaqueswipe
                 Placement_navires{
@@ -84,7 +82,6 @@ RowLayout{
         Layout.maximumHeight : attaq.implicitHeight + 40
     }
     RowLayout{}
-
     CarteDefense{
         id : carteDef
         focus : true
