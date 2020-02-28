@@ -73,11 +73,7 @@ class Jeu(QObject):
 
         if type_navire != "Erreur":
             self.placer_navire(
-                index_case % 15,
-                index_case // 15,
-                profondeur,
-                sens,
-                type_navire,
+                index_case % 15, index_case // 15, profondeur, sens, type_navire,
             )
             self.navire_place.emit()
 
@@ -132,9 +128,7 @@ class Jeu(QObject):
         navire = False
         niveau = 0
         while niveau < 3:
-            navire |= self.carte_adversaire.cases[
-                niveau * 225 + index
-            ].presence_bateau
+            navire |= self.carte_adversaire.cases[niveau * 225 + index].presence_bateau
             niveau += 1
         return sum(get_case_attaque(index)) == 3
 
@@ -285,7 +279,7 @@ class Jeu(QObject):
         """Cette méthode sert à savoir quand la partie est finie et si
         c'est nous qui avons perdu ou l'adversaire
         """
-        for navire in self.navires:
+        for navire in self.carte_perso.navires:
             if navire.isdetruit is False:
                 self.partie_perdue = False
                 break

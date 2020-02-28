@@ -44,9 +44,7 @@ liste_parametres.append(([2.0, 2.5, 5.5], (2.5, 5.5)))
 
 liste_parametres.append(([3, 0, 0], ("Rate", "Non_coule")))
 liste_parametres.append(([3, 1, 0], ("Touche_bateau", "Non_coule")))
-liste_parametres.append(
-    ([3, 2, 0], ("Touche_sous_marin_surface", "Non_coule"))
-)
+liste_parametres.append(([3, 2, 0], ("Touche_sous_marin_surface", "Non_coule")))
 liste_parametres.append(([3, 3, 1], ("Touche_sous_marin_profond", "Coule")))
 
 
@@ -159,3 +157,36 @@ def test_ajouter_navire():
     assert jeu.get_navire_at(106, 2) is False
 
     assert jeu.get_navire_at(105, 1) is False
+
+
+def test_fin_de_partie():
+    jeu = Jeu()
+
+    jeu.placer_navire(1, 2, 0, "Horizontal", "Sous-marin de reconnaissance")
+    jeu.fin_partie()
+    assert jeu.partie_gagnee is False
+    assert jeu.partie_perdue is False
+
+    jeu.recevoir_tir(1, 2)
+    jeu.recevoir_tir(2, 2)
+    jeu.recevoir_tir(3, 2)
+    jeu.fin_partie()
+    assert jeu.partie_perdue is True
+    assert jeu.partie_gagnee is False
+
+    jeu.compteur_bateau_coule = 18
+    jeu.fin_partie()
+    assert jeu.partie_gagnee is True
+    assert jeu.partie_perdue is True
+
+    jeu = Jeu()
+
+    jeu.placer_navire(1, 2, 0, "Horizontal", "Sous-marin de reconnaissance")
+    jeu.fin_partie()
+    assert jeu.partie_gagnee is False
+    assert jeu.partie_perdue is False
+
+    jeu.compteur_bateau_coule = 18
+    jeu.fin_partie()
+    assert jeu.partie_perdue is False
+    assert jeu.partie_gagnee is True
