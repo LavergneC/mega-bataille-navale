@@ -33,9 +33,11 @@ ColumnLayout{
             onClicked: {
                 if (Jeu.droit_de_tirer()) {
                     Jeu.tirer(num % 15, Math.trunc(num/15)) //console.log (num % 15 + " " + Math.trunc(num/15))
+                    etattir = "<font color=\"black\">information du tir:<br> <font color=\"green\"> A ton tour de tirer</font>"
                 }
                 else {
                     attenttontour.open()
+                   etattir = "<font color=\"black\">information du tir:<br> <font color=\"red\"> En attente du tir adverse</font>"
                 }
             }
         }

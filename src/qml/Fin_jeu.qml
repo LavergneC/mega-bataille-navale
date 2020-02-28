@@ -12,13 +12,17 @@ ColumnLayout{
     spacing: 3
 
     property string sourceimage
+    property int taillelong
+    property int taillelarg
 
 ColumnLayout{}
 
     Image{
         id : img
         source : sourceimage
-        Layout.fillWidth: parent
+        sourceSize.width: taillelong
+        sourceSize.height: taillelarg
+
     }
 
 ColumnLayout{}
