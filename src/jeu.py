@@ -243,10 +243,10 @@ class Jeu(QObject):
         etage = 0
         etat_tir = False
         while not etat_tir and etage < 3:
-            etat_tir = self.carte_perso.mise_a_jour_case(x, y, etage)
+            etat_tir, etat_navire = self.carte_perso.mise_a_jour_case(x, y, etage)
             etage += 1
         self.tir_subit.emit()
-        return (etat_tir, etage - 1)
+        return (etat_tir, etage - 1, etat_navire)
 
     def parse_message(self, trame):
         """ Découpe la trame en fonction de son type:
@@ -353,7 +353,12 @@ class Jeu(QObject):
                 ):
                     message_tir = self.connection.recevoir_trame(3)
                     x, y = self.parse_message(message_tir)
-                    self.recevoir_tir(x, y)
+                    etat_tir, etage, etat_navire =  self.recevoir_tir(x, y)
+                    if etat_tir:
+                        message = bytearray([3, etage, etat_navire])
+                    message = bytearray([3, 0, 0])
+                    self.connection.envoyer_trame(message)
+
                 tour += 1
 
     # Partie réseau, passage d'appel de fonction
