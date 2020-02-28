@@ -23,7 +23,13 @@ RowLayout{
         ColumnLayout{
             Layout.margins: 20
             ColumnLayout{}
-            StackLayout{
+            Text {
+                id: placementnavires
+                text: qsTr("Veulliez placer vos navires :")
+                Layout.alignment: Qt.AlignHCenter
+                font.pointSize: 24
+            }
+            StackLayout {
                 id: attaqueswipe
                 Placement_navires{
                     id : placementNavires
@@ -31,6 +37,7 @@ RowLayout{
                 CarteAttaque{
                     id : attaq
                 }
+                onCurrentIndexChanged: carteDef.focus = true
             }
             ColumnLayout{}
         }
