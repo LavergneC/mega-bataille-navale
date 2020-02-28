@@ -290,15 +290,7 @@ class Jeu(QObject):
             return (x, y)
         elif trame[0] == 3:
             # Récupération du résultat d'un tir
-            if trame[1] == 0:  # Raté
-                resultat_tir = "Rate"
-            elif trame[1] == 1:  # Touché bateau
-                resultat_tir = "Touche_bateau"
-            elif trame[1] == 2:  # Touché sous-marin de surface
-                resultat_tir = "Touche_sous_marin_surface"
-            elif trame[1] == 3:  # Touché sous-marin profond
-                resultat_tir = "Touche_sous_marin_profond"
-
+            resultat_tir = trame[1]
             if trame[2] == 0:
                 etat_bateau = "Non_coule"
             elif trame[2] == 1:
