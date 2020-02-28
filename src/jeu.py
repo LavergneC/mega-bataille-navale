@@ -18,11 +18,8 @@ class Jeu(QObject):
         self.partie_gagnee = False
         self.compteur_bateau_coule = 0
         self.nom_adversaire = ""
-<<<<<<< HEAD
         self.droit_de_tir = False
-=======
         self.nom = ""
->>>>>>> master
 
     def placer_navire(self, x, y, z, sens, type_navire):
         """Place un navire sur la carte
