@@ -1,5 +1,6 @@
 from carte import Carte, Case, Navire
 from reseau import *
+import threading
 from PySide2.QtCore import Slot, QObject, Signal, Property
 
 
@@ -339,6 +340,10 @@ class Jeu(QObject):
         return self.droit_de_tir
 
     def partie(self):
+        if (self.connection.isclient):
+            self.thread_seConnecter.join()
+        else:
+            self.thread_heberger.join()
         while not self.fin_partie():
             tour = 0
             while tour < 2:
@@ -360,6 +365,12 @@ class Jeu(QObject):
 
     @Slot(str, int)
     def seConnecter(self, ip, port):
+        self.thread_seConnecter = threading.Thread(target = self.seConnecter_thread, args = [ip, port])
+        self.thread_partie = threading.Thread(target = self.partie)
+        self.thread_seConnecter.start()
+        self.thread_partie.start()
+    
+    def seConnecter_thread(self, ip, port):
         self.connection.se_connecter(ip, port)
         self.connection_effectuee.emit()
         print("CONNECTION OK")
@@ -369,7 +380,6 @@ class Jeu(QObject):
         self.connection.envoyer_trame(message)
         message = self.connection.recevoir_trame(1024)
         self.nom_adversaire = self.parse_message(message)
-        self.partie()
 
     @Slot(result=str)
     def getIP(self):
@@ -381,6 +391,13 @@ class Jeu(QObject):
 
     @Slot()
     def heberger(self):
+        self.thread_heberger = threading.Thread(target = self.heberger_thread)
+        self.thread_partie = threading.Thread(target = self.partie)
+        print("Start heberger & partie")
+        self.thread_heberger.start()
+        self.thread_partie.start()
+    
+    def heberger_thread(self):
         self.connection.heberger()
         print("CONNECTION OK")
         self.connection_effectuee.emit()
@@ -391,7 +408,6 @@ class Jeu(QObject):
         liste_car = list(map(ord, self.nom_joueur))
         message = bytearray([1, len(self.nom_joueur), *liste_car])
         self.connection.envoyer_trame(message)
-        self.partie()
 
     def fin_partie(self):
         """Cette méthode sert à savoir quand la partie est finie et si
