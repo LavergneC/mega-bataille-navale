@@ -11,6 +11,13 @@ ColumnLayout{
     Layout.fillWidth: true
     spacing: 3
 
+    Text {
+        id: placementnavires
+        text: qsTr("Veulliez placer vos navires :")
+        Layout.alignment: Qt.AlignHCenter
+        font.pointSize: 24
+    }
+
     ListView {
         id : listBat
         orientation: ListView.Vertical

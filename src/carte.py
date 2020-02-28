@@ -55,8 +55,10 @@ class Carte:
 
         """
 
-        for navire in self.navires:
-            case_touche, etat_attaque = navire.test_impact(x, y, z)
+        for index, navire in enumerate(self.navires):
+            case_touche, etat_attaque = self.navires[index].test_impact(
+                x, y, z
+            )
             if etat_attaque:
                 return True
         return False
