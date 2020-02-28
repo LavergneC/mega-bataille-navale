@@ -374,7 +374,7 @@ class Jeu(QObject):
         """Cette méthode sert à savoir quand la partie est finie et si
         c'est nous qui avons perdu ou l'adversaire
         """
-        for navire in self.navires:
+        for navire in self.carte_perso.navires:
             if navire.isdetruit is False:
                 self.partie_perdue = False
                 break
