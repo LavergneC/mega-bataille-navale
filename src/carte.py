@@ -40,6 +40,29 @@ class Carte:
                 self.cases[index].impact = True
         return self.check_ship(x, y, z)
 
+    def mise_a_jour_carte_attaque(self, x, y, resultat_tir):
+        """ Met à jour la case de la carte adverse après y avoir effectué un tir
+
+        Parameters:
+            x(int): Abscisse de la case(0 <= x <= 15)
+            y(int): Ordonnée le case (0 <= y <= 15)
+            resultat_tir(int): Resultat de notre tir :
+                0 - Non touché
+                1 - Bateau touché
+                2 - Sous marin de surface touché
+                3 - Sous marin profond
+        """
+        profondeur = 0
+        while profondeur < 3:
+            for index, case in enumerate(self.cases):
+                if case.x == x and case.y == y and case.z == profondeur:
+                    if profondeur == resultat_tir - 1:
+                        self.cases[index].presence_bateau = True
+                        profondeur = 3
+                    self.cases[index].impact = True
+                    break
+            profondeur += 1
+
     def check_ship(self, x, y, z):
         """Test si l'un des navires est touché par les coordonnées de l'attaque
         passée en paramètre et si c'est le cas, met à jour l'état de la case du
