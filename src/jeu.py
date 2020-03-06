@@ -210,13 +210,17 @@ class Jeu(QObject):
             niveau += 1
         return liste_touche
 
-    @Slot(int, result=bool)
-    def get_case_manque(self, index):
-        """return true si on a tire sur la case mais que rien n'a été touché"""
-        return (
-            sum(self.get_case_attaque(index)) == 0
-            and self.carte_adversaire.cases[2 * 225 + index].impact
-        )
+    @Slot(int, result="QVariantList")
+    def get_case_impacts(self, index):
+        """return true si la case a ete tiree"""
+        liste_impacts = []
+        profondeur = 0
+        while profondeur < 3:
+            liste_impacts.append(
+                self.carte_adversaire.cases[index + profondeur * 225].impact
+            )
+            profondeur += 1
+        return liste_impacts
 
     @Slot()
     def simulate(self):
