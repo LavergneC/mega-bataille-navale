@@ -40,7 +40,7 @@ ColumnLayout{
 
         TextField {
             id: saisiport
-            text : 12800
+            text : "12800"
             Layout.fillWidth: true
             validator: RegularExpressionValidator { regularExpression: /[0-9]{1,5}/ }
         }
