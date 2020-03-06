@@ -60,7 +60,7 @@ class Carte:
                 if case.x == x and case.y == y and case.z == profondeur:
                     if profondeur == resultat_tir - 1 and not case.impact:
                         self.cases[index].presence_bateau = True
-                        self.cases[index].bateau_coule = True
+                        self.cases[index].bateau_coule = etat_bateau
                         is_touche = True
                     self.cases[index].impact = True
                     break
