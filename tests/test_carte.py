@@ -70,15 +70,15 @@ def test_mise_a_jour_case():
 
 def test_mise_a_jour_case_attaque():
     carte = Carte(True)
-    carte.mise_a_jour_carte_attaque(0, 0, 1)
+    carte.mise_a_jour_carte_attaque(0, 0, 2)
     for case in carte.cases:
         if case.x == 0 and case.y == 0 and case.z == 1:
-            assert case.impact is False
-            assert case.presence_bateau is False
+            assert case.impact is True
+            assert case.presence_bateau is True
 
         if case.x == 0 and case.y == 0 and case.z == 0:
             assert case.impact is True
-            assert case.presence_bateau is True
+            assert case.presence_bateau is False
 
         if case.x == 0 and case.y == 0 and case.z == 2:
             assert case.impact is False

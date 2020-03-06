@@ -53,12 +53,13 @@ class Carte:
                 3 - Sous marin profond
         """
         profondeur = 0
-        while profondeur < 3:
+        is_touche = False
+        while profondeur < 3 and not is_touche:
             for index, case in enumerate(self.cases):
                 if case.x == x and case.y == y and case.z == profondeur:
                     if profondeur == resultat_tir - 1:
                         self.cases[index].presence_bateau = True
-                        profondeur = 3
+                        is_touche = True
                     self.cases[index].impact = True
                     break
             profondeur += 1
