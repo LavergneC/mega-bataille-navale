@@ -211,6 +211,17 @@ class Jeu(QObject):
         return liste_touche
 
     @Slot(int, result="QVariantList")
+    def get_case_coules(self, index):
+        """Return une liste de taille 3, indiquant à quels niveaux
+                                            des bateaux ont été coulés"""
+        liste_coules = []
+        profondeur = 0
+        while profondeur < 3:
+            liste_coules.append(self.carte_adversaire.cases[profondeur * 225 + index].bateau_coule)
+            profondeur += 1
+        return liste_coules
+
+    @Slot(int, result="QVariantList")
     def get_case_impacts(self, index):
         """return true si la case a ete tiree"""
         liste_impacts = []

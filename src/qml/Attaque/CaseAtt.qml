@@ -6,6 +6,7 @@ import "../Page_connexion"
 ColumnLayout{
     property var touches: [0,0,0]
     property var impacts: [0,0,0]
+    property var coules : [0,0,0]
     property int num
     property int nbtest: 0
     Layout.fillWidth : true
@@ -15,6 +16,7 @@ ColumnLayout{
         onTir_feedback_received:{
             touches = Jeu.get_case_attaque(num)
             impacts = Jeu.get_case_impacts(num)
+            coules = Jeu.get_case_coules(num)
         }
     }
 
@@ -69,7 +71,7 @@ ColumnLayout{
                     Layout.margins : 2
                     radius : 3
 
-                    color : touches[index] ? "red": (impacts[index] ? "blue" : "white")
+                    color : coules[index] ? "black" : (touches[index] ? "red": (impacts[index] ? "blue" : "transparent"))
                 }
             }
         }
