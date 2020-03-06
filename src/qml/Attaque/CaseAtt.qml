@@ -70,7 +70,7 @@ ColumnLayout{
                     Layout.margins : 2
                     radius : 3
                     color : "red"
-                    opacity : touches[index] === 1
+                    opacity : touches[index]
                 }
             }
 
