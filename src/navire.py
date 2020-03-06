@@ -50,7 +50,12 @@ class Navire:
             le navire a été touché.
             """
         for index, case in enumerate(self.cases):
-            if case.x == x and case.y == y and case.z == z:
+            if (
+                case.x == x
+                and case.y == y
+                and case.z == z
+                and case.impact == False
+            ):
                 self.cases[index].impact = True
                 return (case, True)
             self.isdetruit = self.test_bateau_detruit()
