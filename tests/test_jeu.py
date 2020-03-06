@@ -28,8 +28,8 @@ def test_recevoir_tir():
 
     assert jeu.recevoir_tir(0, 0)[0] is False
     assert jeu.recevoir_tir(4, 5)[0] is False
-    assert jeu.recevoir_tir(11, 5) == (True, 1, False)
-    assert jeu.recevoir_tir(4, 7) == (True, 2, False)
+    assert jeu.recevoir_tir(11, 5) == (True, 2, False)
+    assert jeu.recevoir_tir(4, 7) == (True, 3, False)
 
 
 liste_parametres = []
