@@ -54,7 +54,7 @@ class Navire:
                 case.x == x
                 and case.y == y
                 and case.z == z
-                and case.impact == False
+                and not case.impact
             ):
                 self.cases[index].impact = True
                 return (case, True)
