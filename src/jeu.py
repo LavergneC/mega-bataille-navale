@@ -348,13 +348,15 @@ class Jeu(QObject):
                     print("Tir adv OK...")
                     x, y = self.parse_message(message_tir)
                     etat_tir, etage, etat_navire = self.recevoir_tir(x, y)
-                    print(f'etat_tir {etat_tir}, etage {etage}, etat_navire {etat_navire}')
+                    print(
+                        f"etat_tir {etat_tir}, etage {etage}, etat_navire {etat_navire}"
+                    )
                     if etat_tir:
                         message = bytearray([3, etage, etat_navire])
                     else:
                         message = bytearray([3, 0, 0])
                     self.connection.envoyer_trame(message)
-                    print(f'Envoyer : {message}')
+                    print(f"Envoyer : {message}")
                     print("retour tir Adv OK")
 
                 tour += 1

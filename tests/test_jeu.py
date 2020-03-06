@@ -44,9 +44,7 @@ liste_parametres.append(([2.0, 2.5, 5.5], (2.5, 5.5)))
 
 liste_parametres.append(([3, 0, 0], (0, "Non_coule")))
 liste_parametres.append(([3, 1, 0], (1, "Non_coule")))
-liste_parametres.append(
-    ([3, 2, 0], (2, "Non_coule"))
-)
+liste_parametres.append(([3, 2, 0], (2, "Non_coule")))
 liste_parametres.append(([3, 3, 1], (3, "Coule")))
 
 
