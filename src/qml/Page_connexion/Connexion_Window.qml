@@ -78,4 +78,8 @@ ColumnLayout{
         busyindi: true
         closePolicy: Popup.NoAutoClose
     }
+    onVisibleChanged:{
+        if(!visible)
+            popartie.close()
+    }
 }

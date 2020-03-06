@@ -1,5 +1,7 @@
 from carte import Carte, Case, Navire
 from reseau import *
+import threading
+import time
 from PySide2.QtCore import Slot, QObject, Signal, Property
 
 
@@ -19,7 +21,6 @@ class Jeu(QObject):
         self.compteur_bateau_coule = 0
         self.nom_adversaire = ""
         self.droit_de_tir = False
-        self.nom = ""
 
     def init_reseau(self):
         self.connection = Reseau()
@@ -205,23 +206,20 @@ class Jeu(QObject):
         liste_touche = []
         niveau = 0
         while niveau < 3:
-            # TODO && bateau présent
             case = self.carte_adversaire.cases[niveau * 225 + index]
-            liste_touche.append(case.impact)
+            liste_touche.append(case.impact and case.presence_bateau)
+            if index == 0:
+                print(case.impact, case.presence_bateau)
             niveau += 1
         return liste_touche
 
     @Slot(int, result=bool)
     def get_case_manque(self, index):
         """return true si on a tire sur la case mais que rien n'a été touché"""
-        navire = False
-        niveau = 0
-        while niveau < 3:
-            navire |= self.carte_adversaire.cases[
-                niveau * 225 + index
-            ].presence_bateau
-            niveau += 1
-        return sum(get_case_attaque(index)) == 3
+        return (
+            sum(self.get_case_attaque(index)) == 0
+            and self.carte_adversaire.cases[2 * 225 + index].impact
+        )
 
     @Slot()
     def simulate(self):
@@ -248,7 +246,7 @@ class Jeu(QObject):
             )
             etage += 1
         self.tir_subit.emit()
-        return (etat_tir, etage - 1, etat_navire)
+        return (etat_tir, etage, etat_navire)
 
     def parse_message(self, trame):
         """ Découpe la trame en fonction de son type:
@@ -289,15 +287,7 @@ class Jeu(QObject):
             return (x, y)
         elif trame[0] == 3:
             # Récupération du résultat d'un tir
-            if trame[1] == 0:  # Raté
-                resultat_tir = "Rate"
-            elif trame[1] == 1:  # Touché bateau
-                resultat_tir = "Touche_bateau"
-            elif trame[1] == 2:  # Touché sous-marin de surface
-                resultat_tir = "Touche_sous_marin_surface"
-            elif trame[1] == 3:  # Touché sous-marin profond
-                resultat_tir = "Touche_sous_marin_profond"
-
+            resultat_tir = trame[1]
             if trame[2] == 0:
                 etat_bateau = "Non_coule"
             elif trame[2] == 1:
@@ -321,7 +311,6 @@ class Jeu(QObject):
             (int, bool): Tuple contenant le résultat du tir envoyé ainsi que
                          l'état de l'éventuel bateau concerné.
         """
-        self.droit_de_tir = False
         message = bytearray([2, x, y])
         self.connection.envoyer_trame(message)
         reponse_tir = self.connection.recevoir_trame(3)
@@ -335,6 +324,11 @@ class Jeu(QObject):
         return self.droit_de_tir
 
     def partie(self):
+        if self.connection.isclient:
+            self.thread_seConnecter.join()
+        else:
+            self.thread_heberger.join()
+        print("Connection OK")
         while not self.fin_partie():
             tour = 0
             while tour < 2:
@@ -342,18 +336,26 @@ class Jeu(QObject):
                     tour == 1 and not self.connection.isclient
                 ):
                     self.droit_de_tir = True
+                    print("Attente tire...")
                     while self.droit_de_tir:
-                        pass
+                        time.sleep(0.1)
+                    print("Tire OK")
                 elif (tour == 0 and not self.connection.isclient) or (
                     tour == 1 and self.connection.isclient
                 ):
+                    print("Attente tir adv...")
                     message_tir = self.connection.recevoir_trame(3)
+                    print("Tir adv OK...")
                     x, y = self.parse_message(message_tir)
                     etat_tir, etage, etat_navire = self.recevoir_tir(x, y)
+
                     if etat_tir:
                         message = bytearray([3, etage, etat_navire])
-                    message = bytearray([3, 0, 0])
+                    else:
+                        message = bytearray([3, 0, 0])
                     self.connection.envoyer_trame(message)
+                    print(f"Envoyer : {message}")
+                    print("retour tir Adv OK")
 
                 tour += 1
         self.partie_en_cours_changed.emit()
@@ -366,16 +368,22 @@ class Jeu(QObject):
 
     @Slot(str, int)
     def seConnecter(self, ip, port):
+        self.thread_seConnecter = threading.Thread(
+            target=self.seConnecter_thread, args=[ip, port]
+        )
+        self.thread_partie = threading.Thread(target=self.partie)
+        self.thread_seConnecter.start()
+        self.thread_partie.start()
+
+    def seConnecter_thread(self, ip, port):
         self.connection.se_connecter(ip, port)
         self.connection_effectuee.emit()
-        print("CONNECTION OK")
         liste_car = list(map(ord, self.nom_joueur))
         message = bytearray([1, len(self.nom_joueur), *liste_car])
         print(f"Message se co : {message}")
         self.connection.envoyer_trame(message)
         message = self.connection.recevoir_trame(1024)
         self.nom_adversaire = self.parse_message(message)
-        self.partie()
 
     @Slot(result=str)
     def getIP(self):
@@ -387,6 +395,13 @@ class Jeu(QObject):
 
     @Slot()
     def heberger(self):
+        self.thread_heberger = threading.Thread(target=self.heberger_thread)
+        self.thread_partie = threading.Thread(target=self.partie)
+        print("Start heberger & partie")
+        self.thread_heberger.start()
+        self.thread_partie.start()
+
+    def heberger_thread(self):
         self.connection.heberger()
         print("CONNECTION OK")
         self.connection_effectuee.emit()
@@ -397,7 +412,6 @@ class Jeu(QObject):
         liste_car = list(map(ord, self.nom_joueur))
         message = bytearray([1, len(self.nom_joueur), *liste_car])
         self.connection.envoyer_trame(message)
-        self.partie()
 
     def fin_partie(self):
         """Cette méthode sert à savoir quand la partie est finie et si
