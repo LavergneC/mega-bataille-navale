@@ -40,7 +40,7 @@ class Carte:
                 self.cases[index].impact = True
         return self.check_ship(x, y, z)
 
-    def mise_a_jour_carte_attaque(self, x, y, resultat_tir):
+    def mise_a_jour_carte_attaque(self, x, y, resultat_tir, etat_bateau):
         """ Met à jour la case de la carte adverse après y avoir effectué un tir
 
         Parameters:
@@ -51,6 +51,7 @@ class Carte:
                 1 - Bateau touché
                 2 - Sous marin de surface touché
                 3 - Sous marin profond
+            etat_bateau(bool): Etat du bateau concerné (coulé ou non)
         """
         profondeur = 0
         is_touche = False
@@ -59,6 +60,7 @@ class Carte:
                 if case.x == x and case.y == y and case.z == profondeur:
                     if profondeur == resultat_tir - 1 and not case.impact:
                         self.cases[index].presence_bateau = True
+                        self.cases[index].bateau_coule = True
                         is_touche = True
                     self.cases[index].impact = True
                     break

@@ -320,7 +320,9 @@ class Jeu(QObject):
         print(f"Jeu::tirer Parsé : result {resultat_tir}, etat {etat_bateau}")
         if etat_bateau == "Coule":
             self.compteur_bateau_coule += 1
-        self.carte_adversaire.mise_a_jour_carte_attaque(x, y, resultat_tir)
+        self.carte_adversaire.mise_a_jour_carte_attaque(
+            x, y, resultat_tir, etat_bateau == "Coule"
+        )
         self.tir_feedback_received.emit()
         self.droit_de_tir = False
 

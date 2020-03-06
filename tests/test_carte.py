@@ -70,7 +70,7 @@ def test_mise_a_jour_case():
 
 def test_mise_a_jour_case_attaque():
     carte = Carte(True)
-    carte.mise_a_jour_carte_attaque(0, 0, 2)
+    carte.mise_a_jour_carte_attaque(0, 0, 2, False)
     for case in carte.cases:
         if case.x == 0 and case.y == 0 and case.z == 1:
             assert case.impact is True
