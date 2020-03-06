@@ -313,9 +313,9 @@ class Jeu(QObject):
         message = bytearray([2, x, y])
         self.connection.envoyer_trame(message)
         reponse_tir = self.connection.recevoir_trame(3)
-        print(f'Jeu::tirer Reçu : {reponse_tir}')
+        print(f"Jeu::tirer Reçu : {reponse_tir}")
         resultat_tir, etat_bateau = self.parse_message(reponse_tir)
-        print(f'Jeu::tirer Parsé : result{reponse_tir}, etat{etat_bateau}')
+        print(f"Jeu::tirer Parsé : result{reponse_tir}, etat{etat_bateau}")
         if etat_bateau == "Coule":
             self.compteur_bateau_coule += 1
         self.carte_adversaire.mise_a_jour_carte_attaque(x, y, resultat_tir)
