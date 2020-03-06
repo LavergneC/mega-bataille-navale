@@ -126,7 +126,6 @@ class Jeu(QObject):
     def ajouter_navire(self, index_case, profondeur, long, larg, rot):
         sens = ""
         type_navire = ""
-        print(f"{index_case}-{profondeur}")
         if rot == 90:
             sens = "Vertical"
         else:
@@ -322,16 +321,15 @@ class Jeu(QObject):
         message = bytearray([2, x, y])
         self.connection.envoyer_trame(message)
         reponse_tir = self.connection.recevoir_trame(3)
+        print(f'Jeu::tirer Reçu : {reponse_tir}')
         resultat_tir, etat_bateau = self.parse_message(reponse_tir)
+        print(f'Jeu::tirer Parsé : result{reponse_tir}, etat{etat_bateau}')
         if etat_bateau == "Coule":
             self.compteur_bateau_coule += 1
-        if resultat_tir:
-            self.carte_adversaire.mise_a_jour_case(x, y, resultat_tir - 1)
-        else:
-            # Pas de bateau touché, impact sur les trois couches
-            self.carte_adversaire.mise_a_jour_case(x, y, 0)
-            self.carte_adversaire.mise_a_jour_case(x, y, 1)
-            self.carte_adversaire.mise_a_jour_case(x, y, 2)
+        self.carte_adversaire.mise_a_jour_carte_attaque(x, y, resultat_tir)
+        self.droit_de_tir = False
+
+        return (resultat_tir, etat_bateau)
 
     @Slot(result=bool)
     def droit_de_tirer(self):
