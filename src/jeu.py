@@ -207,8 +207,6 @@ class Jeu(QObject):
         while niveau < 3:
             case = self.carte_adversaire.cases[niveau * 225 + index]
             liste_touche.append(case.impact and case.presence_bateau)
-            if index == 0:
-                print(case.impact, case.presence_bateau)
             niveau += 1
         return liste_touche
 
@@ -315,13 +313,14 @@ class Jeu(QObject):
         reponse_tir = self.connection.recevoir_trame(3)
         print(f"Jeu::tirer Reçu : {reponse_tir}")
         resultat_tir, etat_bateau = self.parse_message(reponse_tir)
-        print(f"Jeu::tirer Parsé : result{reponse_tir}, etat{etat_bateau}")
+        print(f"Jeu::tirer Parsé : result {resultat_tir}, etat {etat_bateau}")
         if etat_bateau == "Coule":
             self.compteur_bateau_coule += 1
         self.carte_adversaire.mise_a_jour_carte_attaque(x, y, resultat_tir)
+        self.tir_feedback_received.emit()
         self.droit_de_tir = False
 
-        return (resultat_tir, etat_bateau)
+        return (resultat_tir, etat_bateau == "Coule")
 
     @Slot(result=bool)
     def droit_de_tirer(self):
