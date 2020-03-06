@@ -208,6 +208,8 @@ class Jeu(QObject):
         while niveau < 3:
             case = self.carte_adversaire.cases[niveau * 225 + index]
             liste_touche.append(case.impact and case.presence_bateau)
+            if index == 0:
+                print(case.impact, case.presence_bateau)
             niveau += 1
         return liste_touche
 
@@ -244,7 +246,7 @@ class Jeu(QObject):
             )
             etage += 1
         self.tir_subit.emit()
-        return (etat_tir, etage - 1, etat_navire)
+        return (etat_tir, etage, etat_navire)
 
     def parse_message(self, trame):
         """ Découpe la trame en fonction de son type:
@@ -354,10 +356,13 @@ class Jeu(QObject):
                     print("Tir adv OK...")
                     x, y = self.parse_message(message_tir)
                     etat_tir, etage, etat_navire = self.recevoir_tir(x, y)
+                    print(f'etat_tir {etat_tir}, etage {etage}, etat_navire {etat_navire}')
                     if etat_tir:
                         message = bytearray([3, etage, etat_navire])
-                    message = bytearray([3, 0, 0])
+                    else:
+                        message = bytearray([3, 0, 0])
                     self.connection.envoyer_trame(message)
+                    print(f'Envoyer : {message}')
                     print("retour tir Adv OK")
 
                 tour += 1
