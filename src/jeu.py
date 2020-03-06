@@ -50,7 +50,6 @@ class Jeu(QObject):
 
     @Slot(str)
     def set_nom(self, new_nom):
-        print(new_nom)
         self.nom_joueur = new_nom
 
     @Slot(int, int, int, int, int, result=bool)
@@ -288,13 +287,11 @@ class Jeu(QObject):
 
         if trame[0] == 1:
             longueur_nom = trame[1]
-            print(longueur_nom)
             index = 0
             nom_adv = ""
             while index < longueur_nom:
                 nom_adv += chr(trame[index + 2])
                 index += 1
-            print(nom_adv)
             return nom_adv
         elif trame[0] == 2:
             # Reception d'un tir
@@ -330,9 +327,7 @@ class Jeu(QObject):
         message = bytearray([2, x, y])
         self.connection.envoyer_trame(message)
         reponse_tir = self.connection.recevoir_trame(3)
-        print(f"Jeu::tirer Reçu : {reponse_tir}")
         resultat_tir, etat_bateau = self.parse_message(reponse_tir)
-        print(f"Jeu::tirer Parsé : result {resultat_tir}, etat {etat_bateau}")
         if etat_bateau == "Coule":
             self.compteur_bateau_coule += 1
         self.carte_adversaire.mise_a_jour_carte_attaque(
@@ -352,7 +347,6 @@ class Jeu(QObject):
             self.thread_seConnecter.join()
         else:
             self.thread_heberger.join()
-        print("Connection OK")
         while not self.fin_partie():
             tour = 0
             while tour < 2:
@@ -360,16 +354,12 @@ class Jeu(QObject):
                     tour == 1 and not self.connection.isclient
                 ):
                     self.droit_de_tir = True
-                    print("Attente tire...")
                     while self.droit_de_tir:
                         time.sleep(0.1)
-                    print("Tire OK")
                 elif (tour == 0 and not self.connection.isclient) or (
                     tour == 1 and self.connection.isclient
                 ):
-                    print("Attente tir adv...")
                     message_tir = self.connection.recevoir_trame(3)
-                    print("Tir adv OK...")
                     x, y = self.parse_message(message_tir)
                     etat_tir, etage, etat_navire = self.recevoir_tir(x, y)
 
@@ -378,8 +368,6 @@ class Jeu(QObject):
                     else:
                         message = bytearray([3, 0, 0])
                     self.connection.envoyer_trame(message)
-                    print(f"Envoyer : {message}")
-                    print("retour tir Adv OK")
 
                 tour += 1
         self.partie_en_cours_changed.emit()
@@ -404,7 +392,6 @@ class Jeu(QObject):
         self.connection_effectuee.emit()
         liste_car = list(map(ord, self.nom_joueur))
         message = bytearray([1, len(self.nom_joueur), *liste_car])
-        print(f"Message se co : {message}")
         self.connection.envoyer_trame(message)
         message = self.connection.recevoir_trame(1024)
         self.nom_adversaire = self.parse_message(message)
@@ -421,18 +408,15 @@ class Jeu(QObject):
     def heberger(self):
         self.thread_heberger = threading.Thread(target=self.heberger_thread)
         self.thread_partie = threading.Thread(target=self.partie)
-        print("Start heberger & partie")
         self.thread_heberger.start()
         self.thread_partie.start()
 
     def heberger_thread(self):
         self.connection.heberger()
-        print("CONNECTION OK")
         self.connection_effectuee.emit()
         message = self.connection.recevoir_trame(1024)
-        print("Message reçue")
         self.nom_adversaire = self.parse_message(message)
-        print(f"Nom adv : {self.nom_adversaire}")
+        print(f"Vous jouez contre : {self.nom_adversaire}")
         liste_car = list(map(ord, self.nom_joueur))
         message = bytearray([1, len(self.nom_joueur), *liste_car])
         self.connection.envoyer_trame(message)

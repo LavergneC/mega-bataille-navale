@@ -44,7 +44,6 @@ class Reseau:
         self.socket.bind(self.infos_connexion)
         self.socket.listen(2)
         self.socketclient, self.infos_connexion = self.socket.accept()
-        print(self.infos_connexion)
 
     def envoyer_trame(self, message):
         """ Envoi d'un message.
