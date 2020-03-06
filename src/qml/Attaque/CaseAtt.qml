@@ -5,8 +5,8 @@ import "../Page_connexion"
 
 ColumnLayout{
     property var touches: [0,0,0]
+    property var impacts: [0,0,0]
     property int num
-    property bool manque : false
     property int nbtest: 0
     Layout.fillWidth : true
     
@@ -14,7 +14,7 @@ ColumnLayout{
         target : Jeu
         onTir_feedback_received:{
             touches = Jeu.get_case_attaque(num)
-            manque = Jeu.get_case_manque(num)
+            impacts = Jeu.get_case_impacts(num)
         }
     }
 
@@ -64,23 +64,13 @@ ColumnLayout{
             Repeater{
                 model : 3
                 Rectangle{
-                    visible : !manque
                     Layout.fillWidth : true
                     Layout.fillHeight : true
                     Layout.margins : 2
                     radius : 3
-                    color : "red"
-                    opacity : touches[index]
-                }
-            }
 
-            Image{
-                id : img
-                source : "../Images/close.png"
-                sourceSize.width : 22
-                sourceSize.height : 22
-                Layout.alignment : Qt.AlignHCenter | Qt.AlignVCenter
-                visible : manque
+                    color : touches[index] ? "red": (impacts[index] ? "blue" : "white")
+                }
             }
         }
     }
