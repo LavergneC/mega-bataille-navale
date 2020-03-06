@@ -13,10 +13,10 @@ def test_check_ship():
     navire.cases.append(Case(3, 2, 1))
     carte.navires.append(navire)
 
-    assert carte.check_ship(2, 2, 1) is True
-    assert carte.check_ship(2, 2, 2) is False
-    assert carte.check_ship(2, 3, 1) is False
-    assert carte.check_ship(4, 2, 1) is False
+    assert carte.check_ship(2, 2, 1) == (True, False)
+    assert carte.check_ship(2, 2, 2) == (False, False)
+    assert carte.check_ship(2, 3, 1) == (False, False)
+    assert carte.check_ship(4, 2, 1) == (False, False)
 
 
 def test_positionner_navire():
@@ -60,12 +60,29 @@ def test_positionner_navire():
     carte.positionner_navire(4, 0, 0, "Horizontal", "Destroyer", 4)
 
 
-def test_mise_a_jour():
+def test_mise_a_jour_case():
     carte = Carte(False)
     carte.positionner_navire(0, 0, 0, "Vertical", "Destroyer", 0)
 
     carte.mise_a_jour_case(0, 0, 0)
     assert carte.cases[0].impact is True
+
+
+def test_mise_a_jour_case_attaque():
+    carte = Carte(True)
+    carte.mise_a_jour_carte_attaque(0, 0, 2)
+    for case in carte.cases:
+        if case.x == 0 and case.y == 0 and case.z == 1:
+            assert case.impact is True
+            assert case.presence_bateau is True
+
+        if case.x == 0 and case.y == 0 and case.z == 0:
+            assert case.impact is True
+            assert case.presence_bateau is False
+
+        if case.x == 0 and case.y == 0 and case.z == 2:
+            assert case.impact is False
+            assert case.presence_bateau is False
 
 
 def test_trouver_navire():

@@ -28,8 +28,8 @@ def test_recevoir_tir():
 
     assert jeu.recevoir_tir(0, 0)[0] is False
     assert jeu.recevoir_tir(4, 5)[0] is False
-    assert jeu.recevoir_tir(11, 5) == (True, 1)
-    assert jeu.recevoir_tir(4, 7) == (True, 2)
+    assert jeu.recevoir_tir(11, 5) == (True, 2, False)
+    assert jeu.recevoir_tir(4, 7) == (True, 3, False)
 
 
 liste_parametres = []
@@ -42,12 +42,10 @@ liste_parametres.append(([-5, 18, 0], (None, None)))
 liste_parametres.append(([2, -5, 15], (-5, 15)))
 liste_parametres.append(([2.0, 2.5, 5.5], (2.5, 5.5)))
 
-liste_parametres.append(([3, 0, 0], ("Rate", "Non_coule")))
-liste_parametres.append(([3, 1, 0], ("Touche_bateau", "Non_coule")))
-liste_parametres.append(
-    ([3, 2, 0], ("Touche_sous_marin_surface", "Non_coule"))
-)
-liste_parametres.append(([3, 3, 1], ("Touche_sous_marin_profond", "Coule")))
+liste_parametres.append(([3, 0, 0], (0, "Non_coule")))
+liste_parametres.append(([3, 1, 0], (1, "Non_coule")))
+liste_parametres.append(([3, 2, 0], (2, "Non_coule")))
+liste_parametres.append(([3, 3, 1], (3, "Coule")))
 
 
 @pytest.mark.parametrize("test_input,expected", liste_parametres)
