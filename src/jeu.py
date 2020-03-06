@@ -217,7 +217,11 @@ class Jeu(QObject):
         liste_coules = []
         profondeur = 0
         while profondeur < 3:
-            liste_coules.append(self.carte_adversaire.cases[profondeur * 225 + index].bateau_coule)
+            liste_coules.append(
+                self.carte_adversaire.cases[
+                    profondeur * 225 + index
+                ].bateau_coule
+            )
             profondeur += 1
         return liste_coules
 
