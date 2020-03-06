@@ -328,13 +328,7 @@ class Jeu(QObject):
         resultat_tir, etat_bateau = self.parse_message(reponse_tir)
         if etat_bateau == "Coule":
             self.compteur_bateau_coule += 1
-        if resultat_tir:
-            self.carte_adversaire.mise_a_jour_case(x, y, resultat_tir - 1)
-        else:
-            # Pas de bateau touché, impact sur les trois couches
-            self.carte_adversaire.mise_a_jour_case(x, y, 0)
-            self.carte_adversaire.mise_a_jour_case(x, y, 1)
-            self.carte_adversaire.mise_a_jour_case(x, y, 2)
+        self.carte_adversaire.mise_a_jour_carte_attaque(x, y, resultat_tir)
 
     @Slot(result=bool)
     def droit_de_tirer(self):
