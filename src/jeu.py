@@ -348,9 +348,7 @@ class Jeu(QObject):
                     print("Tir adv OK...")
                     x, y = self.parse_message(message_tir)
                     etat_tir, etage, etat_navire = self.recevoir_tir(x, y)
-                    print(
-                        f"etat_tir {etat_tir}, etage {etage}, etat_navire {etat_navire}"
-                    )
+
                     if etat_tir:
                         message = bytearray([3, etage, etat_navire])
                     else:
