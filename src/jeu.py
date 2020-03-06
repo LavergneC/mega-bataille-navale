@@ -211,6 +211,21 @@ class Jeu(QObject):
         return liste_touche
 
     @Slot(int, result="QVariantList")
+    def get_case_coules(self, index):
+        """Return une liste de taille 3, indiquant à quels niveaux
+                                            des bateaux ont été coulés"""
+        liste_coules = []
+        profondeur = 0
+        while profondeur < 3:
+            liste_coules.append(
+                self.carte_adversaire.cases[
+                    profondeur * 225 + index
+                ].bateau_coule
+            )
+            profondeur += 1
+        return liste_coules
+
+    @Slot(int, result="QVariantList")
     def get_case_impacts(self, index):
         """return true si la case a ete tiree"""
         liste_impacts = []
@@ -320,7 +335,9 @@ class Jeu(QObject):
         print(f"Jeu::tirer Parsé : result {resultat_tir}, etat {etat_bateau}")
         if etat_bateau == "Coule":
             self.compteur_bateau_coule += 1
-        self.carte_adversaire.mise_a_jour_carte_attaque(x, y, resultat_tir)
+        self.carte_adversaire.mise_a_jour_carte_attaque(
+            x, y, resultat_tir, etat_bateau == "Coule"
+        )
         self.tir_feedback_received.emit()
         self.droit_de_tir = False
 

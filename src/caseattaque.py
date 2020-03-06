@@ -17,3 +17,4 @@ class CaseAttaque(Case):
 
         super().__init__(x, y, z)
         self.presence_bateau = False
+        self.bateau_coule = False
